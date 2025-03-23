@@ -1,0 +1,86 @@
+body {
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 800px;
+    background-color: #dcdcdc;
+    padding: 20px;
+    border: 1px solid #bfbfbf;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.menu-bar {
+    background-color: #a9a9a9;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+.section-title {
+    background-color: #e0e0e0;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 1px solid #bfbfbf;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+table {
+    width: 100%;
+    background-color: white;
+    border-collapse: collapse;
+    margin-top: 10px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #bfbfbf;
+    text-align: center;
+    font-size: 16px;
+    vertical-align: middle;
+}
+
+th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.btn-custom {
+    background-color: #c0c0c0;
+    color: black;
+    border: 1px solid #bfbfbf;
+    padding: 6px 12px;
+    font-size: 14px;
+    margin-right: 5px;
+    transition: background-color 0.2s;
+    border-radius: 4px;
+    width: 90px;
+    text-align: center;
+}
+
+.btn-custom:hover {
+    background-color: #b0b0b0;
+}
+
+.btn-section {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn-section .btn-custom {
+    width: 150px;
+}
