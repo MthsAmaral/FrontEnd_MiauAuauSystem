@@ -65,35 +65,36 @@ fetch("http://localhost:8080/apis/tipo-lanc/buscar", requestOptions)
     })
     .catch((error) => resultado2.innerHTML = error);
 
-    function buscarLancamento() {
-        const url = "http://localhost:8080/apis/tipo_lanc/buscar";
-    
-        fetch(url, { method: 'GET', redirect: "follow" })
-            .then((response) => {
-                return response.text();
-            })
-            .then(function (text) {
-                var json = JSON.parse(text); // Converte a resposta JSON
-    
-                var table = "<table border='1'>"; // Começa a tabela com uma borda simples
-                table += `<tr>
+function buscarLancamento() {
+    const url = "http://localhost:8080/apis/tipo_lanc/buscar";
+
+    fetch(url, { method: 'GET', redirect: "follow" })
+        .then((response) => {
+            return response.text();
+        })
+        .then(function (text) {
+            var json = JSON.parse(text); // Converte a resposta JSON
+
+            var table = "<table border='1'>"; // Começa a tabela com uma borda simples
+            table += `<tr>
                     <th>Código</th>
                     <th>Nome</th>
                     <th>Excluir</th>
                     <th>Alterar</th></tr>`;
-    
-                for (let i = 0; i < json.length; i++) {
-                    table += `<tr>
+
+            for (let i = 0; i < json.length; i++) {
+                table += `<tr>
                             <td>${json[i].cod}</td>
                             <td>${json[i].descricao}</td>
                             <td onclick='apagar(${json[i].id})'>X</td>
                             <td onclick='alterar(${json[i].id})'>Alterar</td>
                           </tr>`;
-                }
-                table += "</table>";
-                document.getElementById("resultado").innerHTML = table; // Exibe a tabela no elemento "resultado"
-            })
-            .catch(function (error) {
-                console.error(error); // Exibe erros, se houver
-            });
-    }
+            }
+            table += "</table>";
+            document.getElementById("resultado").innerHTML = table; // Exibe a tabela no elemento "resultado"
+        })
+        .catch(function (error) {
+            console.error(error); // Exibe erros, se houver
+        });
+}
+
