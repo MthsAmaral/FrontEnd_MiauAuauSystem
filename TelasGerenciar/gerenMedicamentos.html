@@ -10,16 +10,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="../ControllerJs/tipoMedicamentoController.js"></script>
     
-    <script>
-        //função para caregar menu
-        window.onload = function () {
-            fetch('../HomePage/menu.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('menu').innerHTML = data;
-                });
-        };
-    </script>
+    
 </head>
 
 <body onload="buscarMedicamento()">
