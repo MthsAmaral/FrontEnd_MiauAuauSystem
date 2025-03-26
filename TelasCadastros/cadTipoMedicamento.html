@@ -17,11 +17,15 @@
     <div class="container mt-5">
         <h2>Cadastro de Medicamento</h2>
         <form method="post" id="ftipomedicamento">
+            
             <div class="mb-3">
+                <label for="id" class="form-label">ID</label>
+                <input type="text" class="form-control" id="id" name="id" disabled>
+                
                 <label for="nome" class="form-label">Nome</label>
-                <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome do medicamento">
+                <input required type="text" class="form-control" id="nome" name="nome" placeholder="Nome do medicamento">
             </div>
-            <button type="button" class="btn btn-primary" onclick="cadTipoMedicamento()">Confirmar</button>
+            <button type="button" class="btn btn-primary" onclick="cadMedicamento()">Confirmar</button>
             <button type="button" class="btn btn-secondary" onclick="history.back()">Voltar</button>
         </form>
     </div>
