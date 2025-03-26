@@ -14,9 +14,6 @@
 </head>
 
 <body>
-    <!-- Aqui o menu será carregado dinamicamente -->
-    <div id="menu"></div>
-
     <div class="container mt-5">
         <h2>Cadastro de Medicamento</h2>
         <form method="post" id="ftipomedicamento">
@@ -24,16 +21,6 @@
                 <label for="nome" class="form-label">Nome</label>
                 <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome do medicamento">
             </div>
-            <!--
-            <div class="mb-3">
-                <label for="periodo" class="form-label">Período de Aplicação</label>
-                <select class="form-select" id="periodo">
-                    <option value="diario">Diário</option>
-                    <option value="semanal">Semanal</option>
-                    <option value="mensal">Mensal</option>
-                </select>
-            </div>
-            -->
             <button type="button" class="btn btn-primary" onclick="cadTipoMedicamento()">Confirmar</button>
             <button type="button" class="btn btn-secondary" onclick="history.back()">Voltar</button>
         </form>

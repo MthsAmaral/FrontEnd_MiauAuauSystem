@@ -11,43 +11,87 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
-    <script src="../ControllerJs/tipoLancamentoController.js"></script>
+    <script>
+        // Exemplo de dados (substituir pela chamada real da API ou Banco de Dados)
+        const tiposLancamento = [
+            { id: 1, nome: "Consulta Veterinária" },
+            { id: 2, nome: "Vacinação" }
+        ];
 
+        // Função para carregar os dados na tabela
+        function carregarTiposLancamento() {
+            const tabela = document.getElementById('resultado');
+            tabela.innerHTML = '';
+
+            tiposLancamento.forEach(tipo => {
+                let row = `
+                    <tr>
+                        <td>${tipo.id}</td>
+                        <td>${tipo.nome}</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="editarTipoLancamento(${tipo.id})">Alterar</button>
+                            <button class="btn btn-danger btn-sm" onclick="excluirTipoLancamento(${tipo.id})">Excluir</button>
+                        </td>
+                    </tr>
+                `;
+                tabela.innerHTML += row;
+            });
+        }
+
+        // Função para editar tipo de lançamento
+        function editarTipoLancamento(id) {
+            const tipo = tiposLancamento.find(t => t.id === id);
+            if (tipo) {
+                // Redireciona para a tela de edição com os dados preenchidos
+                window.location.href = `../TelasCadastros/cadTipoLancamento.html?id=${tipo.id}&nome=${tipo.nome}`;
+            }
+        }
+
+        // Função para excluir tipo de lançamento
+        function excluirTipoLancamento(id) {
+            if (confirm('Tem certeza que deseja excluir este tipo de lançamento?')) {
+                const index = tiposLancamento.findIndex(t => t.id === id);
+                if (index !== -1) {
+                    tiposLancamento.splice(index, 1);
+                    carregarTiposLancamento(); // Recarregar tabela após exclusão
+                    alert('Tipo de lançamento excluído com sucesso!');
+                }
+            }
+        }
+
+        // Carregar os dados na tabela ao carregar a página
+        window.onload = carregarTiposLancamento;
+    </script>
 </head>
 
-<body >
+<body>
+    <!-- Cabeçalho -->
     <header class="bg-dark text-white p-3">
         <div class="container d-flex justify-content-between align-items-center">
-            <!-- Logo ou Título -->
             <h1 class="h3">Sistema AuauMiau</h1>
-    
-            <!-- Menu de navegação -->
             <nav>
                 <ul class="nav">
-                    <li class="nav-item"><a class="nav-link text-white" href="../index.html">Home</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="../index.html">Home</a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">Cadastro</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="../TelasCadastros/cadUsuario.html">Usuário</a></li>
                             <li><a class="dropdown-item" href="../TelasCadastros/cadAnimal.html">Animal</a></li>
-                            <li><a class="dropdown-item" href="../TelasCadastros/cadTipoLancamento.html">Tipo de
-                                    Lançamento</a></li>
-                            <li><a class="dropdown-item" href="../TelasCadastros/cadTipoMedicamento.html">Tipo de
-                                    Medicamento</a></li>
+                            <li><a class="dropdown-item" href="../TelasCadastros/cadTipoLancamento.html">Tipo de Lançamento</a></li>
+                            <li><a class="dropdown-item" href="../TelasCadastros/cadTipoMedicamento.html">Tipo de Medicamento</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdownManage" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">Gerenciar</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownManage">
-                            <li><a class="dropdown-item" href="./gerenMedicamentos.html">Tipo de
-                                    Medicamento</a></li>
+                            <li><a class="dropdown-item" href="./gerenUsuarios.html">Usuário</a></li>
                             <li><a class="dropdown-item" href="./gerenAnimais.html">Animal</a></li>
-                            <li><a class="dropdown-item" href="./gerenTipoLancamentos.html">Tipo de
-                                    Lançamento</a></li>
-                            <li><a class="dropdown-item" href="./gerenMedicamentos.html">Tipo de
-                                    Medicamento</a></li>
+                            <li><a class="dropdown-item" href="./gerenTipoLancamentos.html">Tipo de Lançamento</a></li>
+                            <li><a class="dropdown-item" href="./gerenMedicamentos.html">Tipo de Medicamento</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -64,17 +108,30 @@
         </div>
     </header>
 
-    <div class="container mt-4">
+    <!-- Conteúdo principal -->
+    <div class="container mt-5">
+        <h2>Gerenciar Tipos de Lançamento</h2>
 
-        <div class="section-title">Lista dos Tipos de Lançamento</div>
-        <table>
-            <tbody id="resultado">
+        <div style="overflow: auto; max-height: 400px;">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="resultado">
+                    <!-- Os dados serão preenchidos dinamicamente -->
+                </tbody>
+            </table>
+        </div>
 
-            </tbody>
-        </table>
-
+        <div class="btn-section mt-3">
+            <a href="../TelasCadastros/cadTipoLancamento.html" class="btn btn-primary">Cadastrar Novo Tipo de Lançamento</a>
+            <button class="btn btn-secondary" onclick="history.back()">Voltar</button>
+        </div>
     </div>
-
 </body>
 
 </html>

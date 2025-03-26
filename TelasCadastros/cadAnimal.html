@@ -11,25 +11,29 @@
 </head>
 
 <body>
-    <!-- Aqui o menu será carregado dinamicamente -->
-    <div id="menu"></div>
-
     <div class="container mt-5">
         <h2>Cadastro de Animal</h2>
-        <!-- Adicionei enctype="multipart/form-data" para permitir upload de arquivos -->
+
+        <!-- Adicionei enctype para permitir upload de arquivos -->
         <form method="post" id="fanimal" enctype="multipart/form-data">
+            <!-- ID (oculto) -->
+            <input type="hidden" id="id" name="id">
+
             <div class="mb-3">
                 <label for="nome" class="form-label">Nome</label>
                 <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome do animal" required>
             </div>
+
             <div class="mb-3">
                 <label for="raca" class="form-label">Raça</label>
                 <input type="text" class="form-control" id="raca" name="raca" placeholder="Raça do animal" required>
             </div>
+
             <div class="mb-3">
                 <label for="idade" class="form-label">Idade</label>
                 <input type="number" class="form-control" id="idade" name="idade" placeholder="Idade do animal" required>
             </div>
+
             <div class="mb-3">
                 <label for="sexo" class="form-label">Sexo</label>
                 <select class="form-select" id="sexo" name="sexo" required>
@@ -37,10 +41,12 @@
                     <option value="F">Fêmea</option>
                 </select>
             </div>
+
             <div class="mb-3">
-                <label for="peso" class="form-label">Peso</label>
+                <label for="peso" class="form-label">Peso (kg)</label>
                 <input type="number" class="form-control" id="peso" name="peso" placeholder="Peso do animal" required>
             </div>
+
             <div class="mb-3">
                 <label for="castrado" class="form-label">Castrado</label>
                 <select class="form-select" id="castrado" name="castrado" required>
@@ -48,6 +54,7 @@
                     <option value="FALSE">Não</option>
                 </select>
             </div>
+
             <div class="mb-3">
                 <label for="adotado" class="form-label">Adotado</label>
                 <select class="form-select" id="adotado" name="adotado" required>
@@ -55,16 +62,17 @@
                     <option value="FALSE">Não</option>
                 </select>
             </div>
-            <!-- Novo campo para anexar foto -->
+
+            <!-- Campo para foto -->
             <div class="mb-3">
                 <label for="foto" class="form-label">Anexar Foto do Animal</label>
                 <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
             </div>
+
             <button type="button" class="btn btn-primary" onclick="cadAnimal()">Confirmar</button>
             <button type="button" class="btn btn-secondary" onclick="history.back()">Voltar</button>
         </form>
     </div>
-
 </body>
 
 </html>

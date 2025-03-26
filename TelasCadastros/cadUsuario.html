@@ -10,53 +10,127 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="../ControllerJs/usuarioController.js"></script>
-    
+
+    <script>
+        // Preencher os campos automaticamente se estiver em modo de edição
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('id')) {
+                document.getElementById('id').value = params.get('id');
+                document.getElementById('nome').value = params.get('nome');
+                document.getElementById('email').value = params.get('email');
+                document.getElementById('senha').value = params.get('senha');
+                document.getElementById('telefone').value = params.get('telefone');
+                document.getElementById('cpf').value = params.get('cpf');
+                document.getElementById('privilegio').value = params.get('privilegio');
+                document.getElementById('sexo').value = params.get('sexo');
+                document.getElementById('cep').value = params.get('cep');
+                document.getElementById('rua').value = params.get('rua');
+                document.getElementById('bairro').value = params.get('bairro');
+                document.getElementById('numero').value = params.get('numero');
+            }
+        }
+
+        // Função para cadastrar ou editar usuário
+        function cadUsuario() {
+            const usuario = {
+                id: document.getElementById('id').value || new Date().getTime(), // Para gerar um ID se não estiver em modo de edição
+                nome: document.getElementById('nome').value,
+                email: document.getElementById('email').value,
+                senha: document.getElementById('senha').value,
+                telefone: document.getElementById('telefone').value,
+                cpf: document.getElementById('cpf').value,
+                privilegio: document.getElementById('privilegio').value,
+                sexo: document.getElementById('sexo').value,
+                cep: document.getElementById('cep').value,
+                rua: document.getElementById('rua').value,
+                bairro: document.getElementById('bairro').value,
+                numero: document.getElementById('numero').value
+            };
+
+            if (usuario.nome && usuario.email && usuario.senha) {
+                alert('Usuário cadastrado/atualizado com sucesso!');
+                console.log(usuario);
+
+                // Redirecionar após o cadastro/edição
+                window.location.href = '../TelasGerenciamento/gerenUsuarios.html';
+            } else {
+                alert('Preencha todos os campos obrigatórios!');
+            }
+        }
+    </script>
 </head>
 
 <body>
-    <!-- Aqui o menu será carregado dinamicamente -->
-    <div id="menu"></div>
-
     <div class="container mt-5">
         <h2>Cadastro de Usuário</h2>
         <form method="post" id="fusuario">
+            <!-- ID (escondido) -->
+            <input type="hidden" id="id" name="id">
+
             <div class="mb-3">
                 <label for="nome" class="form-label">Nome</label>
-                <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome completo">
+                <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome completo" required>
             </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="senha" class="form-label">Senha</label>
+                <input type="password" class="form-control" id="senha" name="senha" placeholder="Senha" required>
+            </div>
+
             <div class="mb-3">
                 <label for="telefone" class="form-label">Telefone</label>
                 <input type="tel" class="form-control" id="telefone" name="telefone" placeholder="Telefone">
             </div>
+
             <div class="mb-3">
                 <label for="cpf" class="form-label">CPF</label>
                 <input type="text" class="form-control" id="cpf" name="cpf" placeholder="CPF">
             </div>
+
             <div class="mb-3">
-                <div class="mb-3">
-                    <label for="privilegio" class="form-label">Privilégio</label>
-                    <select class="form-select" id="privilegio" name="privilegio">
-                        <option value="usuario">Usuário</option>
-                        <option value="admin">Admin</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="sexo" class="form-label">Sexo</label>
-                    <select class="form-select" id="sexo" name="sexo">
-                        <option value="M">Masculino</option>
-                        <option value="F">Feminino</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="senha" class="form-label">Senha</label>
-                    <input type="password" class="form-control" id="senha" name="senha" placeholder="Senha">
-                </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Email">
-                </div>
-                <button type="button" class="btn btn-primary" onclick="cadUsuario()">Confirmar</button>
-                <button type="button" class="btn btn-secondary" onclick="history.back()">Voltar</button>
+                <label for="privilegio" class="form-label">Privilégio</label>
+                <select class="form-select" id="privilegio" name="privilegio" required>
+                    <option value="usuario">Usuário</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="sexo" class="form-label">Sexo</label>
+                <select class="form-select" id="sexo" name="sexo" required>
+                    <option value="M">Masculino</option>
+                    <option value="F">Feminino</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="cep" class="form-label">CEP</label>
+                <input type="text" class="form-control" id="cep" name="cep" placeholder="CEP">
+            </div>
+
+            <div class="mb-3">
+                <label for="rua" class="form-label">Rua</label>
+                <input type="text" class="form-control" id="rua" name="rua" placeholder="Rua">
+            </div>
+
+            <div class="mb-3">
+                <label for="bairro" class="form-label">Bairro</label>
+                <input type="text" class="form-control" id="bairro" name="bairro" placeholder="Bairro">
+            </div>
+
+            <div class="mb-3">
+                <label for="numero" class="form-label">Número</label>
+                <input type="number" class="form-control" id="numero" name="numero" placeholder="Número">
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="cadUsuario()">Confirmar</button>
+            <button type="button" class="btn btn-secondary" onclick="history.back()">Voltar</button>
         </form>
     </div>
 </body>
