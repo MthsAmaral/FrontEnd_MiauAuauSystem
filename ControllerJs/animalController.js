@@ -1,7 +1,8 @@
 function cadAnimal() {
-    const URL = "http://localhost:8080/apis/animal/gravar"
+    const URL = "http://localhost:8080/apis/animal/gravar";
     var fanimal = document.getElementById("fanimal");
     var jsontext = JSON.stringify(Object.fromEntries(new FormData(fanimal)));
+    
     fetch(URL, {
         headers: {
             'Accept': 'application/json',
@@ -9,23 +10,25 @@ function cadAnimal() {
         },
         method: 'POST', body: jsontext
     })
-        .then((response) => { return response.json(); })
+        .then((response) => {
+            return response.json();
+        })
         .then((json) => {
             alert(JSON.stringify(json));
             fanimal.reset();
         })
         .catch((error) => console.error(error))
-
 }
 
 function buscarAnimal() {
-
     let filtro = document.getElementById("filtro").value
     const resultado = document.getElementById("resultado");
     if(filtro.length > 0) // busca com filtro
     {
-        const url = "http://localhost:8080/apis/animal/buscar/"+filtro;
-        fetch(url, { method: 'GET', redirect: "follow" })
+        const url = "http://localhost:8080/apis/animal/buscar/" + filtro;
+        fetch(url, {
+            method: 'GET', redirect: "follow"
+        })
         .then((response) => {
             return response.text();
         })
@@ -45,8 +48,8 @@ function buscarAnimal() {
                         <td>${json[i].peso}</td>
                         <td>${json[i].castrado}</td>
                         <td>${json[i].adotado}</td>
-                        <td onclick='apagar(${json[i].codAnimal})'>Excluir</td>
-                        <td onclick='alterar(${json[i].codAnimal})'>Alterar</td>
+                        <td><button type="button" onclick='excluirAnimal(${json[i].codAnimal})'>Excluir</button></td>
+                        <td><button type="button" onclick='alterarAnimal(${json[i].codAnimal})'>Alterar</button></td>
                       </tr>`;
             }
             table += "</table>";
@@ -55,13 +58,13 @@ function buscarAnimal() {
         .catch(function (error) {
             console.error(error); // Exibe erros, se houver
         });
-
-
     }
     else
     {
         const url = "http://localhost:8080/apis/animal/buscar/%20";
-        fetch(url, { method: 'GET', redirect: "follow" })
+        fetch(url, {
+            method: 'GET', redirect: "follow"
+        })
         .then((response) => {
             return response.text();
         })
@@ -79,8 +82,8 @@ function buscarAnimal() {
                         <td>${json[i].peso}</td>
                         <td>${json[i].castrado}</td>
                         <td>${json[i].adotado}</td>
-                        <td onclick='apagar(${json[i].codAnimal})'>X</td>
-                        <td onclick='alterar(${json[i].codAnimal})'>Alterar</td>
+                        <td><button type="button" onclick='excluirAnimal(${json[i].codAnimal})'>Excluir</button></td>
+                        <td><button type="button" onclick='alterarAnimal(${json[i].codAnimal})'>Alterar</button></td>
                       </tr>`;
             }
             table += "</table>";
@@ -90,9 +93,45 @@ function buscarAnimal() {
             console.error(error); // Exibe erros, se houver
         });
     }
-    
-        
 }
 
-
+function excluirAnimal(id){
+    const URL = "http://localhost:8080/apis/animal/excluir/" + id;
     
+    fetch(URL, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: 'DELETE'
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((json) => {
+            alert(JSON.stringify(json));
+        })
+        .catch((error) => console.error(error));
+}
+
+function editarAnimal(id){
+    const URL = "http://localhost:8080/apis/animal/atualizar";
+    var fanimal = document.getElementById("fanimal");
+    var jsontext = JSON.stringify(Object.fromEntries(new FormData(fanimal)));
+
+    fetch(URL, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: 'PUT', body: jsontext
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((json) => {
+            alert(JSON.stringify(json));
+            fanimal.reset();
+        })
+        .catch((error) => console.error(error))
+}

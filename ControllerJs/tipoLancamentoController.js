@@ -1,5 +1,5 @@
 function cadTipoLancamento() {
-    const URL = "http://localhost:8080/apis/tipo_lanc/gravar";
+    const URL = "http://localhost:8080/apis/tipo-lancamento/gravar";
     const ftipolancamento = document.getElementById("ftipolancamento");
     const formData = new FormData(ftipolancamento);
 
@@ -7,88 +7,41 @@ function cadTipoLancamento() {
         method: 'POST',
         body: formData,
     })
-        .then((response) => response.json())
+        .then((response) => {
+            return response.json();
+        })
         .then((json) => {
             alert("Resposta do servidor: " + JSON.stringify(json));
             ftipolancamento.reset();
         })
-        .catch((error) => console.error("Erro ao enviar dados:", error));
+        .catch((error) => console.error("Erro ao CADASTRAR dados:", error));
 }
 
-const resultado = document.getElementById("result");
-let filtro = document.getElementById("filtro").value;
+function buscarTipoLancamento(filtro) {
+    // deixar um espaço ao final da string para buscar por todos os registros já cadastrados
+    const url = "http://localhost:8080/apis/tipo-lancamento/buscar";
 
-const requestOptions = {
-    method: "GET",
-    redirect: "follow"
-};
-let erro = false;
-let autor2 = document.getElementById("nome").value;
-fetch("http://localhost:8080/apis/tipo-lanc/buscar-nome/" + autor2, requestOptions)
-    .then((response) => {
+    if(filtro.length>0)
+        url = url + "/" + filtro; //buscar utilizando o filtro
+    else
+        url = url + "/ "; //buscar todos os valores
 
-        if (!response.ok) erro = true;
-        return response.json()
+    fetch(url, {
+        method: 'GET', redirect: "follow"
     })
-    .then((result) => {
-        if (erro)
-            resultado2.innerHTML = result.mensagem;
-        else {
-            let html = "";
-            result.forEach(element => {
-                html = html + element.titulo + "<br>"
-            });
-            resultado2.innerHTML = html;
-        }
-
-    })
-    .catch((error) => resultado2.innerHTML = error);
-
-
-fetch("http://localhost:8080/apis/tipo-lanc/buscar", requestOptions)
-    .then((response) => {
-
-        if (!response.ok) erro = true;
-        return response.json()
-    })
-    .then((result) => {
-        if (erro)
-            resultado2.innerHTML = result.mensagem;
-        else {
-            let html = "";
-            result.forEach(element => {
-                html = html + element.titulo + "<br>"
-            });
-            resultado2.innerHTML = html;
-        }
-
-    })
-    .catch((error) => resultado2.innerHTML = error);
-
-function buscarLancamento() {
-    const url = "http://localhost:8080/apis/tipo_lanc/buscar";
-
-    fetch(url, { method: 'GET', redirect: "follow" })
-        .then((response) => {
-            return response.text();
-        })
+        .then((response) => {return response.text()})
         .then(function (text) {
             var json = JSON.parse(text); // Converte a resposta JSON
-
             var table = "<table border='1'>"; // Começa a tabela com uma borda simples
-            table += `<tr>
-                    <th>Código</th>
-                    <th>Nome</th>
-                    <th>Excluir</th>
-                    <th>Alterar</th></tr>`;
 
             for (let i = 0; i < json.length; i++) {
-                table += `<tr>
-                            <td>${json[i].cod}</td>
-                            <td>${json[i].descricao}</td>
-                            <td onclick='apagar(${json[i].id})'>X</td>
-                            <td onclick='alterar(${json[i].id})'>Alterar</td>
-                          </tr>`;
+                table += `
+                    <tr>
+                        <td>${json[i].cod}</td>
+                        <td>${json[i].descricao}</td>
+                        <td onclick='excluirTipoLancamento(${json[i].id})'>Excluir</td>
+                        <td onclick='editarTipoLancamento(${json[i].id})'>Alterar</td>
+                    </tr>`;
             }
             table += "</table>";
             document.getElementById("resultado").innerHTML = table; // Exibe a tabela no elemento "resultado"
@@ -98,3 +51,38 @@ function buscarLancamento() {
         });
 }
 
+function excluirTipoLancamento(id){
+    const URL = "http://localhost:8080/apis/tipo-lancamento/excluir" + id;
+
+    fetch(URL, { method: 'DELETE' })
+        .then((response) => {
+            return response.json();
+        })
+        .then((json) => {
+            alert("Resposta do servidor: " + JSON.stringify(json));
+        })
+        .catch((error) => console.error("Erro ao EXCLUIR dados:", error));
+}
+
+function editarTipoLancamento(){
+    const URL = "http://localhost:8080/apis/tipo-lancamento/atualizar";
+    const ftipolancamento = document.getElementById("ftipolancamento");
+    const formData = new FormData(ftipolancamento);
+
+    fetch(URL, {
+        method: 'PUT',
+        body: formData,
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((json) => {
+            alert("Resposta do servidor: " + JSON.stringify(json));
+            ftipolancamento.reset();
+        })
+        .catch((error) => console.error("Erro ao ATUALIZAR dados:", error));
+}
+
+function editarTipoLancamento(id){
+    //redirecionar para a página de cadastro com os dados do respectivo id
+}
