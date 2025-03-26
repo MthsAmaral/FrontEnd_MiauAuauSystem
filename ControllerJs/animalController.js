@@ -19,9 +19,13 @@ function cadAnimal() {
 }
 
 function buscarAnimal() {
-    const url = "http://localhost:8080/apis/animal/buscar";
 
-    fetch(url, { method: 'GET', redirect: "follow" })
+    let filtro = document.getElementById("filtro").value
+    const resultado = document.getElementById("resultado");
+    if(filtro.length > 0) // busca com filtro
+    {
+        const url = "http://localhost:8080/apis/animal/buscar/"+filtro;
+        fetch(url, { method: 'GET', redirect: "follow" })
         .then((response) => {
             return response.text();
         })
@@ -29,23 +33,66 @@ function buscarAnimal() {
             var json = JSON.parse(text); // Converte a resposta JSON
 
             var table = "<table border='1'>"; // Começa a tabela com uma borda simples
-            table += "<tr><th>Código</th><th>Nome</th><th>Raça</th><th>Idade</th><th>Sexo</th><th>Excluir</th><th>Alterar</th></tr>";
-
+            
+        
             for (let i = 0; i < json.length; i++) {
                 table += `<tr>
-                        <td>${json[i].cod}</td>
+                        <td>${json[i].codAnimal}</td>
                         <td>${json[i].nome}</td>
                         <td>${json[i].raca}</td>
                         <td>${json[i].idade}</td>
                         <td>${json[i].sexo}</td>
-                        <td onclick='apagar(${json[i].id})'>X</td>
-                        <td onclick='alterar(${json[i].id})'>Alterar</td>
+                        <td>${json[i].peso}</td>
+                        <td>${json[i].castrado}</td>
+                        <td>${json[i].adotado}</td>
+                        <td onclick='apagar(${json[i].codAnimal})'>Excluir</td>
+                        <td onclick='alterar(${json[i].codAnimal})'>Alterar</td>
                       </tr>`;
             }
             table += "</table>";
-            document.getElementById("resultado").innerHTML = table; // Exibe a tabela no elemento "resultado"
+            resultado.innerHTML = table; // Exibe a tabela no elemento "resultado"
         })
         .catch(function (error) {
             console.error(error); // Exibe erros, se houver
         });
+
+
+    }
+    else
+    {
+        const url = "http://localhost:8080/apis/animal/buscar/%20";
+        fetch(url, { method: 'GET', redirect: "follow" })
+        .then((response) => {
+            return response.text();
+        })
+        .then(function (text) {
+            var json = JSON.parse(text); // Converte a resposta JSON
+
+            var table = "<table border='1'>"; // Começa a tabela com uma borda simples
+            for (let i = 0; i < json.length; i++) {
+                table += `<tr>
+                        <td>${json[i].codAnimal}</td>
+                        <td>${json[i].nome}</td>
+                        <td>${json[i].raca}</td>
+                        <td>${json[i].idade}</td>
+                        <td>${json[i].sexo}</td>
+                        <td>${json[i].peso}</td>
+                        <td>${json[i].castrado}</td>
+                        <td>${json[i].adotado}</td>
+                        <td onclick='apagar(${json[i].codAnimal})'>X</td>
+                        <td onclick='alterar(${json[i].codAnimal})'>Alterar</td>
+                      </tr>`;
+            }
+            table += "</table>";
+            resultado.innerHTML = table; // Exibe a tabela no elemento "resultado"
+        })
+        .catch(function (error) {
+            console.error(error); // Exibe erros, se houver
+        });
+    }
+    
+        
 }
+
+
+    
