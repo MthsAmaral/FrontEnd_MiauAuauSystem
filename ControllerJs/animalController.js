@@ -1,23 +1,81 @@
+function limparForm()
+{
+    var fdados = document.getElementById("fanimal");
+    fdados.nome.value="";
+    fdados.sexo.value="M";
+    fdados.raca.value="";
+    fdados.idade.value="";
+    fdados.peso.value="";
+    fdados.castrado.value="Não";
+    fdados.adotado.value="Não";
+    fdados.fileName.value="";
+}
+
+function validarCampos()
+{
+  const nome = document.getElementById("nome").value;
+  const sexo = document.getElementById("sexo").value;
+  const raca = document.getElementById("raca").value;
+  const idade = document.getElementById("idade").value;
+  const peso = document.getElementById("peso").value;
+  const castrado = document.getElementById("castrado").value;
+  const adotado = document.getElementById("adotado").value;
+  const fileName = document.getElementById("fileName").value;
+  
+  if (nome != "" && sexo != "" && raca != "" && idade > 0 && peso > 0 && castrado != "" && adotado != "" && fileName != "")
+  {
+    cadAnimal();
+  }
+  else
+  {
+    alert("Campo(s) Não Preenchido(s)")
+  }
+  limparForm();
+}
 function cadAnimal() {
-    const URL = "http://localhost:8080/apis/animal/gravar";
+    
     var fanimal = document.getElementById("fanimal");
     var jsontext = JSON.stringify(Object.fromEntries(new FormData(fanimal)));
-    
-    fetch(URL, {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        method: 'POST', body: jsontext
-    })
-        .then((response) => {
-            return response.json();
+    var cod = document.getElementById("codAnimal").value;
+    if(cod) // existe, atualiza
+    {
+        const URL = "http://localhost:8080/apis/animal/atualizar"
+        fetch(URL, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: 'PUT', body: jsontext
         })
-        .then((json) => {
-            alert(JSON.stringify(json));
-            fanimal.reset();
+            .then((response) => {
+                return response.json();
+            })
+            .then((json) => {
+                alert("Animal Alterado Com Sucesso");
+                fanimal.reset();
+            })
+            .catch((error) => console.error(error))
+
+    }
+    else
+    {
+        const URL = "http://localhost:8080/apis/animal/gravar"
+        fetch(URL, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: 'POST', body: jsontext
         })
-        .catch((error) => console.error(error))
+            .then((response) => {
+                return response.json();
+            })
+            .then((json) => {
+                alert("Animal Cadastrado Com Sucesso");
+                fanimal.reset();
+            })
+            .catch((error) => console.error(error))
+    }
 }
 
 function buscarAnimal() {
@@ -83,7 +141,8 @@ function buscarAnimal() {
                         <td>${json[i].castrado}</td>
                         <td>${json[i].adotado}</td>
                         <td><button type="button" onclick='excluirAnimal(${json[i].codAnimal})'>Excluir</button></td>
-                        <td><button type="button" onclick='alterarAnimal(${json[i].codAnimal})'>Alterar</button></td>
+                        <td><button type="button" onclick='editarAnimal(${json[i].codAnimal})'>Alterar</button></td>
+
                       </tr>`;
             }
             table += "</table>";
@@ -95,43 +154,67 @@ function buscarAnimal() {
     }
 }
 
-function excluirAnimal(id){
-    const URL = "http://localhost:8080/apis/animal/excluir/" + id;
+function excluirAnimal(id) 
+{
+
+    const confirmacao = confirm("Tem certeza que deseja excluir este animal ?");
+    if (confirmacao)
+    {
+        const URL = "http://localhost:8080/apis/animal/excluir/" + id;
+
+        fetch(URL, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: 'DELETE'
+        })
+            .then((response) => {
+                return response.json();
+            })
+            .then((json) => {
+                alert("Animal Excluido Com Sucesso");
+                window.location.reload();
+            })
+            .catch((error) => console.error("Erro ao excluir o animal:", error));
+    } 
     
-    fetch(URL, {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        method: 'DELETE'
-    })
-        .then((response) => {
-            return response.json();
-        })
-        .then((json) => {
-            alert(JSON.stringify(json));
-        })
-        .catch((error) => console.error(error));
 }
 
-function editarAnimal(id){
-    const URL = "http://localhost:8080/apis/animal/atualizar";
+function editarAnimal(id) {
+    
+    window.location.href = "../TelasCadastros/cadAnimal.html?id="+id;
+}
+
+function buscarAnimalPeloId(id) {
+    
+    const URL = "http://localhost:8080/apis/animal/buscar-id/"+id;
     var fanimal = document.getElementById("fanimal");
-    var jsontext = JSON.stringify(Object.fromEntries(new FormData(fanimal)));
 
     fetch(URL, {
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Accept': 'application/json'
         },
-        method: 'PUT', body: jsontext
+        method: 'GET'
     })
         .then((response) => {
+            if (!response.ok) {
+                throw new Error("Erro ao buscar o animal: " + response.status);
+            }
             return response.json();
         })
         .then((json) => {
-            alert(JSON.stringify(json));
-            fanimal.reset();
+            // Preenche o formulário com os dados do animal
+            Object.keys(json).forEach(key => {
+                let field = fanimal.elements[key];
+                if (field) {
+                    field.value = json[key];
+                }
+            });
         })
-        .catch((error) => console.error(error))
+        .catch((error) => {
+            console.error("Erro ao buscar o animal:", error);
+            alert("Erro ao buscar o animal.");
+        });
 }
+
