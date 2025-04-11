@@ -2,83 +2,90 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Usuario</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="../ControllerJs/usuarioController.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Usuário</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Controller -->
+  <script src="../ControllerJs/usuarioController.js"></script>
+
+  <!-- CSS personalizado -->
+  <link rel="stylesheet" href="../css/estilo.css" />
 </head>
 
 <body>
-    <div class="container mt-5">
-        <h2>Cadastro de Usuario</h2>
+  <main class="container container-box mt-5">
+    <h2 class="mb-4">Cadastro de Usuário</h2>
 
-        <!-- Adicionei enctype para permitir upload de arquivos -->
-        <form method="post" id="fusuario" enctype="multipart/form-data">
-            <!-- ID (oculto) -->
-            <input type="hidden" id="id" name="id">
+    <form method="post" id="fusuario" enctype="multipart/form-data">
+      <input type="hidden" id="id" name="id">
 
-            <div class="mb-3">
-                <label for="nome" class="form-label">Nome</label>
-                <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome do usuario" required>
-            </div>
+      <div class="mb-3">
+        <label for="nome" class="form-label">Nome</label>
+        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome do usuário" required>
+      </div>
 
-            <div class="mb-3">
-                <label for="senha" class="form-label">Senha</label>
-                <input type="text" class="form-control" id="senha" name="senha" placeholder="Insira a sua senha" required>
-            </div>
+      <div class="mb-3">
+        <label for="senha" class="form-label">Senha</label>
+        <input type="text" class="form-control" id="senha" name="senha" placeholder="Insira sua senha" required>
+      </div>
 
-            <div class="mb-3">
-                <label for="telefone" class="form-label">Telefone</label>
-                <input type="text" class="form-control" id="telefone" name="telefone" placeholder="Insira o seu telefone" required>
-            </div>
+      <div class="mb-3">
+        <label for="telefone" class="form-label">Telefone</label>
+        <input type="text" class="form-control" id="telefone" name="telefone" placeholder="Insira seu telefone" required>
+      </div>
 
-            <div class="mb-3">
-                <label for="cpf" class="form-label">CPF</label>
-                <input type="text" class="form-control" id="cpf" name="cpf" placeholder="Iforme o seu CPF" required>
-            </div>
+      <div class="mb-3">
+        <label for="cpf" class="form-label">CPF</label>
+        <input type="text" class="form-control" id="cpf" name="cpf" placeholder="Informe seu CPF" required>
+      </div>
 
-            <div class="mb-3">
-                <label for="privilegio" class="form-label">Privilegio</label>
-                <select class="form-select" id="privilegio" name="privilegio" required>
-                    <option value="A">ADM</option>
-                    <option value="C">Comum</option>
-                </select>
-            </div>
+      <div class="mb-3">
+        <label for="privilegio" class="form-label">Privilégio</label>
+        <select class="form-select" id="privilegio" name="privilegio" required>
+          <option value="A">ADM</option>
+          <option value="C">Comum</option>
+        </select>
+      </div>
 
-            <div class="mb-3">
-                <label for="sexo" class="form-label">Sexo</label>
-                <select class="form-select" id="sexo" name="sexo" required>
-                    <option value="M">Masculino</option>
-                    <option value="F">Feminino</option>
-                </select>
-            </div>
+      <div class="mb-3">
+        <label for="sexo" class="form-label">Sexo</label>
+        <select class="form-select" id="sexo" name="sexo" required>
+          <option value="M">Masculino</option>
+          <option value="F">Feminino</option>
+        </select>
+      </div>
 
-            <div class="mb-3">
-                <label for="cep" class="form-label">CEP</label>
-                <input type="text" class="form-control" id="cep" name="cep" placeholder="CEP" required>
-            </div>
+      <div class="mb-3">
+        <label for="cep" class="form-label">CEP</label>
+        <input type="text" class="form-control" id="cep" name="cep" placeholder="CEP" required>
+      </div>
 
-            <div class="mb-3">
-                <label for="rua" class="form-label">Rua</label>
-                <input type="text" class="form-control" id="rua" name="rua" placeholder="Rua" required>
-            </div>
+      <div class="mb-3">
+        <label for="rua" class="form-label">Rua</label>
+        <input type="text" class="form-control" id="rua" name="rua" placeholder="Rua" required>
+      </div>
 
-            <div class="mb-3">
-                <label for="bairro" class="form-label">Bairro</label>
-                <input type="text" class="form-control" id="bairro" name="bairro" placeholder="Bairro" required>
-            </div>
+      <div class="mb-3">
+        <label for="bairro" class="form-label">Bairro</label>
+        <input type="text" class="form-control" id="bairro" name="bairro" placeholder="Bairro" required>
+      </div>
 
-            <div class="mb-3">
-                <label for="numero" class="form-label">Numero</label>
-                <input type="text" class="form-control" id="numero" name="numero" placeholder="Numero" required>
-            </div>
+      <div class="mb-3">
+        <label for="numero" class="form-label">Número</label>
+        <input type="text" class="form-control" id="numero" name="numero" placeholder="Número" required>
+      </div>
 
-            <button type="button" class="btn btn-primary" onclick="cadUsuario()">Confirmar</button>
-            <button type="button" class="btn btn-secondary" onclick="history.back()">Voltar</button>
-        </form>
-    </div>
+      <div class="d-flex gap-3 mt-4">
+        <button type="button" class="btn btn-primary" onclick="cadUsuario()">Confirmar</button>
+        <button type="button" class="btn btn-secondary" onclick="history.back()">Voltar</button>
+      </div>
+    </form>
+  </main>
 </body>
 
 </html>

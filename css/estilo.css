@@ -1,86 +1,136 @@
-body {
-    background-color: #f5f5f5;
-    font-family: Arial, sans-serif;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.container {
-    width: 800px;
-    background-color: #dcdcdc;
-    padding: 20px;
-    border: 1px solid #bfbfbf;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
-
-.menu-bar {
-    background-color: #a9a9a9;
-    color: white;
-    padding: 10px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 10px;
-    border-radius: 4px;
-}
-
-.section-title {
-    background-color: #e0e0e0;
-    padding: 10px;
-    text-align: center;
-    font-weight: bold;
-    border-bottom: 1px solid #bfbfbf;
-    border-radius: 4px;
-    margin-bottom: 10px;
-}
-
-table {
-    width: 100%;
-    background-color: white;
-    border-collapse: collapse;
-    margin-top: 10px;
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-th, td {
-    padding: 12px;
-    border: 1px solid #bfbfbf;
-    text-align: center;
-    font-size: 16px;
-    vertical-align: middle;
-}
-
-th {
-    background-color: #f0f0f0;
-    font-weight: bold;
-    white-space: nowrap;
-}
-
-.btn-custom {
-    background-color: #c0c0c0;
-    color: black;
-    border: 1px solid #bfbfbf;
-    padding: 6px 12px;
-    font-size: 14px;
-    margin-right: 5px;
-    transition: background-color 0.2s;
-    border-radius: 4px;
-    width: 90px;
-    text-align: center;
-}
-
-.btn-custom:hover {
-    background-color: #b0b0b0;
-}
-
-.btn-section {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.btn-section .btn-custom {
-    width: 150px;
-}
+/* === VARIÁVEIS DE CORES === */
+:root {
+    --cor-clara: #f5f5f5;           /* Cor de fundo clara usada em elementos como dropdown */
+    --cor-verde-claro: #cdeeea;     /* Cor de fundo principal do body */
+    --cor-caramelo: #d3a96a;        /* Cor usada em botões e cabeçalhos de tabela */
+    --cor-petroleo: #073b4c;        /* Cor escura usada na navbar e textos */
+    --cor-destaque: #d5a96c;        /* Cor para destacar um item no menu */
+  }
+  
+  /* === ESTILO GLOBAL === */
+  body {
+    background-color: var(--cor-verde-claro); /* Define cor de fundo da página */
+    font-family: 'Segoe UI', sans-serif;      /* Fonte padrão do site */
+  }
+  
+  /* === NAVBAR === */
+  .navbar {
+    background-color: var(--cor-petroleo); /* Cor de fundo da navbar */
+  }
+  
+  .navbar-brand {
+    font-weight: 700; /* Negrito para o nome/logo da navbar */
+    color: white;     /* Cor do texto da marca */
+  }
+  
+  .navbar-nav .nav-link {
+    color: white;          /* Cor dos links do menu */
+    font-weight: 500;      /* Peso da fonte dos links */
+    padding: 0 1.25rem;    /* Espaçamento horizontal entre os botões */
+  }
+  
+  .navbar-nav .nav-link:hover {
+    color: #dddddd; /* Cor dos links ao passar o mouse */
+  }
+  
+  /* Espaçamento entre os itens da navbar */
+  .navbar-nav .nav-item {
+    margin: 0 10px; /* Espaço horizontal entre os itens do menu */
+  }
+  
+  /* Centraliza a navbar dentro do container */
+  .navbar .container-fluid {
+    max-width: 1200px; /* Largura máxima da navbar */
+    margin: 0 auto;    /* Centraliza horizontalmente */
+  }
+  
+  /* Ajusta a navbar um pouco para a direita (efeito visual de leve deslocamento) */
+  .central-navbar {
+    transform: translateX(+300px); /* Move horizontalmente para a direita */
+  }
+  
+  /* === DROPDOWN === */
+  .dropdown-menu {
+    background-color: var(--cor-clara);                  /* Cor de fundo dos dropdowns */
+    border-radius: 10px;                                 /* Bordas arredondadas */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);            /* Sombra suave */
+    border: none;                                        /* Remove borda padrão */
+    padding: 0.5rem 0;                                   /* Espaçamento interno */
+  }
+  
+  .dropdown-item {
+    padding: 10px 20px;               /* Espaçamento dos itens do menu */
+    color: var(--cor-petroleo);       /* Cor do texto */
+    font-weight: 500;                 /* Peso da fonte */
+    transition: background-color 0.2s;/* Animação suave no hover */
+  }
+  
+  .dropdown-item:hover {
+    background-color: var(--cor-caramelo); /* Cor de fundo ao passar o mouse */
+    color: var(--cor-petroleo);            /* Cor do texto ao passar o mouse */
+  }
+  
+  /* === CONTAINER PRINCIPAL === */
+  .container-box {
+    background-color: #f9f9f9;                       /* Cor de fundo do bloco principal */
+    border-radius: 20px;                             /* Arredondamento das bordas */
+    padding: 30px;                                   /* Espaço interno */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);       /* Sombra para destaque */
+    margin-top: 50px;                                /* Espaço acima do container */
+  }
+  
+  h2 {
+    color: var(--cor-petroleo); /* Cor do título principal */
+    font-weight: 700;           /* Negrito */
+  }
+  
+  /* === TABELAS === */
+  table th {
+    background-color: var(--cor-caramelo); /* Cor de fundo do cabeçalho da tabela */
+    color: var(--cor-petroleo);            /* Cor do texto do cabeçalho */
+    font-weight: bold;                     /* Texto em negrito */
+  }
+  
+  /* === BOTÕES === */
+  .btn {
+    padding: 10px 22px;                       /* Tamanho do botão */
+    border-radius: 10px;                      /* Borda arredondada */
+    font-weight: 600;                         /* Peso da fonte */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    display: inline-flex;                     /* Para alinhar ícone e texto */
+    align-items: center;                      /* Centraliza verticalmente */
+    gap: 8px;                                 /* Espaço entre ícone e texto */
+    transition: all 0.3s ease;                /* Animação suave */
+  }
+  
+  .btn-primary {
+    background: linear-gradient(to right, #d3a96a, #e6bb7e); /* Gradiente caramelo */
+    border: none;
+    color: var(--cor-petroleo);                              /* Cor do texto */
+  }
+  
+  .btn-primary:hover {
+    background: linear-gradient(to right, #c49a5d, #dbac6d); /* Gradiente mais escuro */
+    transform: translateY(-2px);                             /* Animação de leve subida */
+  }
+  
+  .btn-secondary {
+    background: linear-gradient(to right, #cdeeea, #e2f8f5); /* Gradiente em tons claros */
+    border: none;
+    color: var(--cor-petroleo);                              /* Cor do texto */
+  }
+  
+  .btn-secondary:hover {
+    background: linear-gradient(to right, #b6d9d6, #d2f0ed); /* Versão mais escura no hover */
+    transform: translateY(-2px);                             /* Efeito de elevação */
+  }
+  
+  /* === CAMPOS DE TEXTO === */
+  input[type="text"] {
+    border-radius: 10px;         /* Arredondamento */
+    border: 1px solid #ccc;      /* Borda cinza clara */
+    padding: 10px;               /* Espaço interno */
+    width: 100%;                 /* Ocupa toda a largura disponível */
+    margin-bottom: 20px;         /* Espaço abaixo do campo */
+  }
+  

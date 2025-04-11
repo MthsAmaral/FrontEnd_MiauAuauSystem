@@ -2,94 +2,92 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lista de Medicamentos</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lista de Medicamentos</title>
 
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+  <!-- Bootstrap e Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="../ControllerJs/tipoMedicamentoController.js"></script>
-
+ 
+  <link rel="stylesheet" href="../css/estilo.css" />
+  <script src="../ControllerJs/tipoMedicamentoController.js"></script>
 </head>
 
 <body>
     <!-- Cabeçalho -->
-    <header class="bg-dark text-white p-3">
-        <div class="container d-flex justify-content-between align-items-center">
-            <!-- Logo ou Título -->
-            <h1 class="h3">Sistema AuauMiau</h1>
-
-            <!-- Menu de navegação -->
-            <nav>
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="../index.html">Home</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">Cadastro</a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="../TelasCadastros/cadUsuario.html">Usuário</a></li>
-                            <li><a class="dropdown-item" href="../TelasCadastros/cadAnimal.html">Animal</a></li>
-                            <li><a class="dropdown-item" href="../TelasCadastros/cadTipoLancamento.html">Tipo de Lançamento</a></li>
-                            <li><a class="dropdown-item" href="../TelasCadastros/cadTipoMedicamento.html">Tipo de Medicamento</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdownManage" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">Gerenciar</a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownManage">
-                            <li><a class="dropdown-item" href="./gerenUsuarios.html">Usuário</a></li>
-                            <li><a class="dropdown-item" href="./gerenAnimais.html">Animal</a></li>
-                            <li><a class="dropdown-item" href="./gerenTipoLancamentos.html">Tipo de Lançamento</a></li>
-                            <li><a class="dropdown-item" href="./gerenMedicamentos.html">Tipo de Medicamento</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdownLogin" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">Login</a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownLogin">
-                            <li><a class="dropdown-item" href="#">Entrar</a></li>
-                            <li><a class="dropdown-item" href="#">Registrar</a></li>
-                            <li><a class="dropdown-item" href="#">Sair</a></li>
-                        </ul>
-                    </li>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="../index.html">Sistema MiauAuau</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto me-auto central-navbar">
+              <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Cadastro</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="../TelasCadastros/cadUsuario.html">Usuário</a></li>
+                  <li><a class="dropdown-item" href="../TelasCadastros/cadAnimal.html">Animal</a></li>
+                  <li><a class="dropdown-item"  href="../TelasCadastros/cadTipoLancamento.html">Tipo de Lançamento</a></li>
+                  <li><a class="dropdown-item" href="../TelasCadastros/cadTipoMedicamento.html">Tipo de Medicamento</a></li>
                 </ul>
-            </nav>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Gerenciar</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="./gerenUsuarios.html">Usuário</a></li>
+                  <li><a class="dropdown-item" href="./gerenAnimais.html">Animal</a></li>
+                  <li><a class="dropdown-item" href="./gerenTipoLancamentos.html">Tipo de Lançamento</a></li>
+                  <li><a class="dropdown-item" href="./gerenMedicamentos.html">Tipo de Medicamento</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Login</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Entrar</a></li>
+                  <li><a class="dropdown-item" href="#">Sair</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
         </div>
-    </header>
+      </nav>
 
-
-    <body onload="buscarMedicamento()">
- <!-- Conteúdo principal -->
- <div class="container mt-5">
+  <!-- Conteúdo principal -->
+  <main class="container container-box" onload="buscarMedicamento()">
     <h2>Gerenciar Medicamentos</h2>
-    <input type="text" id="filtro" class="form-control mb-3" placeholder="Filtrar por nome do Medicamento" onkeyup="buscarMedicamento()">
+
+    <!-- Campo de filtro -->
+    <input type="text" id="filtro" placeholder="Filtrar por nome do Medicamento" onkeyup="buscarMedicamento()">
+
+    <!-- Tabela -->
     <div style="overflow: auto; max-height: 400px;">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody id="resultado">
-                <!-- Os dados serão preenchidos dinamicamente -->
-            </tbody>
-        </table>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="resultado">
+          <!-- Dados preenchidos dinamicamente -->
+        </tbody>
+      </table>
     </div>
 
-    <div class="btn-section mt-3">
-        <a href="../TelasCadastros/cadTipoMedicamento.html" class="btn btn-primary">Cadastrar Novo Medicamento</a>
-        <button class="btn btn-secondary" onclick="history.back()">Voltar</button>
+    <!-- Botões -->
+    <div class="btn-section mt-4 d-flex gap-3">
+      <a href="../TelasCadastros/cadTipoMedicamento.html" class="btn btn-primary"><i class="bi bi-plus-circle"></i>Cadastrar Novo Medicamento</a>
+      <button class="btn btn-secondary" onclick="history.back()"><i class="bi bi-arrow-left"></i>Voltar</button>
     </div>
-</div>
-    </body>
-   
+  </main>
 </body>
 
 </html>
