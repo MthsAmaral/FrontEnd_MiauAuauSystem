@@ -64,19 +64,23 @@
 
   <!-- Conteúdo principal -->
    
-  <main class="container container-box mt-5" onload="buscarMedicamento()">
-    <h2>Gerenciar Medicamentos</h2>
-
+  <main class="container container-box mt-5">
+    <h2 class="mb-4">Gerenciar Medicamentos</h2>
+  
     <!-- Campo de filtro -->
-    <input type="text" id="filtro" placeholder="Filtrar por nome do Medicamento" onkeyup="buscarMedicamento()">
-
+    <div class="mb-3">
+      <input type="text" class="form-control" id="filtro" placeholder="Filtrar por nome do medicamento" onkeyup="buscarMedicamento()">
+    </div>
+  
     <!-- Tabela -->
-    <div style="overflow: auto; max-height: 400px;">
+    <div style="overflow-x: auto; max-height: 400px;">
       <table class="table table-striped">
-        <thead>
+        <thead class="table-light">
           <tr>
             <th>ID</th>
             <th>Nome</th>
+            <th>Forma Farmacêutica</th>
+            <th>Descrição</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -85,13 +89,18 @@
         </tbody>
       </table>
     </div>
-
+  
     <!-- Botões -->
-    <div class="btn-section mt-4 d-flex gap-3">
-      <a href="../TelasCadastros/cadTipoMedicamento.html" class="btn btn-primary"><i class="bi bi-plus-circle"></i>Cadastrar Novo Medicamento</a>
-      <button class="btn btn-secondary" onclick="history.back()"><i class="bi bi-arrow-left"></i>Voltar</button>
+    <div class="d-flex justify-content-start gap-3 mt-4">
+      <a href="../TelasCadastros/cadTipoMedicamento.html" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Cadastrar Novo Medicamento
+      </a>
+      <button class="btn btn-secondary" onclick="history.back()">
+        <i class="bi bi-arrow-left"></i> Voltar
+      </button>
     </div>
   </main>
+  
 </body>
 
 </html>

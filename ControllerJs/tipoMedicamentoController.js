@@ -1,24 +1,24 @@
-function limparForm()
-{
+function limparForm() {
     var fdados = document.getElementById("ftipomedicamento");
-    fdados.nome.value="";
+    fdados.nome.value = "";
+    fdados.formaFarmaceutica.value = "";
+    fdados.descricao.value = "";
 }
 
-function validarCampos()
-{
-  const nome = document.getElementById("nome").value;
-  
-  
-  if (nome != "")
-  {
-    cadMedicamento();
-  }
-  else
-  {
-    alert("Campo(s) Não Preenchido(s)")
-  }
-  limparForm();
+
+function validarCampos() {
+    const nome = document.getElementById("nome").value;
+    const formaFarmaceutica = document.getElementById("formaFarmaceutica").value;
+    const descricao = document.getElementById("descricao").value;
+
+    if (nome !== "" && formaFarmaceutica !== "" && descricao !== "") {
+        cadMedicamento();
+    } else {
+        alert("Campo(s) Não Preenchido(s)");
+    }
+    limparForm();
 }
+
 function cadMedicamento() {
     
     var ftipomedicamento = document.getElementById("ftipomedicamento");
@@ -87,6 +87,8 @@ function buscarMedicamento() {
                 table += `<tr>
                         <td>${json[i].codMedicamento}</td>
                         <td>${json[i].nome}</td>
+                        <td>${json[i].formaFarmaceutica}</td>
+                        <td>${json[i].descricao}</td>
                         <td><button type="button" onclick='excluirMedicamento(${json[i].codMedicamento})'>Excluir</button></td>
                         <td><button type="button" onclick='alterarMedicamento(${json[i].codMedicamento})'>Alterar</button></td>
                       </tr>`;
@@ -115,7 +117,8 @@ function buscarMedicamento() {
                 table += `<tr>
                         <td>${json[i].codMedicamento}</td>
                         <td>${json[i].nome}</td>
-                        
+                        <td>${json[i].formaFarmaceutica}</td>
+                        <td>${json[i].descricao}</td>
                         <td><button type="button" onclick='excluirMedicamento(${json[i].codMedicamento})'>Excluir</button></td>
                         <td><button type="button" onclick='editarMedicamento(${json[i].codMedicamento})'>Alterar</button></td>
 
