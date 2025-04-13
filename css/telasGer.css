@@ -17,185 +17,187 @@ body {
 
 /* === ESTILOS GERAIS DO NAVBAR === */
 .navbar {
-    background-color: var(--cor-petroleo);
-    padding: 0.8rem 1rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-bottom: 2px solid var(--cor-destaque);
+    background-color: var(--cor-petroleo); /* Cor de fundo da barra de navegação */
+    padding: 0.8rem 1rem;                   /* Espaçamento interno do navbar */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave abaixo da navbar */
+    border-bottom: 2px solid var(--cor-destaque); /* Linha de destaque na parte inferior */
 }
 
 /* === ESTILO DA MARCA "SISTEMA MIAUAUAU" === */
 .navbar-brand {
-    font-weight: 700;
-    font-size: 1.8rem;
-    color: var(--cor-clara);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    letter-spacing: 1px;
-    transition: all 0.3s ease;
-    position: relative;
-    padding: 0.5rem 1rem;
+    font-weight: 700;                      /* Peso da fonte mais grosso */
+    font-size: 1.8rem;                     /* Tamanho da fonte maior */
+    color: var(--cor-clara);               /* Cor clara para o texto */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Sombra suave no texto */
+    letter-spacing: 1px;                   /* Espaçamento entre letras */
+    transition: all 0.3s ease;             /* Transição suave para os efeitos de hover */
+    position: relative;                    /* Necessário para o efeito ::after */
+    padding: 0.5rem 1rem;                  /* Espaçamento interno */
 }
 
 .navbar-brand:hover {
-    color: var(--cor-destaque);
-    text-shadow: 2px 2px 6px rgba(211, 169, 106, 0.5);
+    color: var(--cor-destaque);            /* Cor do texto ao passar o mouse */
+    text-shadow: 2px 2px 6px rgba(211, 169, 106, 0.5); /* Aumenta a sombra no hover */
 }
 
 /* Efeito de sublinhado animado */
 .navbar-brand::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 3px;
-    bottom: 0;
-    left: 0;
-    background-color: var(--cor-destaque);
-    transform: scaleX(0);
-    transform-origin: bottom right;
-    transition: transform 0.3s ease;
+    content: '';                           /* Cria um pseudo-elemento vazio */
+    position: absolute;                    /* Posiciona o sublinhado */
+    width: 100%;                            /* Sublinha o texto inteiro */
+    height: 3px;                           /* Altura do sublinhado */
+    bottom: 0;                             /* Posiciona o sublinhado na parte inferior */
+    left: 0;                               /* Começa da esquerda */
+    background-color: var(--cor-destaque);  /* Cor do sublinhado */
+    transform: scaleX(0);                  /* Inicialmente o sublinhado está invisível */
+    transform-origin: bottom right;        /* Ponto de origem da transformação */
+    transition: transform 0.3s ease;       /* Transição suave para o efeito de hover */
 }
 
 .navbar-brand:hover::after {
-    transform: scaleX(1);
-    transform-origin: bottom left;
+    transform: scaleX(1);                  /* Torna o sublinhado visível ao passar o mouse */
+    transform-origin: bottom left;         /* Inicia a transformação da esquerda para a direita */
 }
 
 /* === ESTILOS DOS ITENS DO MENU === */
 .nav-link {
-    font-weight: 500;
-    color: var(--cor-clara);
-    padding: 0.5rem 1rem;
-    margin: 0 0.2rem;
-    border-radius: 4px;
-    transition: all 0.3s ease;
+    font-weight: 500;                      /* Peso de fonte médio */
+    color: var(--cor-clara);               /* Cor clara para os itens do menu */
+    padding: 0.5rem 1rem;                  /* Espaçamento interno */
+    margin: 0 0.2rem;                      /* Margem entre os itens do menu */
+    border-radius: 4px;                    /* Arredonda os cantos */
+    transition: all 0.3s ease;             /* Transição suave para os efeitos de hover */
 }
 
 .nav-link:hover {
-    color: var(--cor-destaque);
-    background-color: rgba(205, 238, 234, 0.1);
+    color: var(--cor-destaque);            /* Cor de destaque ao passar o mouse */
+    background-color: rgba(205, 238, 234, 0.1); /* Fundo leve ao passar o mouse */
 }
 
 .dropdown-menu {
-    background-color: var(--cor-petroleo);
-    border: 1px solid var(--cor-destaque);
+    background-color: var(--cor-petroleo); /* Cor de fundo do menu suspenso */
+    border: 1px solid var(--cor-destaque);  /* Borda de destaque */
 }
 
 .dropdown-item {
-    color: var(--cor-clara);
-    transition: all 0.2s ease;
+    color: var(--cor-clara);               /* Cor dos itens do dropdown */
+    transition: all 0.2s ease;             /* Transição suave para o hover */
 }
 
 .dropdown-item:hover {
-    background-color: var(--cor-destaque);
-    color: var(--cor-petroleo);
+    background-color: var(--cor-destaque); /* Cor de fundo ao passar o mouse */
+    color: var(--cor-petroleo);            /* Cor do texto ao passar o mouse */
 }
 
 /* === MENU MOBILE === */
 .navbar-toggler {
-    border-color: var(--cor-clara);
+    border-color: var(--cor-clara); /* Cor da borda do botão de toggle */
 }
 
 .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(245, 245, 245, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(245, 245, 245, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"); /* Ícone do menu hamburger */
 }
 
 /* === CENTRALIZAÇÃO DOS ITENS === */
 .central-navbar {
-    display: flex;
-    justify-content: flex-end; /* Alinha os itens do menu à direita */
-    width: 80%;
+    display: flex;                          /* Usa flexbox para layout */
+    justify-content: flex-end;              /* Alinha os itens à direita */
+    width: 80%;                             /* Define a largura dos itens do menu */
 }
 
 /* === CONTAINER PRINCIPAL === */
 .container-box {
-    background-color: var(--cor-clara);
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    background-color: var(--cor-clara);     /* Cor de fundo do container */
+    border-radius: 20px;                    /* Bordas arredondadas */
+    padding: 30px;                          /* Preenchimento interno */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
 /* === TÍTULO === */
 h2 {
-    color: var(--cor-petroleo);
-    font-weight: 700;
-    margin-bottom: 20px;
-    text-shadow: 3px 3px 6px rgba(211, 169, 106, 0.7);
+    color: var(--cor-petroleo);             /* Cor do título */
+    font-weight: 700;                       /* Peso de fonte pesado */
+    margin-bottom: 20px;                    /* Espaçamento abaixo do título */
+    text-shadow: 3px 3px 6px rgba(211, 169, 106, 0.7); /* Sombra suave no texto */
 }
 
 /* === INPUT DE FILTRO === */
 input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    width: 100%;                            /* Largura total do input */
+    padding: 10px;                          /* Preenchimento interno */
+    margin-bottom: 20px;                    /* Espaçamento abaixo do input */
+    border: 1px solid #ccc;                 /* Borda cinza */
+    border-radius: 10px;                    /* Bordas arredondadas */
+    transition: border-color 0.3s, box-shadow 0.3s; /* Transições suaves */
 }
 
 input[type="text"]:focus {
-    border-color: var(--cor-caramelo);
-    box-shadow: 0 0 5px rgba(211, 169, 106, 0.5);
+    border-color: var(--cor-caramelo);      /* Borda de destaque ao focar */
+    box-shadow: 0 0 5px rgba(211, 169, 106, 0.5); /* Sombra suave ao focar */
 }
 
 /* === TABELA === */
 .table {
-    width: 100%;
-    border-collapse: collapse;
+    width: 100%;                            /* Largura total da tabela */
+    border-collapse: collapse;              /* Remove espaçamento entre as células */
 }
 
 .table th,
 .table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+    padding: 12px 15px;                     /* Preenchimento das células */
+    text-align: left;                       /* Alinha o texto à esquerda */
+    border-bottom: 1px solid #ddd;          /* Borda inferior das células */
 }
 
 .table th {
-    background-color: var(--cor-caramelo-claro);
-    color: var(--cor-petroleo);
-    font-weight: 600;
+    background-color: var(--cor-caramelo-claro); /* Cor de fundo das células de cabeçalho */
+    color: var(--cor-petroleo);              /* Cor do texto do cabeçalho */
+    font-weight: 600;                        /* Peso de fonte médio */
 }
 
 .table tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: #f9f9f9;              /* Cor de fundo alternada nas linhas */
 }
 
 /* === BOTÕES === */
 .btn {
-    padding: 10px 22px;
-    border-radius: 25px;
-    font-weight: 600;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.3s ease;
+    padding: 10px 22px;                     /* Preenchimento dos botões */
+    border-radius: 25px;                    /* Bordas arredondadas */
+    font-weight: 600;                        /* Peso de fonte médio */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra dos botões */
+    display: inline-flex;                    /* Exibe os botões em linha */
+    align-items: center;                     /* Alinha ícones ou texto no centro */
+    gap: 8px;                                /* Espaço entre os itens do botão */
+    transition: all 0.3s ease;               /* Transições suaves */
 }
 
 .btn-primary {
-    background: linear-gradient(to right, var(--cor-caramelo), var(--cor-caramelo-claro));
-    border: none;
-    color: var(--cor-petroleo);
+    background: linear-gradient(to right, var(--cor-caramelo), var(--cor-caramelo-claro)); /* Gradiente de fundo */
+    border: none;                           /* Remove borda padrão */
+    color: var(--cor-petroleo);             /* Cor do texto */
 }
 
 .btn-primary:hover {
-    background: linear-gradient(to right, #c49a5d, #dbac6d);
-    transform: translateY(-4px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(to right, #c49a5d, #dbac6d); /* Alteração do gradiente no hover */
+    transform: translateY(-4px);             /* Efeito de movimento ao passar o mouse */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Sombra mais forte no hover */
 }
 
 .btn-secondary {
-    background: linear-gradient(to right, #cdeeea, #e2f8f5);
-    border: none;
-    color: var(--cor-petroleo);
+    background: linear-gradient(to right, #cdeeea, #e2f8f5); /* Gradiente de fundo */
+    border: none;                           /* Remove borda padrão */
+    color: var(--cor-petroleo);             /* Cor do texto */
 }
 
 .btn-secondary:hover {
-    background: linear-gradient(to right, #b6d9d6, #d2f0ed);
-    transform: translateY(-4px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(to right, #b6d9d6, #d2f0ed); /* Alteração do gradiente no hover */
+    transform: translateY(-4px);             /* Efeito de movimento ao passar o mouse */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Sombra mais forte no hover */
 }
+
+/* Estilo para imagens dentro da navbar */
 .navbar-brand img {
-    max-height: 50px; /* Ajuste a altura máxima conforme necessário */
-    margin-right: 10px; /* Adiciona um pequeno espaço entre a imagem e o texto (opcional) */
-    vertical-align: middle; /* Alinha verticalmente a imagem com o texto (se houver) */
+    max-height: 50px;                      /* Define altura máxima da imagem */
+    margin-right: 10px;                     /* Espaçamento entre a imagem e o texto */
+    vertical-align: middle;                 /* Alinha verticalmente a imagem */
 }
