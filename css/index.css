@@ -1,0 +1,203 @@
+/* === VARIÁVEIS DE CORES === */
+:root {
+    --cor-clara: #f5f5f5;          /* Cor de fundo clara usada em elementos como dropdown */
+    --cor-verde-claro: #cdeeea;     /* Cor de fundo principal do body */
+    --cor-caramelo: #d3a96a;        /* Cor usada em botões e cabeçalhos de tabela */
+    --cor-petroleo: #073b4c;        /* Cor escura usada na navbar e textos */
+    --cor-destaque: #d5a96c;        /* Cor para destacar um item no menu */
+}
+
+/* === ESTILO GLOBAL === */
+body {
+    background-color: var(--cor-verde-claro); /* Define cor de fundo da página */
+    font-family: 'Poppins', sans-serif;          /* Fonte padrão do site */
+    margin: 0;                                  /* Remove margens padrão */
+    padding: 0;                                 /* Remove preenchimento padrão */
+}
+
+/* === ESTILOS GERAIS DO NAVBAR === */
+.navbar {
+    background-color: var(--cor-petroleo);
+    padding: 0.8rem 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-bottom: 2px solid var(--cor-destaque);
+}
+
+/* === ESTILO DA MARCA "SISTEMA MIAUAUAU" === */
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--cor-clara);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 0.5rem 1rem;
+}
+
+.navbar-brand:hover {
+    color: var(--cor-destaque);
+    text-shadow: 2px 2px 6px rgba(211, 169, 106, 0.5);
+}
+
+/* Efeito de sublinhado animado */
+.navbar-brand::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--cor-destaque);
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/* === ESTILOS DOS ITENS DO MENU === */
+.nav-link {
+    font-weight: 500;
+    color: var(--cor-clara);
+    padding: 0.5rem 1rem;
+    margin: 0 0.2rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--cor-destaque);
+    background-color: rgba(205, 238, 234, 0.1);
+}
+
+.dropdown-menu {
+    background-color: var(--cor-petroleo);
+    border: 1px solid var(--cor-destaque);
+}
+
+.dropdown-item {
+    color: var(--cor-clara);
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: var(--cor-destaque);
+    color: var(--cor-petroleo);
+}
+
+/* === MENU MOBILE === */
+.navbar-toggler {
+    border-color: var(--cor-clara);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(245, 245, 245, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* === CENTRALIZAÇÃO DOS ITENS === */
+.central-navbar {
+    display: flex;
+    justify-content: flex-end; /* Alinha os itens do menu à direita */
+    width: 80%;
+    margin-right: 20px; /* Adiciona margem direita para deslocar o menu para a esquerda */
+}
+
+/* === CONTAINER PRINCIPAL === */
+.container-box {
+    background-color: var(--cor-clara);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* === TÍTULO === */
+h2 {
+    color: var(--cor-petroleo);
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 3px 3px 6px rgba(211, 169, 106, 0.7);
+}
+
+/* === INPUT DE FILTRO === */
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type="text"]:focus {
+    border-color: var(--cor-caramelo);
+    box-shadow: 0 0 5px rgba(211, 169, 106, 0.5);
+}
+
+/* === TABELA === */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.table th {
+    background-color: var(--cor-caramelo-claro);
+    color: var(--cor-petroleo);
+    font-weight: 600;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* === BOTÕES === */
+.btn {
+    padding: 10px 22px;
+    border-radius: 25px;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(to right, var(--cor-caramelo), var(--cor-caramelo-claro));
+    border: none;
+    color: var(--cor-petroleo);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(to right, #c49a5d, #dbac6d);
+    transform: translateY(-4px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-secondary {
+    background: linear-gradient(to right, #cdeeea, #e2f8f5);
+    border: none;
+    color: var(--cor-petroleo);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(to right, #b6d9d6, #d2f0ed);
+    transform: translateY(-4px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-brand img {
+    max-height: 50px; /* Ajuste a altura máxima conforme necessário */
+    margin-right: 10px; /* Adiciona um pequeno espaço entre a imagem e o texto (opcional) */
+    vertical-align: middle; /* Alinha verticalmente a imagem com o texto (se houver) */
+}
