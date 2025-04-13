@@ -8,7 +8,7 @@ function limparForm()
     fdados.peso.value="";
     fdados.castrado.value="Não";
     fdados.adotado.value="Não";
-    fdados.fileName.value="";
+    fdados.imagemBase64.value="";
 }
 
 function validarCampos()
@@ -20,9 +20,9 @@ function validarCampos()
   const peso = document.getElementById("peso").value;
   const castrado = document.getElementById("castrado").value;
   const adotado = document.getElementById("adotado").value;
-  const fileName = document.getElementById("fileName").value;
+  const imagemBase64 = document.getElementById("imagemBase64").value;
   
-  if (nome != "" && sexo != "" && raca != "" && idade > 0 && peso > 0 && castrado != "" && adotado != "" && fileName != "")
+  if (nome != "" && sexo != "" && raca != "" && idade > 0 && peso > 0 && castrado != "" && adotado != "" && imagemBase64 != "")
   {
     cadAnimal();
   }
@@ -35,17 +35,13 @@ function validarCampos()
 function cadAnimal() {
     
     var fanimal = document.getElementById("fanimal");
-    var jsontext = JSON.stringify(Object.fromEntries(new FormData(fanimal)));
+    var formData = new FormData(fanimal);
     var cod = document.getElementById("codAnimal").value;
     if(cod) // existe, atualiza
     {
         const URL = "http://localhost:8080/apis/animal/atualizar"
         fetch(URL, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            method: 'PUT', body: jsontext
+            method: 'PUT', body: formData
         })
             .then((response) => {
                 return response.json();
@@ -61,11 +57,7 @@ function cadAnimal() {
     {
         const URL = "http://localhost:8080/apis/animal/gravar"
         fetch(URL, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            method: 'POST', body: jsontext
+            method: 'POST', body: formData
         })
             .then((response) => {
                 return response.json();
@@ -107,7 +99,7 @@ function buscarAnimal() {
                         <td>${json[i].castrado}</td>
                         <td>${json[i].adotado}</td>
                         <td><button type="button" onclick='excluirAnimal(${json[i].codAnimal})'>Excluir</button></td>
-                        <td><button type="button" onclick='alterarAnimal(${json[i].codAnimal})'>Alterar</button></td>
+                        <td><button type="button" onclick='editarAnimal(${json[i].codAnimal})'>Alterar</button></td>
                       </tr>`;
             }
             table += "</table>";
@@ -183,7 +175,7 @@ function excluirAnimal(id)
 
 function editarAnimal(id) {
     
-    window.location.href = "../TelasCadastros/cadAnimal.html?id="+id;
+    window.location.href = "../TelasCadastros/cadAnimal.html?codAnimal="+id;
 }
 
 function buscarAnimalPeloId(id) {
@@ -204,13 +196,15 @@ function buscarAnimalPeloId(id) {
             return response.json();
         })
         .then((json) => {
-            // Preenche o formulário com os dados do animal
-            Object.keys(json).forEach(key => {
-                let field = fanimal.elements[key];
-                if (field) {
-                    field.value = json[key];
-                }
-            });
+            document.getElementById('codAnimal').value = id;
+            document.getElementById('nome').value = json.nome;
+            document.getElementById('raca').value = json.raca;
+            document.getElementById('idade').value = json.idade;
+            document.getElementById('peso').value = json.peso;
+            document.getElementById('imagemBase64').value = json.imagemBase64;
+            document.getElementById('sexo').value = json.sexo;
+            document.getElementById('castrado').value = json.castrado;
+            document.getElementById('adotado').value = json.adotado;
         })
         .catch((error) => {
             console.error("Erro ao buscar o animal:", error);

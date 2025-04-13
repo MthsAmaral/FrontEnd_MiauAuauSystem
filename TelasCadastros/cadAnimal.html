@@ -14,7 +14,7 @@
   <script>
     window.addEventListener("DOMContentLoaded", function () {
       const params = new URLSearchParams(window.location.search);
-      const id = params.get('id');
+      const id = params.get('codAnimal');
       if (id) {
         buscarAnimalPeloId(id);
       }
@@ -77,14 +77,14 @@
           
         </div>
         <div class="col-md-3">
-          <label for="fileName" class="form-label">FileName</label>
-          <input type="text" class="form-control form-sm" id="fileName" name="fileName" required>
+          <label for="imagemBase64" class="form-label">imagemBase64</label>
+          <input type="text" class="form-control form-sm" id="imagemBase64" name="imagemBase64" required>
         </div>
       </div>
     
       <div class="d-flex gap-3 mt-3">
         <button type="button" class="btn btn-primary" onclick="validarCampos()">Confirmar</button>
-        <button type="button" class="btn btn-secondary" onclick="history.back()">Voltar</button>
+        <a href="../TelasGerenciar/gerenAnimais.html"> <button type="button" class="btn btn-secondary">Voltar</button></a>
       </div>
     </form>
   </main>
