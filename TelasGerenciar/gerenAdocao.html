@@ -3,21 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gerenciar Animais</title>
+  <title>Gerenciar Adoções</title>
 
   <!-- Bootstrap e Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-  
+
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   <!-- CSS personalizado -->
   <link rel="stylesheet" href="../css/telasGer.css">
-  <script src="../ControllerJs/animalController.js"></script>
-
+  <script src="../ControllerJs/adocaoController.js"></script>
 </head>
-<body onload="buscarAnimal()">
+<body onload="buscarAdocoes()">
 
   <!-- Cabeçalho -->
   <nav class="navbar navbar-expand-lg">
@@ -37,7 +36,7 @@
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="../TelasCadastros/cadUsuario.html">Usuário</a></li>
               <li><a class="dropdown-item" href="../TelasCadastros/cadAnimal.html">Animal</a></li>
-              <li><a class="dropdown-item"  href="../TelasCadastros/cadTipoLancamento.html">Tipo de Lançamento</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadTipoLancamento.html">Tipo de Lançamento</a></li>
               <li><a class="dropdown-item" href="../TelasCadastros/cadTipoMedicamento.html">Tipo de Medicamento</a></li>
               <li><a class="dropdown-item" href="../TelasCadastros/cadAdocao.html">Adoção</a></li>
             </ul>
@@ -49,7 +48,7 @@
               <li><a class="dropdown-item" href="./gerenAnimais.html">Animal</a></li>
               <li><a class="dropdown-item" href="./gerenTipoLancamentos.html">Tipo de Lançamento</a></li>
               <li><a class="dropdown-item" href="./gerenMedicamentos.html">Tipo de Medicamento</a></li>
-              <li><a class="dropdown-item" href="./gerenAdocao.html">Adoção</a></li>
+              <li><a class="dropdown-item" href="./gerenAdocoes.html">Adoção</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">
@@ -63,37 +62,70 @@
       </div>
     </div>
   </nav>
-  
 
   <!-- Conteúdo -->
   <div class="container mt-5">
     <div class="container-box">
-      <h2>Gerenciar Animais</h2>
+      <h2>Gerenciar Adoções</h2>
 
-      <input type="text" id="filtro" class="form-control mb-3" placeholder="Filtrar por nome do animal" onkeyup="buscarAnimal()">
+      <input type="text" id="filtro" class="form-control mb-3" placeholder="Filtrar por nome do adotante" onkeyup="buscarAdocoes()">
 
       <table class="table">
         <thead>
           <tr>
-            <th>ID</th><th>Nome</th><th>Raça</th><th>Idade</th><th>Sexo</th>
-            <th>Peso</th><th>Castrado</th><th>Adotado</th><th>Ações</th>
+            <th>ID</th>
+            <th>Data</th>
+            <th>Animal</th>
+            <th>Adotante</th>
+            <th>CPF</th>
+            <th>Telefone</th>
+            <th>Email</th>
+            <th>Ações</th>
           </tr>
         </thead>
-        <tbody id = "resultado">
+        <tbody id="resultado">
+          <!-- Dados mockados -->
+          <tr>
+            <td>1</td>
+            <td>2025-04-10</td>
+            <td>Rex</td>
+            <td>João Silva</td>
+            <td>123.456.789-00</td>
+            <td>(11) 91234-5678</td>
+            <td>joao@email.com</td>
+            <td class="d-flex gap-1">
+              <button class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></button>
+              <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
+              <button class="btn btn-sm btn-info text-white"><i class="bi bi-file-earmark-text"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>2025-04-12</td>
+            <td>Mimi</td>
+            <td>Maria Oliveira</td>
+            <td>987.654.321-00</td>
+            <td>(21) 99876-5432</td>
+            <td>maria@email.com</td>
+            <td class="d-flex gap-1">
+              <button class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></button>
+              <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
+              <button class="btn btn-sm btn-info text-white"><i class="bi bi-file-earmark-text"></i></button>
+            </td>
+          </tr>
         </tbody>
       </table>
 
       <div class="d-flex gap-3 mt-3">
-        <a href="../TelasCadastros/cadAnimal.html" class="btn btn-primary">
-          <i class="bi bi-plus-circle"></i> Cadastrar Novo Animal
+        <a href="../TelasCadastros/cadAdocao.html" class="btn btn-primary">
+          <i class="bi bi-plus-circle"></i> Cadastrar Nova Adoção
         </a>
-         <a href="../index.html"><button class="btn btn-secondary">
+        <a href="../index.html"><button class="btn btn-secondary">
           <i class="bi bi-arrow-left"></i> Voltar
         </button></a>
       </div>
     </div>
   </div>
 
-  
 </body>
 </html>
