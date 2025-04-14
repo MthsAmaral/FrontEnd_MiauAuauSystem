@@ -11,7 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
   <link rel="stylesheet" href="../css/telasCad.css" />
-    <script src="../ControllerJs/agendamentoController.js"> </script>
+  <script src="../ControllerJs/agendamentoController.js"> </script>
   <style>
     .card-select {
       cursor: pointer;
@@ -40,29 +40,37 @@
       <!-- Animal -->
       <div class="mb-3">
         <label class="form-label">Animal:</label><br />
-        <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalAnimais">Selecionar Animal</button>
+        <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+          data-bs-target="#modalAnimais">Selecionar Animal</button>
         <div id="animalSelecionado" class="mt-2 preview-box d-none"></div>
       </div>
 
       <!-- Medicamento -->
       <div class="mb-3">
         <label class="form-label">Medicamento:</label><br />
-        <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalMedicamentos">Selecionar Medicamento</button>
+        <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+          data-bs-target="#modalMedicamentos">Selecionar Medicamento</button>
         <div id="medicamentoSelecionado" class="mt-2 preview-box d-none"></div>
       </div>
 
       <!-- Período -->
       <div class="mb-3 row">
         <div class="col-md-1">
-          <label class="form-label">Período:</label>
-          <input type="number" class="form-control form-control-sm" id="periodo" name="periodo" placeholder="Ex: 2" min="1" />
+          <label class="form-label">Intervalo:</label>
+          <input type="number" class="form-control form-control-sm" id="intervalo" name="intervalo" placeholder="Ex: 1"
+            min="1" />
         </div>
         <div class="col-md-2">
-          <label class="form-label">Tipo:</label>
+          <label class="form-label">Formato:</label>
           <select class="form-select " id="tipoPeriodo">
             <option value="horas">Horas</option>
             <option value="dias">Dias</option>
           </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Período de dias:</label>
+          <input type="number" class="form-control form-control-sm" id="periodo" name="periodo" placeholder="Ex: 1"
+            min="1" />
         </div>
       </div>
 
@@ -101,7 +109,9 @@
         <div class="modal-body row">
           <!-- MOCK: Lista de animais -->
           <div class="col-md-4 mb-3">
-            <div class="card card-select" onclick="selecionarAnimal({id: 1, nome: 'Rex', sexo: 'Macho', raca: 'Labrador', imagem: 'https://placedog.net/200/200?id=1'})" data-bs-dismiss="modal">
+            <div class="card card-select"
+              onclick="selecionarAnimal({id: 1, nome: 'Rex', sexo: 'Macho', raca: 'Labrador', imagem: 'https://placedog.net/200/200?id=1'})"
+              data-bs-dismiss="modal">
               <img src="https://placedog.net/200/200?id=1" class="card-img-top" />
               <div class="card-body">
                 <h5 class="card-title">Rex</h5>
@@ -110,7 +120,9 @@
             </div>
           </div>
           <div class="col-md-4 mb-3">
-            <div class="card card-select" onclick="selecionarAnimal({id: 2, nome: 'Luna', sexo: 'Fêmea', raca: 'Poodle', imagem: 'https://placedog.net/200/200?id=2'})" data-bs-dismiss="modal">
+            <div class="card card-select"
+              onclick="selecionarAnimal({id: 2, nome: 'Luna', sexo: 'Fêmea', raca: 'Poodle', imagem: 'https://placedog.net/200/200?id=2'})"
+              data-bs-dismiss="modal">
               <img src="https://placedog.net/200/200?id=2" class="card-img-top" />
               <div class="card-body">
                 <h5 class="card-title">Luna</h5>
@@ -135,7 +147,9 @@
         <div class="modal-body row">
           <!-- MOCK: Lista de medicamentos -->
           <div class="col-md-4 mb-3">
-            <div class="card card-select" onclick="selecionarMedicamento({id: 1, nome: 'Vermivet', forma: 'Comprimido', descricao: 'Vermífugo para cães e gatos'})" data-bs-dismiss="modal">
+            <div class="card card-select"
+              onclick="selecionarMedicamento({id: 1, nome: 'Vermivet', forma: 'Comprimido', descricao: 'Vermífugo para cães e gatos'})"
+              data-bs-dismiss="modal">
               <div class="card-body">
                 <h5 class="card-title">Vermivet</h5>
                 <p class="card-text">Forma: Comprimido<br>Descrição: Vermífugo para cães e gatos</p>
@@ -143,7 +157,9 @@
             </div>
           </div>
           <div class="col-md-4 mb-3">
-            <div class="card card-select" onclick="selecionarMedicamento({id: 2, nome: 'Otoguard', forma: 'Solução', descricao: 'Solução otológica para inflamações'})" data-bs-dismiss="modal">
+            <div class="card card-select"
+              onclick="selecionarMedicamento({id: 2, nome: 'Otoguard', forma: 'Solução', descricao: 'Solução otológica para inflamações'})"
+              data-bs-dismiss="modal">
               <div class="card-body">
                 <h5 class="card-title">Otoguard</h5>
                 <p class="card-text">Forma: Solução<br>Descrição: Para inflamações no ouvido</p>
