@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agendamento de Medicamento</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <link rel="stylesheet" href="../css/telasCad.css" />
+    <script src="../ControllerJs/agendamentoController.js"> </script>
+  <style>
+    .card-select {
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .card-select:hover {
+      transform: scale(1.02);
+    }
+
+    .preview-box {
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      background-color: #f8f9fa;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container container-box mt-5">
+    <h2 class="mb-4">Agendamento de Medicamento</h2>
+
+    <form id="formAgendamento">
+
+      <!-- Animal -->
+      <div class="mb-3">
+        <label class="form-label">Animal:</label><br />
+        <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalAnimais">Selecionar Animal</button>
+        <div id="animalSelecionado" class="mt-2 preview-box d-none"></div>
+      </div>
+
+      <!-- Medicamento -->
+      <div class="mb-3">
+        <label class="form-label">Medicamento:</label><br />
+        <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalMedicamentos">Selecionar Medicamento</button>
+        <div id="medicamentoSelecionado" class="mt-2 preview-box d-none"></div>
+      </div>
+
+      <!-- Período -->
+      <div class="mb-3 row">
+        <div class="col-md-1">
+          <label class="form-label">Período:</label>
+          <input type="number" class="form-control form-control-sm" id="periodo" name="periodo" placeholder="Ex: 2" min="1" />
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Tipo:</label>
+          <select class="form-select " id="tipoPeriodo">
+            <option value="horas">Horas</option>
+            <option value="dias">Dias</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="d-flex gap-3 mt-4">
+        <button type="button" class="btn btn-primary" onclick="confirmarAgendamento()">Confirmar Agendamento</button>
+        <button type="button" class="btn btn-secondary" onclick="history.back()">Voltar</button>
+      </div>
+
+      <div class="mt-3" id="resultadoProximaAplicacao"></div>
+
+    </form>
+
+    <!-- Tabela de Agendamentos -->
+    <h3 class="mt-5">Agendamentos Cadastrados</h3>
+    <table class="table table-bordered mt-3" id="tabelaAgendamentos">
+      <thead>
+        <tr>
+          <th>Animal</th>
+          <th>Medicamento</th>
+          <th>Próxima Aplicação</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </main>
+
+  <!-- Modal Animais -->
+  <div class="modal fade" id="modalAnimais" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Selecionar Animal</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body row">
+          <!-- MOCK: Lista de animais -->
+          <div class="col-md-4 mb-3">
+            <div class="card card-select" onclick="selecionarAnimal({id: 1, nome: 'Rex', sexo: 'Macho', raca: 'Labrador', imagem: 'https://placedog.net/200/200?id=1'})" data-bs-dismiss="modal">
+              <img src="https://placedog.net/200/200?id=1" class="card-img-top" />
+              <div class="card-body">
+                <h5 class="card-title">Rex</h5>
+                <p class="card-text">Raça: Labrador<br>Sexo: Macho</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="card card-select" onclick="selecionarAnimal({id: 2, nome: 'Luna', sexo: 'Fêmea', raca: 'Poodle', imagem: 'https://placedog.net/200/200?id=2'})" data-bs-dismiss="modal">
+              <img src="https://placedog.net/200/200?id=2" class="card-img-top" />
+              <div class="card-body">
+                <h5 class="card-title">Luna</h5>
+                <p class="card-text">Raça: Poodle<br>Sexo: Fêmea</p>
+              </div>
+            </div>
+          </div>
+          <!-- ... mais animais se quiser -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Medicamentos -->
+  <div class="modal fade" id="modalMedicamentos" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Selecionar Medicamento</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body row">
+          <!-- MOCK: Lista de medicamentos -->
+          <div class="col-md-4 mb-3">
+            <div class="card card-select" onclick="selecionarMedicamento({id: 1, nome: 'Vermivet', forma: 'Comprimido', descricao: 'Vermífugo para cães e gatos'})" data-bs-dismiss="modal">
+              <div class="card-body">
+                <h5 class="card-title">Vermivet</h5>
+                <p class="card-text">Forma: Comprimido<br>Descrição: Vermífugo para cães e gatos</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="card card-select" onclick="selecionarMedicamento({id: 2, nome: 'Otoguard', forma: 'Solução', descricao: 'Solução otológica para inflamações'})" data-bs-dismiss="modal">
+              <div class="card-body">
+                <h5 class="card-title">Otoguard</h5>
+                <p class="card-text">Forma: Solução<br>Descrição: Para inflamações no ouvido</p>
+              </div>
+            </div>
+          </div>
+          <!-- ... mais medicamentos se quiser -->
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
