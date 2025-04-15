@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agendamento de Doação</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- CSS personalizado -->
+  <link rel="stylesheet" href="../css/telasCad.css" />
+</head>
+
+<body>
+  <main class="container container-box mt-5">
+    <h2 class="mb-4">Agendamento de Doação</h2>
+
+    <form method="post" id="fdoacao">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="nome" class="form-label">Nome</label>
+          <input type="text" class="form-control form-control-sm" id="nome" name="nome" placeholder="Nome completo" required>
+        </div>
+        <div class="col-md-6">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control form-control-sm" id="email" name="email" placeholder="Email" required>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="telefone" class="form-label">Telefone</label>
+          <input type="tel" class="form-control form-control-sm" id="telefone" name="telefone" placeholder="Telefone" required>
+        </div>
+        <div class="col-md-6">
+          <label for="valor" class="form-label">Valor</label>
+          <input type="number" class="form-control form-control-sm" id="valor" name="valor" placeholder="Valor de doação" required>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="tipoPagamento" class="form-label">Tipo de Pagamento</label>
+        <select class="form-control form-control-sm" id="tipoPagamento" name="tipoPagamento" required>
+          <option hidden selected value="pix">Pix</option>
+        </select>
+      </div>
+
+      <div class="d-flex gap-3 mt-4">
+        <button type="button" class="btn btn-primary" onclick="window.location.href='telaPagamento.html'">Confirmar</button>
+        <button type="button" class="btn btn-secondary" onclick="history.back()">Voltar</button>
+      </div>
+    </form>
+  </main>
+</body>
+
+</html>

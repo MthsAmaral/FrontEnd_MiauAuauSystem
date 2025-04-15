@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Pagamento via Pix</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Bootstrap e CSS base -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/telasGer.css">
+  <script>
+    function copiarPix() {
+      navigator.clipboard.writeText("12.345.678/0001-90");
+      alert("Chave Pix copiada!");
+    }
+  </script>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="../index.html">
+        Sistema MiauAuau
+        <img src="../img/logo.png" alt="Logo Sistema MiauAuau">
+      </a>
+    </div>
+  </nav>
+
+  <!-- Tela Pix -->
+  <main class="container container-box text-center mt-5">
+    <h2 class="mb-4">Pagamento via Pix</h2>
+
+    <div class="d-flex flex-column align-items-center gap-4">
+      <div>
+        <h5>Chave Pix (CNPJ)</h5>
+        <p>12.345.678/0001-90</p>
+        <p onclick="copiarPix()" class="fs-5 fw-bold text-primary" style="cursor: pointer;">
+            Copiar pix
+        </p>
+      </div>
+
+      <div>
+        <h5>QR Code para pagamento</h5>
+        <img src="../img/qrcode_exemplo.png" alt="QR Code Pix" class="rounded border border-secondary" style="width: 250px; height: 250px;">
+      </div>
+
+      <div>
+        <button class="btn btn-secondary mt-4" onclick="history.back()">Voltar</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

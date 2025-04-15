@@ -98,6 +98,9 @@ function buscarAnimal() {
                         <td>${json[i].peso}</td>
                         <td>${json[i].castrado}</td>
                         <td>${json[i].adotado}</td>
+                        <td>
+                        <img src="data:image/jpeg;base64,${json[i].imagemBase64}" alt="Imagem do animal" style="width: 100px; height: auto;">
+                        </td>
                         <td><button type="button" onclick='excluirAnimal(${json[i].codAnimal})'>Excluir</button></td>
                         <td><button type="button" onclick='editarAnimal(${json[i].codAnimal})'>Alterar</button></td>
                       </tr>`;
@@ -123,6 +126,7 @@ function buscarAnimal() {
 
             var table = "<table border='1'>"; // Começa a tabela com uma borda simples
             for (let i = 0; i < json.length; i++) {
+                console.log(`Imagem Base64 do animal ${json[i].codAnimal}:`, json[i].imagemBase64);
                 table += `<tr>
                         <td>${json[i].codAnimal}</td>
                         <td>${json[i].nome}</td>
@@ -132,6 +136,9 @@ function buscarAnimal() {
                         <td>${json[i].peso}</td>
                         <td>${json[i].castrado}</td>
                         <td>${json[i].adotado}</td>
+                        <td>
+                        <img src="data:image/jpeg;base64,${json[i].imagemBase64}" alt="Imagem do animal" style="width: 100px; height: auto;">
+                        </td>
                         <td><button type="button" onclick='excluirAnimal(${json[i].codAnimal})'>Excluir</button></td>
                         <td><button type="button" onclick='editarAnimal(${json[i].codAnimal})'>Alterar</button></td>
 
@@ -201,7 +208,7 @@ function buscarAnimalPeloId(id) {
             document.getElementById('raca').value = json.raca;
             document.getElementById('idade').value = json.idade;
             document.getElementById('peso').value = json.peso;
-            document.getElementById('imagemBase64').value = json.imagemBase64;
+            //document.getElementById('imagemBase64').value = json.imagemBase64;
             document.getElementById('sexo').value = json.sexo;
             document.getElementById('castrado').value = json.castrado;
             document.getElementById('adotado').value = json.adotado;
