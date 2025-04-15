@@ -22,7 +22,7 @@ function validarCampos() {
 function cadMedicamento() {
     
     var ftipomedicamento = document.getElementById("ftipomedicamento");
-    var jsontext = JSON.stringify(Object.fromEntries(new FormData(ftipomedicamento)));
+    var formData = new FormData(ftipomedicamento);
     var cod = document.getElementById("codMedicamento").value;
     if(cod) // existe, atualiza
     {
@@ -32,7 +32,7 @@ function cadMedicamento() {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            method: 'PUT', body: jsontext
+            method: 'PUT', body: formData
         })
             .then((response) => {
                 return response.json();
@@ -52,7 +52,7 @@ function cadMedicamento() {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            method: 'POST', body: jsontext
+            method: 'POST', body: formData
         })
             .then((response) => {
                 return response.json();
@@ -79,6 +79,7 @@ function buscarMedicamento() {
         })
         .then(function (text) {
             var json = JSON.parse(text); // Converte a resposta JSON
+
             var table = "<table border='1'>"; // Começa a tabela com uma borda simples
             
         
@@ -161,7 +162,7 @@ function excluirMedicamento(id)
 
 function editarMedicamento(id) {
     
-    window.location.href = "../TelasCadastros/cadTipoMedicamento.html?id="+id;
+    window.location.href = "../TelasCadastros/cadTipoMedicamento.html?codMedicamento="+id;
 }
 
 function buscarMedicamentoPeloId(id) {
@@ -182,13 +183,10 @@ function buscarMedicamentoPeloId(id) {
             return response.json();
         })
         .then((json) => {
-            // Preenche o formulário com os dados do medicamento
-            Object.keys(json).forEach(key => {
-                let field = ftipomedicamento.elements[key];
-                if (field) {
-                    field.value = json[key];
-                }
-            });
+            document.getElementById('codMedicamento').value = id;
+            document.getElementById('nome').value = json.nome;
+            document.getElementById('formaFarmaceutica').value = json.formaFarmaceutica;
+            document.getElementById('descricao').value = json.descricao;
         })
         .catch((error) => {
             console.error("Erro ao buscar o medicamento:", error);
