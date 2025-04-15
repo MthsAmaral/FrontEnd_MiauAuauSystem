@@ -1,0 +1,222 @@
+/* === VARIÁVEIS DE CORES === */
+:root {
+    --cor-clara: #f5f5f5;          /* Cor de fundo clara usada em elementos como dropdown */
+    --cor-verde-claro: #cdeeea;     /* Cor de fundo principal do body */
+    --cor-caramelo: #d3a96a;        /* Cor usada em botões e cabeçalhos de tabela */
+    --cor-petroleo: #073b4c;        /* Cor escura usada na navbar e textos */
+    --cor-destaque: #d5a96c;        /* Cor para destacar um item no menu */
+}
+
+/* === ESTILO GLOBAL === */
+body {
+    background-color: var(--cor-verde-claro); /* Cor de fundo da página */
+    font-family: 'Poppins', sans-serif;       /* Fonte principal da página */
+    margin: 0;                                /* Remove margens externas padrão */
+    padding: 0;                               /* Remove preenchimentos internos padrão */
+}
+
+/* === NAVBAR (barra de navegação superior) === */
+.navbar {
+    background-color: var(--cor-petroleo); /* Cor de fundo da navbar */
+    padding: 0.8rem 1rem;                  /* Espaçamento interno da navbar */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra sutil para profundidade */
+    border-bottom: 2px solid var(--cor-destaque); /* Linha inferior destacada */
+}
+
+/* === LOGO OU NOME DO SISTEMA NA NAVBAR === */
+.navbar-brand {
+    font-weight: 700;            /* Deixa o texto mais grosso */
+    font-size: 1.8rem;           /* Tamanho da fonte */
+    color: var(--cor-clara);     /* Cor clara para contraste */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Sombra no texto */
+    letter-spacing: 1px;         /* Espaço entre letras */
+    transition: all 0.3s ease;   /* Transição suave em efeitos */
+    position: relative;          /* Para controle de posicionamento do pseudo-elemento */
+    padding: 0.5rem 1rem;        /* Espaçamento interno */
+}
+
+.navbar-brand:hover {
+    color: var(--cor-destaque); /* Muda cor ao passar o mouse */
+    text-shadow: 2px 2px 6px rgba(211, 169, 106, 0.5); /* Sombra mais intensa */
+}
+
+/* === ANIMAÇÃO DE SUBLINHADO NA MARCA === */
+.navbar-brand::after {
+    content: '';                           /* Necessário para pseudo-elementos */
+    position: absolute;                   /* Posicionamento absoluto em relação ao elemento pai */
+    width: 100%;                          /* Ocupa toda a largura */
+    height: 3px;                          /* Altura da linha */
+    bottom: 0; left: 0;                   /* Posicionamento da linha */
+    background-color: var(--cor-destaque); /* Cor da linha */
+    transform: scaleX(0);                 /* Inicialmente invisível */
+    transform-origin: bottom right;       /* Origem da animação */
+    transition: transform 0.3s ease;      /* Animação suave */
+}
+
+.navbar-brand:hover::after {
+    transform: scaleX(1);                /* Faz a linha crescer ao passar o mouse */
+    transform-origin: bottom left;       /* Origem agora do lado esquerdo */
+}
+
+/* === ITENS DE MENU (links) === */
+.nav-link {
+    font-weight: 500;                      /* Peso da fonte médio */
+    color: var(--cor-clara);              /* Cor clara para contraste */
+    padding: 0.5rem 1rem;                 /* Espaçamento interno */
+    margin: 0 0.2rem;                     /* Margem entre os links */
+    border-radius: 4px;                   /* Cantos levemente arredondados */
+    transition: all 0.3s ease;            /* Transições suaves */
+}
+
+.nav-link:hover {
+    color: var(--cor-destaque);           /* Muda a cor ao passar o mouse */
+    background-color: rgba(205, 238, 234, 0.1); /* Fundo sutil ao hover */
+}
+
+/* === DROPDOWN (submenus) === */
+.dropdown-menu {
+    background-color: var(--cor-petroleo);         /* Cor de fundo escura */
+    border: 1px solid var(--cor-destaque);         /* Borda destacada */
+}
+
+.dropdown-item {
+    color: var(--cor-clara);                      /* Cor clara dos itens */
+    transition: all 0.2s ease;                    /* Transições suaves */
+}
+
+.dropdown-item:hover {
+    background-color: var(--cor-destaque);        /* Fundo ao passar o mouse */
+    color: var(--cor-petroleo);                   /* Inversão de cor para contraste */
+}
+
+/* === BOTÃO DE MENU MOBILE === */
+.navbar-toggler {
+    border-color: var(--cor-clara);              /* Cor da borda */
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(245, 245, 245, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"); /* Ícone hamburguer branco */
+}
+
+/* === ALINHAMENTO DO MENU À DIREITA === */
+.central-navbar {
+    display: flex;
+    justify-content: flex-end; /* Alinha o conteúdo à direita */
+    width: 80%;
+    margin-right: 20px;
+}
+
+/* === CONTAINER PRINCIPAL DE CONTEÚDO === */
+.container-box {
+    background-color: var(--cor-clara);           /* Fundo claro */
+    border-radius: 20px;                          /* Cantos arredondados */
+    padding: 30px;                                /* Espaço interno */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);     /* Sombra leve para profundidade */
+}
+
+/* === TÍTULOS === */
+h2 {
+    color: var(--cor-petroleo);                  /* Cor escura para contraste */
+    font-weight: 700;                            /* Negrito */
+    margin-bottom: 20px;                         /* Espaço abaixo */
+    text-shadow: 3px 3px 6px rgba(211, 169, 106, 0.7); /* Sombra suave com tom caramelo */
+}
+
+/* === CAMPOS DE TEXTO === */
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    transition: border-color 0.3s, box-shadow 0.3s; /* Transições suaves ao focar */
+}
+
+input[type="text"]:focus {
+    border-color: var(--cor-caramelo);           /* Cor de borda ao focar */
+    box-shadow: 0 0 5px rgba(211, 169, 106, 0.5); /* Sombra caramelo leve */
+}
+
+/* === TABELA === */
+.table {
+    width: 100%;
+    border-collapse: collapse; /* Remove espaçamentos entre bordas */
+}
+
+.table th,
+.table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd; /* Linha inferior clara */
+}
+
+.table th {
+    background-color: var(--cor-caramelo-claro); /* Cor para o cabeçalho */
+    color: var(--cor-petroleo);                 /* Texto escuro */
+    font-weight: 600;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;                  /* Alternância de cores nas linhas */
+}
+
+/* === BOTÕES === */
+.btn {
+    padding: 10px 22px;
+    border-radius: 25px;              /* Botões arredondados */
+    font-weight: 600;                 /* Negrito */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra leve */
+    display: inline-flex;             /* Permite ícones + texto lado a lado */
+    align-items: center;              /* Centraliza verticalmente */
+    gap: 8px;                         /* Espaço entre ícone e texto */
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(to right, var(--cor-caramelo), var(--cor-caramelo-claro));
+    border: none;
+    color: var(--cor-petroleo);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(to right, #c49a5d, #dbac6d); /* Tom mais escuro no hover */
+    transform: translateY(-4px); /* Efeito de "elevar" o botão */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-secondary {
+    background: linear-gradient(to right, #cdeeea, #e2f8f5);
+    border: none;
+    color: var(--cor-petroleo);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(to right, #b6d9d6, #d2f0ed);
+    transform: translateY(-4px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* === IMAGEM NA NAVBAR (se houver) === */
+.navbar-brand img {
+    max-height: 50px;                /* Altura máxima da imagem */
+    margin-right: 10px;              /* Espaço ao lado do texto */
+    vertical-align: middle;          /* Alinha com o texto */
+}
+.queroadotar {
+    background-color: orange; /* Cor amarela mais suave com opacidade */
+    color: white; /* Cor do texto escuro */
+    padding: 12px 16px; /* Espaçamento interno */
+    border-radius: 20px; /* Bordas arredondadas */
+    text-align: center; /* Alinha o texto ao centro */
+    font-weight: bold; /* Texto em negrito */
+    text-decoration: none; /* Remove o sublinhado */
+    display: inline-block; /* Permite que o link seja tratado como um bloco */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Transições suaves */
+}
+
+/* Efeito ao passar o mouse sobre o link "Quero Adotar" */
+.queroadotar:hover {
+    background-color: rgba(255, 165, 0, 0.8); /* Muda para uma cor amarela mais forte */
+    color: white; /* Muda o texto para branco */
+    transform: scale(1.05); /* Aumenta o tamanho do link suavemente */
+}
