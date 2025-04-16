@@ -78,7 +78,7 @@
     <h2>Gerenciar Tipos de Lançamento</h2>
 
      <!-- Campo de filtro -->
-     <input type="text" id="filtro" placeholder="Filtrar por nome do Lançamento" onkeyup="buscarTipoLancamento()">
+     <input type="text" id="filtro" placeholder="Filtrar por nome do Lançamento" onkeyup="buscarTipoLancamento(filtro)">
 
     <!-- Tabela com rolagem -->
     <div style="overflow: auto; max-height: 400px;">
@@ -86,7 +86,7 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>Nome</th>
+            <th>Descrição</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -94,6 +94,7 @@
           <!-- Os dados serão preenchidos dinamicamente -->
         </tbody>
       </table>
+      <script></script>
     </div>
 
     <!-- Botões -->

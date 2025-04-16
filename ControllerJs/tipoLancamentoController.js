@@ -5,7 +5,7 @@ function cadTipoLancamento() {
 
     fetch(URL, {
         method: 'POST',
-        body: formData,
+        body: formData
     })
         .then((response) => {
             return response.json();
@@ -24,7 +24,7 @@ function buscarTipoLancamento(filtro) {
     if(filtro.length>0)
         url = url + "/" + filtro; //buscar utilizando o filtro
     else
-        url = url + "/ "; //buscar todos os valores
+        url = url + "/%20"; //buscar todos os valores
 
     fetch(url, {
         method: 'GET', redirect: "follow"
@@ -32,18 +32,17 @@ function buscarTipoLancamento(filtro) {
         .then((response) => {return response.text()})
         .then(function (text) {
             var json = JSON.parse(text); // Converte a resposta JSON
-            var table = "<table border='1'>"; // Começa a tabela com uma borda simples
+            var table; // Começa a tabela com uma borda simples
 
             for (let i = 0; i < json.length; i++) {
                 table += `
                     <tr>
                         <td>${json[i].cod}</td>
                         <td>${json[i].descricao}</td>
-                        <td onclick='excluirTipoLancamento(${json[i].id})'>Excluir</td>
-                        <td onclick='editarTipoLancamento(${json[i].id})'>Alterar</td>
+                        <td onclick='excluirTipoLancamento(${json[i].cod})'>Excluir</td>
+                        <td onclick='editarTipoLancamento(${json[i].cod})'>Alterar</td>
                     </tr>`;
             }
-            table += "</table>";
             document.getElementById("resultado").innerHTML = table; // Exibe a tabela no elemento "resultado"
         })
         .catch(function (error) {

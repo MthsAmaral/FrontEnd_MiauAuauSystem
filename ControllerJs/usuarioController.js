@@ -103,43 +103,37 @@ function excluirUsuario(id){
 function editarUsuario(id){
     const URL = "http://localhost:8080/apis/usuario/atualizar";
     var fusuario = document.getElementById("fusuario");
-    var jsontext = JSON.stringify(Object.fromEntries(new FormData(fusuario)));
+    var formData = new FormData(fusuario);
 
     fetch(URL, {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        method: 'PUT', body: jsontext
+        method: 'PUT',
+        body: jsontext
     })
         .then((response) => {
             return response.json();
         })
         .then((json) => {
-            alert(JSON.stringify(json));
+            alert('Resposta do servidor: ' + JSON.stringify(json));
             fusuario.reset();
         })
-        .catch((error) => console.error(error))
+        .catch((error) => console.error('Erro ao atualizar USUÁRIO!! ' + error))
 }
 
 function cadUsuario() {
     const URL = "http://localhost:8080/apis/usuario/gravar";
     var fusuario = document.getElementById("fusuario");
-    var jsontext = JSON.stringify(Object.fromEntries(new FormData(fusuario)));
+    var formData = new FormData(fusuario);
     
     fetch(URL, {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        method: 'POST', body: jsontext
+        method: 'POST',
+        body: formData
     })
         .then((response) => {
             return response.json();
         })
         .then((json) => {
-            alert(JSON.stringify(json));
+            alert('Resposta do servidor: ' + JSON.stringify(json));
             fusuario.reset();
         })
-        .catch((error) => console.error(error))
+        .catch((error) => console.error('Erro ao cadastrar dados!! '+error))
 }
