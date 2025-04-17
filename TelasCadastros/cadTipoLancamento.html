@@ -12,6 +12,16 @@
 
   <script src="../ControllerJs/tipoLancamentoController.js"></script>
   <link rel="stylesheet" href="../css/telasCad.css" />
+
+  <script>
+    window.addEventListener("DOMContentLoaded", function () {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('cod');
+      if (id) {
+        buscarTipoLancID(id);
+      }
+    });
+  </script>
 </head>
 
 <body>
@@ -21,12 +31,12 @@
     <form method="post" id="ftipolancamento">
       <div class="row mb-3">
         <div class="col-md-2">
-          <label for="id" class="form-label">ID</label>
-          <input type="text" class="form-control form-control-sm" id="id" name="id" disabled>
+          <label for="cod" class="form-label">ID</label>
+          <input type="text" class="form-control form-control-sm" id="cod" name="cod" disabled>
         </div>
         <div class="col-md-10">
           <label for="descricao" class="form-label">Descrição</label>
-          <input type="text" class="form-control form-control-sm" id="descricao" name="descricao" placeholder="Nome do tipo de lançamento">
+          <input type="text" class="form-control form-control-sm" id="descricao" name="descricao" placeholder="Descrição Tipo de Lançamento">
         </div>
       </div>
     

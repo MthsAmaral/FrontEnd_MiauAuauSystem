@@ -32,6 +32,7 @@ function validarCampos()
   }
   limparForm();
 }
+
 function cadAnimal() {
     
     var fanimal = document.getElementById("fanimal");
@@ -186,7 +187,6 @@ function editarAnimal(id) {
 }
 
 function buscarAnimalPeloId(id) {
-    
     const URL = "http://localhost:8080/apis/animal/buscar-id/"+id;
     var fanimal = document.getElementById("fanimal");
 
