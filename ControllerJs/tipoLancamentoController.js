@@ -37,7 +37,9 @@ function buscarTipoLancamento(filtro) {
     fetch(url, {
         method: 'GET', redirect: "follow"
     })
-        .then((response) => { return response.text() })
+        .then((response) => {
+            return response.text();
+        })
         .then(function (text) {
             var json = JSON.parse(text); // Converte a resposta JSON
             var table = ""; // Começa a tabela com uma borda simples

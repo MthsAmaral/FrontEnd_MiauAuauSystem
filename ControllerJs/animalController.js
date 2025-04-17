@@ -1,44 +1,40 @@
-function limparForm()
-{
+function limparForm() {
     var fdados = document.getElementById("fanimal");
-    fdados.nome.value="";
-    fdados.sexo.value="M";
-    fdados.raca.value="";
-    fdados.idade.value="";
-    fdados.peso.value="";
-    fdados.castrado.value="Não";
-    fdados.adotado.value="Não";
-    fdados.imagemBase64.value="";
+    fdados.nome.value = "";
+    fdados.sexo.value = "M";
+    fdados.raca.value = "";
+    fdados.idade.value = "";
+    fdados.peso.value = "";
+    fdados.castrado.value = "Não";
+    fdados.adotado.value = "Não";
+    fdados.imagemBase64.value = "";
 }
 
-function validarCampos()
-{
-  const nome = document.getElementById("nome").value;
-  const sexo = document.getElementById("sexo").value;
-  const raca = document.getElementById("raca").value;
-  const idade = document.getElementById("idade").value;
-  const peso = document.getElementById("peso").value;
-  const castrado = document.getElementById("castrado").value;
-  const adotado = document.getElementById("adotado").value;
-  const imagemBase64 = document.getElementById("imagemBase64").value;
-  
-  if (nome != "" && sexo != "" && raca != "" && idade > 0 && peso > 0 && castrado != "" && adotado != "" && imagemBase64 != "")
-  {
-    cadAnimal();
-  }
-  else
-  {
-    alert("Campo(s) Não Preenchido(s)")
-  }
-  limparForm();
+function validarCampos() {
+    const nome = document.getElementById("nome").value;
+    const sexo = document.getElementById("sexo").value;
+    const raca = document.getElementById("raca").value;
+    const idade = document.getElementById("idade").value;
+    const peso = document.getElementById("peso").value;
+    const castrado = document.getElementById("castrado").value;
+    const adotado = document.getElementById("adotado").value;
+    const imagemBase64 = document.getElementById("imagemBase64").value;
+
+    if (nome != "" && sexo != "" && raca != "" && idade > 0 && peso > 0 && castrado != "" && adotado != "" && imagemBase64 != "") {
+        cadAnimal();
+    }
+    else {
+        alert("Campo(s) Não Preenchido(s)")
+    }
+    limparForm();
 }
 
 function cadAnimal() {
-    
+
     var fanimal = document.getElementById("fanimal");
     var formData = new FormData(fanimal);
     var cod = document.getElementById("codAnimal").value;
-    if(cod) // existe, atualiza
+    if (cod) // existe, atualiza
     {
         const URL = "http://localhost:8080/apis/animal/atualizar"
         fetch(URL, {
@@ -54,8 +50,7 @@ function cadAnimal() {
             .catch((error) => console.error(error))
 
     }
-    else
-    {
+    else {
         const URL = "http://localhost:8080/apis/animal/gravar"
         fetch(URL, {
             method: 'POST', body: formData
@@ -74,23 +69,23 @@ function cadAnimal() {
 function buscarAnimal() {
     let filtro = document.getElementById("filtro").value
     const resultado = document.getElementById("resultado");
-    if(filtro.length > 0) // busca com filtro
+    if (filtro.length > 0) // busca com filtro
     {
         const url = "http://localhost:8080/apis/animal/buscar/" + filtro;
         fetch(url, {
             method: 'GET', redirect: "follow"
         })
-        .then((response) => {
-            return response.text();
-        })
-        .then(function (text) {
-            var json = JSON.parse(text); // Converte a resposta JSON
+            .then((response) => {
+                return response.text();
+            })
+            .then(function (text) {
+                var json = JSON.parse(text); // Converte a resposta JSON
 
-            var table = "<table border='1'>"; // Começa a tabela com uma borda simples
-            
-        
-            for (let i = 0; i < json.length; i++) {
-                table += `<tr>
+                var table = "<table border='1'>"; // Começa a tabela com uma borda simples
+
+
+                for (let i = 0; i < json.length; i++) {
+                    table += `<tr>
                         <td>${json[i].codAnimal}</td>
                         <td>${json[i].nome}</td>
                         <td>${json[i].raca}</td>
@@ -105,30 +100,29 @@ function buscarAnimal() {
                         <td><button type="button" onclick='excluirAnimal(${json[i].codAnimal})'>Excluir</button></td>
                         <td><button type="button" onclick='editarAnimal(${json[i].codAnimal})'>Alterar</button></td>
                       </tr>`;
-            }
-            table += "</table>";
-            resultado.innerHTML = table; // Exibe a tabela no elemento "resultado"
-        })
-        .catch(function (error) {
-            console.error(error); // Exibe erros, se houver
-        });
+                }
+                table += "</table>";
+                resultado.innerHTML = table; // Exibe a tabela no elemento "resultado"
+            })
+            .catch(function (error) {
+                console.error(error); // Exibe erros, se houver
+            });
     }
-    else
-    {
+    else {
         const url = "http://localhost:8080/apis/animal/buscar/%20";
         fetch(url, {
             method: 'GET', redirect: "follow"
         })
-        .then((response) => {
-            return response.text();
-        })
-        .then(function (text) {
-            var json = JSON.parse(text); // Converte a resposta JSON
+            .then((response) => {
+                return response.text();
+            })
+            .then(function (text) {
+                var json = JSON.parse(text); // Converte a resposta JSON
 
-            var table = "<table border='1'>"; // Começa a tabela com uma borda simples
-            for (let i = 0; i < json.length; i++) {
-                console.log(`Imagem Base64 do animal ${json[i].codAnimal}:`, json[i].imagemBase64);
-                table += `<tr>
+                var table = "<table border='1'>"; // Começa a tabela com uma borda simples
+                for (let i = 0; i < json.length; i++) {
+                    console.log(`Imagem Base64 do animal ${json[i].codAnimal}:`, json[i].imagemBase64);
+                    table += `<tr>
                         <td>${json[i].codAnimal}</td>
                         <td>${json[i].nome}</td>
                         <td>${json[i].raca}</td>
@@ -144,22 +138,20 @@ function buscarAnimal() {
                         <td><button type="button" onclick='editarAnimal(${json[i].codAnimal})'>Alterar</button></td>
 
                       </tr>`;
-            }
-            table += "</table>";
-            resultado.innerHTML = table; // Exibe a tabela no elemento "resultado"
-        })
-        .catch(function (error) {
-            console.error(error); // Exibe erros, se houver
-        });
+                }
+                table += "</table>";
+                resultado.innerHTML = table; // Exibe a tabela no elemento "resultado"
+            })
+            .catch(function (error) {
+                console.error(error); // Exibe erros, se houver
+            });
     }
 }
 
-function excluirAnimal(id) 
-{
+function excluirAnimal(id) {
 
     const confirmacao = confirm("Tem certeza que deseja excluir este animal ?");
-    if (confirmacao)
-    {
+    if (confirmacao) {
         const URL = "http://localhost:8080/apis/animal/excluir/" + id;
 
         fetch(URL, {
@@ -177,17 +169,17 @@ function excluirAnimal(id)
                 window.location.reload();
             })
             .catch((error) => console.error("Erro ao excluir o animal:", error));
-    } 
-    
+    }
+
 }
 
 function editarAnimal(id) {
-    
-    window.location.href = "../TelasCadastros/cadAnimal.html?codAnimal="+id;
+
+    window.location.href = "../TelasCadastros/cadAnimal.html?codAnimal=" + id;
 }
 
 function buscarAnimalPeloId(id) {
-    const URL = "http://localhost:8080/apis/animal/buscar-id/"+id;
+    const URL = "http://localhost:8080/apis/animal/buscar-id/" + id;
     var fanimal = document.getElementById("fanimal");
 
     fetch(URL, {
@@ -218,4 +210,3 @@ function buscarAnimalPeloId(id) {
             alert("Erro ao buscar o animal.");
         });
 }
-

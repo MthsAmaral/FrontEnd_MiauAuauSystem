@@ -5,7 +5,6 @@ function limparForm() {
     fdados.descricao.value = "";
 }
 
-
 function validarCampos() {
     const nome = document.getElementById("nome").value;
     const formaFarmaceutica = document.getElementById("formaFarmaceutica").value;
@@ -20,19 +19,17 @@ function validarCampos() {
 }
 
 function cadMedicamento() {
-    
-    var ftipomedicamento = document.getElementById("ftipomedicamento");
-    var formData = new FormData(ftipomedicamento);
-    var cod = document.getElementById("codMedicamento").value;
-    if(cod) // existe, atualiza
+    const ftipomedicamento = document.getElementById("ftipomedicamento");
+    const formData = new FormData(ftipomedicamento);
+    console.log(formData);
+    const cod = document.getElementById("cod").value;
+
+    if (cod) // existe, atualiza
     {
         const URL = "http://localhost:8080/apis/tipo-medicamento/atualizar"
         fetch(URL, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            method: 'PUT', body: formData
+            method: 'PUT',
+            body: formData
         })
             .then((response) => {
                 return response.json();
@@ -42,133 +39,112 @@ function cadMedicamento() {
                 ftipomedicamento.reset();
             })
             .catch((error) => console.error(error))
-
     }
-    else
-    {
+    else {
         const URL = "http://localhost:8080/apis/tipo-medicamento/gravar"
         fetch(URL, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
             method: 'POST', body: formData
         })
             .then((response) => {
                 return response.json();
             })
             .then((json) => {
-                alert("Medicamento Cadastrado Com Sucesso");
+                alert("Medicamento Cadastrado Com Sucesso" + JSON.stringify(json));
                 ftipomedicamento.reset();
             })
-            .catch((error) => console.error(error))
+            .catch((error) => console.error("Erro ao cadastrar Tipo Medicamento!! " + error))
     }
 }
 
 function buscarMedicamento() {
     let filtro = document.getElementById("filtro").value
-    const resultado = document.getElementById("resultado");
-    if(filtro.length > 0) // busca com filtro
+    
+    if (filtro.length > 0) // busca com filtro
     {
         const url = "http://localhost:8080/apis/tipo-medicamento/buscar/" + filtro;
         fetch(url, {
             method: 'GET', redirect: "follow"
         })
-        .then((response) => {
-            return response.text();
-        })
-        .then(function (text) {
-            var json = JSON.parse(text); // Converte a resposta JSON
+            .then((response) => {
+                return response.text();
+            })
+            .then(function (text) {
+                var json = JSON.parse(text); // Converte a resposta JSON
 
-            var table = "<table border='1'>"; // Começa a tabela com uma borda simples
-            
-        
-            for (let i = 0; i < json.length; i++) {
-                table += `<tr>
-                        <td>${json[i].codMedicamento}</td>
+                var table = ""; // Começa a tabela com uma borda simples
+
+                for (let i = 0; i < json.length; i++) {
+                    table += `<tr>
+                        <td>${json[i].cod}</td>
                         <td>${json[i].nome}</td>
                         <td>${json[i].formaFarmaceutica}</td>
                         <td>${json[i].descricao}</td>
-                        <td><button type="button" onclick='excluirMedicamento(${json[i].codMedicamento})'>Excluir</button></td>
-                        <td><button type="button" onclick='alterarMedicamento(${json[i].codMedicamento})'>Alterar</button></td>
+                        <td><button type="button" onclick='excluirMedicamento(${json[i].cod})'>Excluir</button></td>
+                        <td><button type="button" onclick='alterarMedicamento(${json[i].cod})'>Alterar</button></td>
                       </tr>`;
-            }
-            table += "</table>";
-            resultado.innerHTML = table; // Exibe a tabela no elemento "resultado"
-        })
-        .catch(function (error) {
-            console.error(error); // Exibe erros, se houver
-        });
+                }
+                document.getElementById("resultado").innerHTML = table; // Exibe a tabela no elemento "resultado"
+            })
+            .catch(function (error) {
+                console.error(error); // Exibe erros, se houver
+            });
     }
-    else
-    {
+    else {
         const url = "http://localhost:8080/apis/tipo-medicamento/buscar/%20";
         fetch(url, {
             method: 'GET', redirect: "follow"
         })
-        .then((response) => {
-            return response.text();
-        })
-        .then(function (text) {
-            var json = JSON.parse(text); // Converte a resposta JSON
+            .then((response) => {
+                return response.text();
+            })
+            .then(function (text) {
+                var json = JSON.parse(text); // Converte a resposta JSON
 
-            var table = "<table border='1'>"; // Começa a tabela com uma borda simples
-            for (let i = 0; i < json.length; i++) {
-                table += `<tr>
-                        <td>${json[i].codMedicamento}</td>
+                var table = ""; // Começa a tabela com uma borda simples
+                for (let i = 0; i < json.length; i++) {
+                    table += `<tr>
+                        <td>${json[i].cod}</td>
                         <td>${json[i].nome}</td>
                         <td>${json[i].formaFarmaceutica}</td>
                         <td>${json[i].descricao}</td>
-                        <td><button type="button" onclick='excluirMedicamento(${json[i].codMedicamento})'>Excluir</button></td>
-                        <td><button type="button" onclick='editarMedicamento(${json[i].codMedicamento})'>Alterar</button></td>
+                        <td><button type="button" onclick='excluirMedicamento(${json[i].cod})'>Excluir</button></td>
+                        <td><button type="button" onclick='editarMedicamento(${json[i].cod})'>Alterar</button></td>
 
                       </tr>`;
-            }
-            table += "</table>";
-            resultado.innerHTML = table; // Exibe a tabela no elemento "resultado"
-        })
-        .catch(function (error) {
-            console.error(error); // Exibe erros, se houver
-        });
+                }
+                resultado.innerHTML = table; // Exibe a tabela no elemento "resultado"
+            })
+            .catch(function (error) {
+                console.error(error); // Exibe erros, se houver
+            });
     }
 }
 
-function excluirMedicamento(id) 
-{
-
+function excluirMedicamento(id) {
     const confirmacao = confirm("Tem certeza que deseja excluir este medicamento ?");
-    if (confirmacao)
-    {
+    if (confirmacao) {
         const URL = "http://localhost:8080/apis/tipo-medicamento/excluir/" + id;
 
         fetch(URL, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
             method: 'DELETE'
         })
             .then((response) => {
                 return response.json();
             })
             .then((json) => {
-                alert("Medicamento Excluido Com Sucesso");
+                alert("Medicamento Excluido Com Sucesso!");
                 window.location.reload();
             })
             .catch((error) => console.error("Erro ao excluir o medicamento:", error));
-    } 
-    
+    }
 }
 
 function editarMedicamento(id) {
-    
-    window.location.href = "../TelasCadastros/cadTipoMedicamento.html?codMedicamento="+id;
+    window.location.href = "../TelasCadastros/cadTipoMedicamento.html?codMedicamento=" + id;
 }
 
 function buscarMedicamentoPeloId(id) {
-    
-    const URL = "http://localhost:8080/apis/tipo-medicamento/buscar-id/"+id;
-    var ftipomedicamento = document.getElementById("ftipomedicamento");
+    const URL = "http://localhost:8080/apis/tipo-medicamento/buscar-id/" + id;
 
     fetch(URL, {
         headers: {
@@ -183,7 +159,7 @@ function buscarMedicamentoPeloId(id) {
             return response.json();
         })
         .then((json) => {
-            document.getElementById('codMedicamento').value = id;
+            document.getElementById('cod').value = id;
             document.getElementById('nome').value = json.nome;
             document.getElementById('formaFarmaceutica').value = json.formaFarmaceutica;
             document.getElementById('descricao').value = json.descricao;
@@ -191,6 +167,5 @@ function buscarMedicamentoPeloId(id) {
         .catch((error) => {
             console.error("Erro ao buscar o medicamento:", error);
             alert("Erro ao buscar o medicamento.");
-        });
+        })
 }
-

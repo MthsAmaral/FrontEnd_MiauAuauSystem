@@ -17,7 +17,7 @@
   <script>
     window.addEventListener("DOMContentLoaded", function () {
       const params = new URLSearchParams(window.location.search);
-      const id = params.get('id');
+      const id = params.get('codMedicamento');
 
       if (id) {
         buscarMedicamentoPeloId(id);
@@ -31,37 +31,35 @@
     <h2 class="mb-4">Cadastro de Medicamento</h2>
 
     <form method="post" id="ftipomedicamento">
-      <input type="hidden" id="codMedicamento" name="codMedicamento">
-    
+      <input type="hidden" id="cod" name="cod">
+
       <div class="row mb-3">
         <div class="col-md-6">
           <label for="nome" class="form-label">Nome:</label>
           <input type="text" class="form-control form-control-sm" id="nome" name="nome"
-             placeholder="Nome do medicamento" required>
+            placeholder="Nome do medicamento" required>
         </div>
         <div class="col-md-6">
           <label for="formaFarmaceutica" class="form-label">Forma farmacêutica:</label>
-          <input type="text" class="form-control form-control-sm" id="formaFarmaceutica" name="formaFarmaceutica" 
-              placeholder="Ex: comprimido, pomada, etc..." required>
+          <input type="text" class="form-control form-control-sm" id="formaFarmaceutica" name="formaFarmaceutica"
+            placeholder="Ex: comprimido, pomada, etc..." required>
         </div>
       </div>
-    
+
       <div class="row mb-3">
         <div class="col-md-12">
           <label for="descricao" class="form-label">Descrição:</label>
-          <textarea class="form-control form-control-sm" id="descricao" name="descricao"
-               rows="4" placeholder="Descreva" required></textarea>
+          <textarea class="form-control form-control-sm" id="descricao" name="descricao" rows="4" placeholder="Descreva"
+            required></textarea>
         </div>
       </div>
-    
+
       <div class="d-flex gap-3 mt-4">
         <button type="button" class="btn btn-primary" onclick="validarCampos()">Confirmar</button>
         <button type="button" class="btn btn-secondary" onclick="history.back()">Voltar</button>
       </div>
     </form>
-    
-    
-    
+
   </main>
 </body>
 

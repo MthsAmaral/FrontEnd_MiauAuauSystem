@@ -12,10 +12,8 @@ function buscarAnimalAdocao() {
     })
     .then(function (text) {
       var json = JSON.parse(text); // Converte a resposta JSON
-      for (let i = 0; i < json.length; i++) 
-      {
-        if(json[i].adotado == 'Não')
-        {
+      for (let i = 0; i < json.length; i++) {
+        if (json[i].adotado == 'Não') {
           container.innerHTML += `
           <div class="card mb-3 shadow-sm" style="border-radius: 15px;">
           <div class="row g-0">
@@ -36,15 +34,12 @@ function buscarAnimalAdocao() {
           </div>
           </div>`
         }
-       
+
       }
-      
+
     })
     .catch(function (error) {
       console.error(error); // Exibe erros, se houver
     });
 
 }
-
-
-
