@@ -40,7 +40,7 @@ function buscarTipoLancamento(filtro) {
         .then((response) => { return response.text() })
         .then(function (text) {
             var json = JSON.parse(text); // Converte a resposta JSON
-            var table; // Começa a tabela com uma borda simples
+            var table = ""; // Começa a tabela com uma borda simples
 
             for (let i = 0; i < json.length; i++) {
                 table += `
@@ -80,7 +80,7 @@ function buscarTipoLancID(id) {
 
 //exclusão
 function excluirTipoLancamento(id) {
-    const URL = "http://localhost:8080/apis/tipo-lancamento/excluir" + id;
+    const URL = "http://localhost:8080/apis/tipo-lancamento/excluir/" + id;
 
     fetch(URL, { method: 'DELETE' })
         .then((response) => {
