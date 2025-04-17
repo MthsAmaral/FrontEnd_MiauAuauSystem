@@ -88,6 +88,7 @@ function excluirTipoLancamento(id) {
         })
         .then((json) => {
             alert("Resposta do servidor: " + JSON.stringify(json));
+            window.location.reload();
         })
         .catch((error) => console.error("Erro ao EXCLUIR dados:", error));
 }
