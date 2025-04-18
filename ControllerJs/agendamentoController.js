@@ -1,4 +1,3 @@
-
 let animalSelecionado = null;
 let medicamentoSelecionado = null;
 let agendamentos = [];
@@ -10,7 +9,7 @@ function selecionarAnimal(animal) {
   div.innerHTML = `
       <div class="d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center gap-3">
-          <img src="${animal.imagem}" alt="Animal" width="60" height="60" class="rounded" />
+          <img src="${animal.imagem}" alt="Animal" width="60" height="60" class="rounded"/>
           <div>
             <strong>${animal.nome}</strong><br/>
             Raça: ${animal.raca} | Sexo: ${animal.sexo}
