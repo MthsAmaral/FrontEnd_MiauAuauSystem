@@ -159,6 +159,62 @@ select.form-control option:checked {
   margin-top: 5px;  /* Adiciona uma margem superior de 5px */
 }
 
+.file-upload-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  height: 50px;
+  border: 2px dashed #007bff;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.file-upload-wrapper:hover {
+  background-color: #eef4ff;
+  border-color: #0056b3;
+}
+
+.file-upload-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  padding: 0 15px;
+  color: #007bff;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.file-upload-wrapper input[type="file"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.upload-icon {
+  flex-shrink: 0;
+  color: #007bff;
+}
+
+.file-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+
 /* AJUSTA TAMANHO DAS CÈLULAS FORMULARIO
 .form-control.form-sm {
   font-size: 0.85rem;  

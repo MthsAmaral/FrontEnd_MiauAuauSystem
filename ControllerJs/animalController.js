@@ -1,15 +1,22 @@
 function limparForm() {
     var fdados = document.getElementById("fanimal");
     fdados.nome.value = "";
-    fdados.sexo.value = "M";
     fdados.raca.value = "";
     fdados.idade.value = "";
     fdados.peso.value = "";
-    fdados.castrado.value = "Não";
-    fdados.adotado.value = "Não";
+    fdados.adotado.value = "";
+    fdados.sexo.value = "";
+    fdados.castrado.value = "";
     fdados.imagemBase64.value = "";
+    document.getElementById('file-name').textContent = 'Selecionar Foto';
 }
+function validarImagem(imagem) {
 
+    let flag = 0;
+    if (imagem.endsWith(".jpeg") || imagem.endsWith(".jpg"))
+        flag = 1;
+    return flag;
+}
 function validarCampos() {
     const nome = document.getElementById("nome").value;
     const sexo = document.getElementById("sexo").value;
@@ -18,10 +25,21 @@ function validarCampos() {
     const peso = document.getElementById("peso").value;
     const castrado = document.getElementById("castrado").value;
     const adotado = document.getElementById("adotado").value;
-    const imagemBase64 = document.getElementById("imagemBase64").value;
+    const imagem = document.getElementById("imagemBase64").value;
+    
+    if (nome != "" && sexo != "" && raca != "" && idade > 0 && peso > 0 && castrado != "" && adotado != "") {
+        if (imagem != "") {
+            if (validarImagem(imagem))
+                cadAnimal();
+            else
+            {
+                alert("Tipo de Arquivo Não Permitido. Apenas .jpeg ou .jpg são permitidos");
+                
+            }
+        }
+        else
+            cadAnimal();
 
-    if (nome != "" && sexo != "" && raca != "" && idade > 0 && peso > 0 && castrado != "" && adotado != "" && imagemBase64 != "") {
-        cadAnimal();
     }
     else {
         alert("Campo(s) Não Preenchido(s)")
@@ -34,7 +52,7 @@ function cadAnimal() {
     var fanimal = document.getElementById("fanimal");
     var formData = new FormData(fanimal);
     var cod = document.getElementById("codAnimal").value;
-    if (cod) // existe, atualiza
+    if (cod) 
     {
         const URL = "http://localhost:8080/apis/animal/atualizar"
         fetch(URL, {
@@ -44,8 +62,9 @@ function cadAnimal() {
                 return response.json();
             })
             .then((json) => {
-                alert("Animal Alterado Com Sucesso");
+                //alert("Animal Alterado Com Sucesso");
                 fanimal.reset();
+                window.location.href = "../TelasGerenciar/gerenAnimais.html";
             })
             .catch((error) => console.error(error))
 
@@ -59,8 +78,9 @@ function cadAnimal() {
                 return response.json();
             })
             .then((json) => {
-                alert("Animal Cadastrado Com Sucesso");
+                //alert("Animal Cadastrado Com Sucesso");
                 fanimal.reset();
+                window.location.href = "../TelasGerenciar/gerenAnimais.html";
             })
             .catch((error) => console.error(error))
     }
@@ -79,9 +99,9 @@ function buscarAnimal() {
                 return response.text();
             })
             .then(function (text) {
-                var json = JSON.parse(text); // Converte a resposta JSON
+                var json = JSON.parse(text); 
 
-                var table = "<table border='1'>"; // Começa a tabela com uma borda simples
+                var table = "<table border='1'>"; 
 
 
                 for (let i = 0; i < json.length; i++) {
@@ -97,15 +117,19 @@ function buscarAnimal() {
                         <td>
                         <img src="data:image/jpeg;base64,${json[i].imagemBase64}" alt="Imagem do animal" style="width: 100px; height: auto;">
                         </td>
-                        <td><button type="button" onclick='excluirAnimal(${json[i].codAnimal})'>Excluir</button></td>
-                        <td><button type="button" onclick='editarAnimal(${json[i].codAnimal})'>Alterar</button></td>
+                        <td>
+                        <button type="button" class="btn btn-sm btn-warning" onclick="editarAnimal(${json[i].codAnimal})"><i class="bi bi-pencil-square"></i></button>
+                        </td>
+                        <td>
+                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirAnimal(${json[i].codAnimal})"><i class="bi bi-trash"></i></button>
+                        </td>
                       </tr>`;
                 }
                 table += "</table>";
-                resultado.innerHTML = table; // Exibe a tabela no elemento "resultado"
+                resultado.innerHTML = table; 
             })
             .catch(function (error) {
-                console.error(error); // Exibe erros, se houver
+                console.error(error); 
             });
     }
     else {
@@ -117,9 +141,9 @@ function buscarAnimal() {
                 return response.text();
             })
             .then(function (text) {
-                var json = JSON.parse(text); // Converte a resposta JSON
+                var json = JSON.parse(text); 
 
-                var table = "<table border='1'>"; // Começa a tabela com uma borda simples
+                var table = "<table border='1'>"; 
                 for (let i = 0; i < json.length; i++) {
                     console.log(`Imagem Base64 do animal ${json[i].codAnimal}:`, json[i].imagemBase64);
                     table += `<tr>
@@ -134,16 +158,21 @@ function buscarAnimal() {
                         <td>
                         <img src="data:image/jpeg;base64,${json[i].imagemBase64}" alt="Imagem do animal" style="width: 100px; height: auto;">
                         </td>
-                        <td><button type="button" onclick='excluirAnimal(${json[i].codAnimal})'>Excluir</button></td>
-                        <td><button type="button" onclick='editarAnimal(${json[i].codAnimal})'>Alterar</button></td>
+                        <td>
+                        <button type="button" class="btn btn-sm btn-warning" onclick="editarAnimal(${json[i].codAnimal})"><i class="bi bi-pencil-square"></i></button>
+                        </td>
+                        <td>
+                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirAnimal(${json[i].codAnimal})"><i class="bi bi-trash"></i></button>
+                        </td>
 
+                        
                       </tr>`;
                 }
                 table += "</table>";
-                resultado.innerHTML = table; // Exibe a tabela no elemento "resultado"
+                resultado.innerHTML = table; 
             })
             .catch(function (error) {
-                console.error(error); // Exibe erros, se houver
+                console.error(error); 
             });
     }
 }
@@ -165,7 +194,6 @@ function excluirAnimal(id) {
                 return response.json();
             })
             .then((json) => {
-                alert("Animal Excluido Com Sucesso");
                 window.location.reload();
             })
             .catch((error) => console.error("Erro ao excluir o animal:", error));
@@ -180,7 +208,6 @@ function editarAnimal(id) {
 
 function buscarAnimalPeloId(id) {
     const URL = "http://localhost:8080/apis/animal/buscar-id/" + id;
-    var fanimal = document.getElementById("fanimal");
 
     fetch(URL, {
         headers: {
@@ -200,7 +227,6 @@ function buscarAnimalPeloId(id) {
             document.getElementById('raca').value = json.raca;
             document.getElementById('idade').value = json.idade;
             document.getElementById('peso').value = json.peso;
-            //document.getElementById('imagemBase64').value = json.imagemBase64;
             document.getElementById('sexo').value = json.sexo;
             document.getElementById('castrado').value = json.castrado;
             document.getElementById('adotado').value = json.adotado;
@@ -209,4 +235,9 @@ function buscarAnimalPeloId(id) {
             console.error("Erro ao buscar o animal:", error);
             alert("Erro ao buscar o animal.");
         });
+
+
+
+
+
 }
