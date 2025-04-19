@@ -191,12 +191,19 @@ function excluirAnimal(id) {
             method: 'DELETE'
         })
             .then((response) => {
+                if(!response.ok)
+                    alert("Erro ao excluir o animal");
+                else
+                    window.location.reload();
+
                 return response.json();
             })
             .then((json) => {
-                window.location.reload();
+                
             })
-            .catch((error) => console.error("Erro ao excluir o animal:", error));
+            .catch((error) => {
+                console.error("Erro ao excluir o animal:", error);
+            });
     }
 
 }
@@ -235,9 +242,5 @@ function buscarAnimalPeloId(id) {
             console.error("Erro ao buscar o animal:", error);
             alert("Erro ao buscar o animal.");
         });
-
-
-
-
 
 }
