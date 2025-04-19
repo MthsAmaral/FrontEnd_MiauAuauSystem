@@ -104,8 +104,12 @@ function buscarUsuario() {
                         <td>${json[i].rua}</td>
                         <td>${json[i].bairro}</td>
                         <td>${json[i].numero}</td>
-                        <td><button type="button" onclick='excluirUsuario(${json[i].cod})'>Excluir</button></td>
-                        <td><button type="button" onclick='editarUsuario(${json[i].cod})'>Alterar</button></td>
+                        <td>
+                        <button type="button" class="btn btn-sm btn-warning" onclick="editarUsuario(${json[i].cod})"><i class="bi bi-pencil-square"></i></button>
+                        </td>
+                        <td>
+                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirUsuario(${json[i].cod})"><i class="bi bi-trash"></i></button>
+                        </td>
                       </tr>`;
                 }
                 table += "</table>";
@@ -141,8 +145,12 @@ function buscarUsuario() {
                         <td>${json[i].rua}</td>
                         <td>${json[i].bairro}</td>
                         <td>${json[i].numero}</td>
-                        <td><button type="button" onclick='excluirUsuario(${json[i].cod})'>Excluir</button></td>
-                        <td><button type="button" onclick='editarUsuario(${json[i].cod})'>Alterar</button></td>
+                        <td>
+                        <button type="button" class="btn btn-sm btn-warning" onclick="editarUsuario(${json[i].cod})"><i class="bi bi-pencil-square"></i></button>
+                        </td>
+                        <td>
+                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirUsuario(${json[i].cod})"><i class="bi bi-trash"></i></button>
+                        </td>
 
                       </tr>`;
                 }

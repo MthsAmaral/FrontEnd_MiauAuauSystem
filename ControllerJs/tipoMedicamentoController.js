@@ -79,8 +79,12 @@ function buscarMedicamento() {
                         <td>${json[i].nome}</td>
                         <td>${json[i].formaFarmaceutica}</td>
                         <td>${json[i].descricao}</td>
-                        <td><button type="button" onclick='excluirMedicamento(${json[i].cod})'>Excluir</button></td>
-                        <td><button type="button" onclick='alterarMedicamento(${json[i].cod})'>Alterar</button></td>
+                        <td>
+                        <button type="button" class="btn btn-sm btn-warning" onclick="editarMedicamento(${json[i].cod})"><i class="bi bi-pencil-square"></i></button>
+                        </td>
+                        <td>
+                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirMedicamento(${json[i].cod})"><i class="bi bi-trash"></i></button>
+                        </td>
                       </tr>`;
                 }
                 document.getElementById("resultado").innerHTML = table; // Exibe a tabela no elemento "resultado"
@@ -106,9 +110,12 @@ function buscarMedicamento() {
                         <td>${json[i].cod}</td>
                         <td>${json[i].nome}</td>
                         <td>${json[i].formaFarmaceutica}</td>
-                        <td>${json[i].descricao}</td>
-                        <td><button type="button" onclick='excluirMedicamento(${json[i].cod})'>Excluir</button></td>
-                        <td><button type="button" onclick='editarMedicamento(${json[i].cod})'>Alterar</button></td>
+                        <td>${json[i].descricao}</td><td>
+                        <button type="button" class="btn btn-sm btn-warning" onclick="editarMedicamento(${json[i].cod})"><i class="bi bi-pencil-square"></i></button>
+                        </td>
+                        <td>
+                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirMedicamento(${json[i].cod})"><i class="bi bi-trash"></i></button>
+                        </td>
 
                       </tr>`;
                 }
