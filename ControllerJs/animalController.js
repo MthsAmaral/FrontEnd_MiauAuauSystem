@@ -115,7 +115,7 @@ function buscarAnimal() {
                         <td>${json[i].castrado}</td>
                         <td>${json[i].adotado}</td>
                         <td>
-                        <img src="data:image/jpeg;base64,${json[i].imagemBase64}" alt="Imagem do animal" style="width: 100px; height: auto;">
+                        <img src="data:image/jpeg;base64,${json[i].imagemBase64}" alt="Imagem do animal" style="width: 100px; height: 100px; object-fit: cover;">
                         </td>
                         <td>
                         <button type="button" class="btn btn-sm btn-warning" onclick="editarAnimal(${json[i].codAnimal})"><i class="bi bi-pencil-square"></i></button>
@@ -156,7 +156,7 @@ function buscarAnimal() {
                         <td>${json[i].castrado}</td>
                         <td>${json[i].adotado}</td>
                         <td>
-                        <img src="data:image/jpeg;base64,${json[i].imagemBase64}" alt="Imagem do animal" style="width: 100px; height: auto;">
+                        <img src="data:image/jpeg;base64,${json[i].imagemBase64}" alt="Imagem do animal" style="width: 100px; height: 100px; object-fit: cover;">
                         </td>
                         <td>
                         <button type="button" class="btn btn-sm btn-warning" onclick="editarAnimal(${json[i].codAnimal})"><i class="bi bi-pencil-square"></i></button>
