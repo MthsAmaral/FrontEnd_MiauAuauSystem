@@ -40,6 +40,7 @@
       <!-- Animal -->
       <div class="mb-3">
         <label class="form-label">Animal:</label><br />
+        
         <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
           data-bs-target="#modalAnimais">Selecionar Animal</button>
         <div id="animalSelecionado" class="mt-2 preview-box d-none"></div>
@@ -55,29 +56,17 @@
 
       <!-- Período -->
       <div class="mb-3 row">
-        <div class="col-md-1">
-          <label class="form-label">Intervalo:</label>
-          <input type="number" class="form-control form-control-sm" id="intervalo" name="intervalo" placeholder="Ex: 1"
-            min="1" />
-        </div>
         <div class="col-md-2">
-          <label class="form-label">Formato:</label>
-          <select class="form-select " id="tipoPeriodo">
-            <option value="horas">Horas</option>
-            <option value="dias">Dias</option>
-          </select>
-        </div>
-        <div class="col-md-2">
-          <label class="form-label">Período de dias:</label>
-          <input type="number" class="form-control form-control-sm" id="periodo" name="periodo" placeholder="Ex: 1"
-            min="1" />
+          <label class="form-label">Data da aplicação:</label>
+          <input type="date" class="form-control form-control-sm" id="dataAplicacao" name="dataAplicacao" />
         </div>
       </div>
 
       <div class="d-flex gap-3 mt-4">
-        <button type="button" class="btn btn-primary" onclick="confirmarAgendamento()">Confirmar Agendamento</button>
+        <button type="button" class="btn btn-primary" onclick="validarCamposAgendamento()">Confirmar Agendamento</button>
         <button type="button" class="btn btn-secondary" onclick="history.back()">Voltar</button>
       </div>
+
 
       <div class="mt-3" id="resultadoProximaAplicacao"></div>
 
@@ -98,7 +87,7 @@
     </table>
   </main>
 
-  <!-- Modal Animais -->
+    <!-- Modal Animais -->
   <div class="modal fade" id="modalAnimais" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -106,32 +95,7 @@
           <h5 class="modal-title">Selecionar Animal</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-        <div class="modal-body row">
-          <!-- MOCK: Lista de animais -->
-          <div class="col-md-4 mb-3">
-            <div class="card card-select"
-              onclick="selecionarAnimal({id: 1, nome: 'Rex', sexo: 'Macho', raca: 'Labrador', imagem: 'https://placedog.net/200/200?id=1'})"
-              data-bs-dismiss="modal">
-              <img src="https://placedog.net/200/200?id=1" class="card-img-top" />
-              <div class="card-body">
-                <h5 class="card-title">Rex</h5>
-                <p class="card-text">Raça: Labrador<br>Sexo: Macho</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 mb-3">
-            <div class="card card-select"
-              onclick="selecionarAnimal({id: 2, nome: 'Luna', sexo: 'Fêmea', raca: 'Poodle', imagem: 'https://placedog.net/200/200?id=2'})"
-              data-bs-dismiss="modal">
-              <img src="https://placedog.net/200/200?id=2" class="card-img-top" />
-              <div class="card-body">
-                <h5 class="card-title">Luna</h5>
-                <p class="card-text">Raça: Poodle<br>Sexo: Fêmea</p>
-              </div>
-            </div>
-          </div>
-          <!-- ... mais animais se quiser -->
-        </div>
+        <div class="modal-body row" id="listaAnimais"></div>
       </div>
     </div>
   </div>
@@ -144,33 +108,11 @@
           <h5 class="modal-title">Selecionar Medicamento</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-        <div class="modal-body row">
-          <!-- MOCK: Lista de medicamentos -->
-          <div class="col-md-4 mb-3">
-            <div class="card card-select"
-              onclick="selecionarMedicamento({id: 1, nome: 'Vermivet', forma: 'Comprimido', descricao: 'Vermífugo para cães e gatos'})"
-              data-bs-dismiss="modal">
-              <div class="card-body">
-                <h5 class="card-title">Vermivet</h5>
-                <p class="card-text">Forma: Comprimido<br>Descrição: Vermífugo para cães e gatos</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 mb-3">
-            <div class="card card-select"
-              onclick="selecionarMedicamento({id: 2, nome: 'Otoguard', forma: 'Solução', descricao: 'Solução otológica para inflamações'})"
-              data-bs-dismiss="modal">
-              <div class="card-body">
-                <h5 class="card-title">Otoguard</h5>
-                <p class="card-text">Forma: Solução<br>Descrição: Para inflamações no ouvido</p>
-              </div>
-            </div>
-          </div>
-          <!-- ... mais medicamentos se quiser -->
-        </div>
+        <div class="modal-body row" id="listaMedicamentos"></div>
       </div>
     </div>
   </div>
+
 </body>
 
 </html>
