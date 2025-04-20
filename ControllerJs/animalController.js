@@ -2,7 +2,7 @@ function limparForm() {
     var fdados = document.getElementById("fanimal");
     fdados.nome.value = "";
     fdados.raca.value = "";
-    fdados.idade.value = "";
+    fdados.dataNascimento.value = "";
     fdados.peso.value = "";
     fdados.adotado.value = "";
     fdados.sexo.value = "";
@@ -17,29 +17,69 @@ function validarImagem(imagem) {
         flag = 1;
     return flag;
 }
+
+function validarData(dataString) 
+{
+    const regexData = /^\d{4}-\d{2}-\d{2}$/;
+    if (!regexData.test(dataString)) {
+      return false;
+    }
+
+    const [ano, mes, dia] = dataString.split("-").map(Number);
+    const data = new Date(ano, mes - 1, dia);
+
+    if (
+      data.getFullYear() !== ano ||
+      data.getMonth() !== mes - 1 ||
+      data.getDate() !== dia
+    ) 
+    {
+      return false; 
+    }
+  
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+    data.setHours(0, 0, 0, 0);
+  
+    if (data > hoje)
+    {
+      return false; 
+    }
+  
+    return true; 
+}
+
 function validarCampos() {
     const nome = document.getElementById("nome").value;
     const sexo = document.getElementById("sexo").value;
     const raca = document.getElementById("raca").value;
-    const idade = document.getElementById("idade").value;
+    const dataNascimento = document.getElementById("dataNascimento").value;
     const peso = document.getElementById("peso").value;
     const castrado = document.getElementById("castrado").value;
     const adotado = document.getElementById("adotado").value;
     const imagem = document.getElementById("imagemBase64").value;
     
-    if (nome != "" && sexo != "" && raca != "" && idade > 0 && peso > 0 && castrado != "" && adotado != "") {
-        if (imagem != "") {
-            if (validarImagem(imagem))
-                cadAnimal();
+    if (nome != "" && sexo != "" && raca != "" && dataNascimento != "" && peso > 0 && castrado != "" && adotado != "") {
+        
+        if (validarData(dataNascimento))
+        {
+            if (imagem != "") {
+                if (validarImagem(imagem))
+                    cadAnimal();
+                else
+                {
+                    alert("Tipo de Arquivo Não Permitido. Apenas .jpeg ou .jpg são permitidos");
+                }
+            }
             else
             {
-                alert("Tipo de Arquivo Não Permitido. Apenas .jpeg ou .jpg são permitidos");
-                
+                cadAnimal();
             }
         }
         else
-            cadAnimal();
-
+        {
+            alert("Data Informada Inválida");
+        }
     }
     else {
         alert("Campo(s) Não Preenchido(s)")
@@ -104,14 +144,18 @@ function buscarAnimal() {
                 var table = "<table border='1'>"; 
 
 
-                for (let i = 0; i < json.length; i++) {
+                for (let i = 0; i < json.length; i++)
+                {
+                    const dataOriginal = json[i].dataNascimento;
+                    const [year, month, day] = dataOriginal.split('-'); 
+                    const dataFormatada = `${day}/${month}/${year.slice(-2)}`;  
                     table += `<tr>
                         <td>${json[i].codAnimal}</td>
                         <td>${json[i].nome}</td>
                         <td>${json[i].raca}</td>
-                        <td>${json[i].idade}</td>
+                        <td>${dataFormatada}</td>
                         <td>${json[i].sexo}</td>
-                        <td>${json[i].peso}</td>
+                        <td>${json[i].peso} kg</td>
                         <td>${json[i].castrado}</td>
                         <td>${json[i].adotado}</td>
                         <td>
@@ -144,15 +188,18 @@ function buscarAnimal() {
                 var json = JSON.parse(text); 
 
                 var table = "<table border='1'>"; 
-                for (let i = 0; i < json.length; i++) {
-                    console.log(`Imagem Base64 do animal ${json[i].codAnimal}:`, json[i].imagemBase64);
+                for (let i = 0; i < json.length; i++) 
+                {
+                    const dataOriginal = json[i].dataNascimento;
+                    const [year, month, day] = dataOriginal.split('-'); 
+                    const dataFormatada = `${day}/${month}/${year.slice(-2)}`; 
                     table += `<tr>
                         <td>${json[i].codAnimal}</td>
                         <td>${json[i].nome}</td>
                         <td>${json[i].raca}</td>
-                        <td>${json[i].idade}</td>
+                        <td>${dataFormatada}</td>
                         <td>${json[i].sexo}</td>
-                        <td>${json[i].peso}</td>
+                        <td>${json[i].peso} kg</td>
                         <td>${json[i].castrado}</td>
                         <td>${json[i].adotado}</td>
                         <td>
@@ -164,10 +211,9 @@ function buscarAnimal() {
                         <td>
                         <button type="button" class="btn btn-sm btn-danger" onclick="excluirAnimal(${json[i].codAnimal})"><i class="bi bi-trash"></i></button>
                         </td>
-
-                        
                       </tr>`;
                 }
+                
                 table += "</table>";
                 resultado.innerHTML = table; 
             })
@@ -232,7 +278,7 @@ function buscarAnimalPeloId(id) {
             document.getElementById('codAnimal').value = id;
             document.getElementById('nome').value = json.nome;
             document.getElementById('raca').value = json.raca;
-            document.getElementById('idade').value = json.idade;
+            document.getElementById('dataNascimento').value = json.dataNascimento;
             document.getElementById('peso').value = json.peso;
             document.getElementById('sexo').value = json.sexo;
             document.getElementById('castrado').value = json.castrado;

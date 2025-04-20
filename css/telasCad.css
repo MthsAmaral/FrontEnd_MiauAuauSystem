@@ -213,7 +213,22 @@ select.form-control option:checked {
   text-overflow: ellipsis;
 }
 
+.card-select {
+    
+  transition: transform 0.2s, box-shadow 0.2s; /* Animação para suavizar o efeito */
+  cursor: pointer; /* Define o cursor como "selecionando" */
+}
 
+.card-select:hover {
+transform: scale(1.05); /* Aumenta ligeiramente o tamanho do card */
+box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2); /* Adiciona uma sombra */
+border: 2px solid #007bff; /* Destaca a borda com cor azul */
+}
+.card-select img {
+width: 100%; /* Faz a imagem ocupar toda a largura disponível do card */
+height: 220px;
+object-fit: cover; /* Garante que a imagem preencha o espaço sem distorcer */
+}
 
 /* AJUSTA TAMANHO DAS CÈLULAS FORMULARIO
 .form-control.form-sm {

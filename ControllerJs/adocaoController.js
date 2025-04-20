@@ -9,22 +9,34 @@ function limparForm() {
 
 function validarData(dataString) 
 {
-  const data = new Date(dataString);
-  if (isNaN(data.getTime())) 
-    return false;
+    const regexData = /^\d{4}-\d{2}-\d{2}$/;
+    if (!regexData.test(dataString)) {
+      return false;
+    }
 
+    const [ano, mes, dia] = dataString.split("-").map(Number);
+    const data = new Date(ano, mes - 1, dia);
+
+    if (
+      data.getFullYear() !== ano ||
+      data.getMonth() !== mes - 1 ||
+      data.getDate() !== dia
+    ) 
+    {
+      return false; 
+    }
   
-  const hoje = new Date();
-  hoje.setHours(0, 0, 0, 0);
-  data.setHours(0, 0, 0, 0);
-
-  if (data > hoje) 
-    return false;
-
-  return true;
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+    data.setHours(0, 0, 0, 0);
+  
+    if (data > hoje)
+    {
+      return false; 
+    }
+  
+    return true; 
 }
-
-
 
 function validarCampos() {
   const codAnimal = document.getElementById("cod_animal").value;
@@ -43,7 +55,7 @@ function validarCampos() {
       }
       else
       {
-        alert("Data Inválida")
+        alert("Data Informada Inválida")
       }
   }
   else
@@ -69,6 +81,61 @@ function buscarAnimalAdocao() {
       var json = JSON.parse(text); // Converte a resposta JSON
       for (let i = 0; i < json.length; i++) {
         if (json[i].adotado == 'Não') {
+          const dataNascimento = new Date(json[i].dataNascimento);
+          const hoje = new Date();
+
+          let diferencaAno = hoje.getFullYear() - dataNascimento.getFullYear();
+          if (hoje.getMonth() < dataNascimento.getMonth() || (hoje.getMonth() === dataNascimento.getMonth() && hoje.getDate() < dataNascimento.getDate())) 
+          {
+              diferencaAno--;
+          }
+
+          let diferencaMes = 0;
+          let diferencaDias = 0;
+
+          if (diferencaAno === 0) 
+          {
+              diferencaMes = hoje.getMonth() - dataNascimento.getMonth();
+              if (hoje.getDate() < dataNascimento.getDate()) 
+              {
+                  diferencaMes--;
+              }
+              if (diferencaMes < 0) 
+              {
+                  diferencaMes += 12;
+              }
+
+              const inicioMes = new Date(hoje.getFullYear(), hoje.getMonth(), 0);
+              diferencaDias = Math.abs(
+                  Math.floor((hoje - dataNascimento) / (1000 * 60 * 60 * 24))
+              );
+          }
+
+          let idade;
+          if (diferencaAno > 0) 
+          {
+              if (diferencaAno > 1)
+                  idade = `${diferencaAno} anos`;
+              else
+                  idade = `${diferencaAno} ano`;
+          } 
+          else if (diferencaMes > 0)
+          {
+              if (diferencaMes > 1)
+                  idade = `${diferencaMes} meses`;
+              else
+                  idade = `${diferencaMes} mes`;
+          } 
+          else if (diferencaDias > 0) 
+          {
+              if (diferencaDias > 1)
+                  idade = `${diferencaDias} dias`;
+              else
+                  idade = `${diferencaDias} dia`;
+          } else 
+          {
+              idade = "Recém-nascido";
+          }
           container.innerHTML += `
           <div class="card mb-3 shadow-sm" style="border-radius: 15px;">
           <div class="row g-0">
@@ -81,9 +148,9 @@ function buscarAnimalAdocao() {
                 <p class="card-text mb-1"><strong>Sexo:</strong> ${json[i].sexo}</p>
                 <p class="card-text mb-1"><strong>Castrado:</strong> ${json[i].castrado}</p>
                 <p class="card-text mb-1"><strong>Raça:</strong> ${json[i].raca}</p>
-                <p class="card-text mb-1"><strong>Idade:</strong> ${json[i].idade}</p>
+                <p class="card-text mb-1"><strong>Idade:</strong> ${idade}</p>
                 <p class="card-text mb-1"><strong>Peso:</strong> ${json[i].peso} kg</p>
-                <button class="btn btn-primary mt-2" onclick="selecionarAnimal('${json[i].codAnimal}')">Quero Adotar</button>
+                <button class="btn btn-primary mt-5" onclick="selecionarAnimal('${json[i].codAnimal}')">Quero Adotar</button>
               </div>
             </div>
           </div>
@@ -140,11 +207,12 @@ function buscarAdocao() {
                         </span>
                         </td>
                         <td>
-                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirAnimal(${json[i].codAdocao})"><i class="bi bi-trash"></i></button>
-                        </td>
-                        <td>
                         <button type="button" class="btn btn-sm btn-info text-white"><i class="bi bi-file-earmark-text"></i></button>
                         </td>
+                        <td>
+                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirAnimal(${json[i].codAdocao})"><i class="bi bi-trash"></i></button>
+                        </td>
+                        
                       </tr>`;
         }
         table += "</table>";
@@ -189,10 +257,10 @@ function buscarAdocao() {
                         </span>
                         </td>
                         <td>
-                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirAdocao(${json[i].codAdocao})"><i class="bi bi-trash"></i></button>
+                        <button type="button" class="btn btn-sm btn-info text-white"><i class="bi bi-file-earmark-text"></i></button>
                         </td>
                         <td>
-                        <button type="button" class="btn btn-sm btn-info text-white"><i class="bi bi-file-earmark-text"></i></button>
+                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirAdocao(${json[i].codAdocao})"><i class="bi bi-trash"></i></button>
                         </td>
                       </tr>`;
         }
@@ -314,6 +382,7 @@ function cadAdocao() {
   var cod = document.getElementById("codAdocao").value;
   if (cod) 
   {
+      
       const URL = "http://localhost:8080/apis/adocao/atualizar"
       fetch(URL, {
           method: 'PUT', body: formData
@@ -327,7 +396,7 @@ function cadAdocao() {
               window.location.href = "../TelasGerenciar/gerenAdocao.html";
           })
           .catch((error) => console.error(error))
-
+      
   }
   else 
   {
@@ -376,7 +445,6 @@ function excluirAdocao(id) {
   }
 
 }
-
 
 
 
