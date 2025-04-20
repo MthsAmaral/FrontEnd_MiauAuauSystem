@@ -212,6 +212,7 @@ input[type="text"]:focus {
     text-decoration: none; /* Remove o sublinhado */
     display: inline-block; /* Permite que o link seja tratado como um bloco */
     transition: background-color 0.3s ease, transform 0.3s ease; /* Transições suaves */
+    margin-right: 10px;
 }
 
 /* Efeito ao passar o mouse sobre o link "Quero Adotar" */
@@ -219,4 +220,5 @@ input[type="text"]:focus {
     background-color: rgba(255, 165, 0, 0.8); /* Muda para uma cor amarela mais forte */
     color: white; /* Muda o texto para branco */
     transform: scale(1.05); /* Aumenta o tamanho do link suavemente */
+    
 }
