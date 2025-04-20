@@ -118,10 +118,14 @@ function buscarAdocao() {
         var table = "<table border='1'>";
 
 
-        for (let i = 0; i < json.length; i++) {
+        for (let i = 0; i < json.length; i++) 
+          {
+            const dataOriginal = json[i].data;
+            const [year, month, day] = dataOriginal.split('-'); 
+            const dataFormatada = `${day}/${month}/${year.slice(-2)}`;  
           table += `<tr>
                         <td>${json[i].codAdocao}</td>
-                        <td>${json[i].data}</td>
+                        <td>${dataFormatada}</td>
                         <td>${json[i].animal.nome}</td>
                         <td>${json[i].usuario.nome}</td>
                         <td>${json[i].usuario.cpf}</td>
@@ -162,10 +166,15 @@ function buscarAdocao() {
         var json = JSON.parse(text);
 
         var table = "<table border='1'>";
-        for (let i = 0; i < json.length; i++) {
+       
+        for (let i = 0; i < json.length; i++) 
+          {
+          const dataOriginal = json[i].data;
+          const [year, month, day] = dataOriginal.split('-'); 
+          const dataFormatada = `${day}/${month}/${year.slice(-2)}`; 
           table += `<tr>
                         <td>${json[i].codAdocao}</td>
-                        <td>${json[i].data}</td>
+                        <td>${dataFormatada}</td>
                         <td>${json[i].animal.nome}</td>
                         <td>${json[i].usuario.nome}</td>
                         <td>${json[i].usuario.cpf}</td>
