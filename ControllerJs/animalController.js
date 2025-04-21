@@ -68,7 +68,13 @@ function validarCampos() {
                     cadAnimal();
                 else
                 {
-                    alert("Tipo de Arquivo Não Permitido. Apenas .jpeg ou .jpg são permitidos");
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Tipo de Arquivo Não Permitido. Apenas .jpeg ou .jpg são permitidos",
+                        timer: 2500,
+                        timerProgressBar: true
+                      })
+                   
                 }
             }
             else
@@ -78,11 +84,22 @@ function validarCampos() {
         }
         else
         {
-            alert("Data Informada Inválida");
+            Swal.fire({
+                icon: "warning",
+                title: "Data Inválida",
+                timer: 1500,
+                timerProgressBar: true
+              })
         }
     }
     else {
-        alert("Campo(s) Não Preenchido(s)")
+        
+        Swal.fire({
+          icon: "warning",
+          title: "Campo(s) Não Preenchido(s)",
+          timer: 1500,
+          timerProgressBar: true
+        })
     }
     limparForm();
 }
@@ -99,12 +116,22 @@ function cadAnimal() {
             method: 'PUT', body: formData
         })
             .then((response) => {
-                return response.json();
-            })
-            .then((json) => {
-                //alert("Animal Alterado Com Sucesso");
+                if(!response.ok)
+                {
+                    sessionStorage.setItem('animalAlterado', 'false');
+                }
+                else
+                {
+                    sessionStorage.setItem('animalAlterado', 'true');
+                }
                 fanimal.reset();
                 window.location.href = "../TelasGerenciar/gerenAnimais.html";
+                return response.json();
+              
+            })
+            .then((json) => {
+
+            
             })
             .catch((error) => console.error(error))
 
@@ -115,12 +142,22 @@ function cadAnimal() {
             method: 'POST', body: formData
         })
             .then((response) => {
+                
+                if(!response.ok)
+                {
+                    sessionStorage.setItem('animalGravado', 'false');
+                }
+                else
+                {
+                    sessionStorage.setItem('animalGravado', 'true');
+                }
+                fanimal.reset();
+                window.location.href = "../TelasGerenciar/gerenAnimais.html";
                 return response.json();
             })
             .then((json) => {
-                //alert("Animal Cadastrado Com Sucesso");
-                fanimal.reset();
-                window.location.href = "../TelasGerenciar/gerenAnimais.html";
+                
+                
             })
             .catch((error) => console.error(error))
     }
@@ -225,8 +262,19 @@ function buscarAnimal() {
 
 function excluirAnimal(id) {
 
-    const confirmacao = confirm("Tem certeza que deseja excluir este animal ?");
-    if (confirmacao) {
+    Swal.fire({
+        title: "Você tem certeza ?",
+        text: "Você não poderá reverter isso!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Apagar",
+        cancelButtonText: "Cancelar"
+      }).then((result) => {
+        if (result.isConfirmed) 
+        {
+
         const URL = "http://localhost:8080/apis/animal/excluir/" + id;
 
         fetch(URL, {
@@ -238,10 +286,15 @@ function excluirAnimal(id) {
         })
             .then((response) => {
                 if(!response.ok)
-                    alert("Erro ao excluir o animal");
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Erro ao Excluir o Animal!',
+                      });
                 else
+                {
                     window.location.reload();
-
+                }
+                    
                 return response.json();
             })
             .then((json) => {
@@ -250,8 +303,10 @@ function excluirAnimal(id) {
             .catch((error) => {
                 console.error("Erro ao excluir o animal:", error);
             });
-    }
 
+        }
+      });
+        
 }
 
 function editarAnimal(id) {
@@ -270,7 +325,10 @@ function buscarAnimalPeloId(id) {
     })
         .then((response) => {
             if (!response.ok) {
+
+                window.location.href = "../TelasGerenciar/gerenAnimais.html";
                 throw new Error("Erro ao buscar o animal: " + response.status);
+                
             }
             return response.json();
         })
@@ -286,7 +344,6 @@ function buscarAnimalPeloId(id) {
         })
         .catch((error) => {
             console.error("Erro ao buscar o animal:", error);
-            alert("Erro ao buscar o animal.");
         });
 
 }
