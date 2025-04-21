@@ -8,12 +8,13 @@
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Seus estilos -->
     <link rel="stylesheet" href="../css/index.css" />
 </head>
 
-<body>
+<body onload="buscarSelects()">
 
     <!--Parte do menu superior-->
     <nav class="navbar navbar-expand-lg">
@@ -38,6 +39,7 @@
                             <li><a class="dropdown-item" href="../TelasCadastros/cadTipoMedicamento.html">Tipo de Medicamento</a></li>
                             <li><a class="dropdown-item" href="../TelasFundamentais/agendarMedicamento.html">Agendar Medicamento</a>
                             <li><a class="dropdown-item" href="../TelasCadastros/cadAdocao.html">Adoção</a></li>
+                            <li><a class="dropdown-item" href="../TelasCadastros/cadTipoPagamento.html">Tipo de Pagamento</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -49,6 +51,7 @@
                             <li><a class="dropdown-item" href="../TelasGerenciar/gerenMedicamentos.html">Tipo de Medicamento</a></li>
                             <li><a class="dropdown-item" href="../TelasGerenciar/gerenAdocao.html">Adoção</a></li>
                             <li><a class="dropdown-item" href="../TelasGerenciar/gerenciarDoacoes.html">Doação</a></li>
+                            <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Tipo de Pagamento</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -74,8 +77,8 @@
                     <input type="date" class="form-control" id="data" name="data" required />
                 </div>
                 <div class="col-md-4">
-                    <label for="tipo" class="form-label">Tipo de Lançamento</label>
-                    <select class="form-select" id="tipo" name="tipo" required>
+                    <label for="tipoLanc" class="form-label">Tipo de Lançamento</label>
+                    <select class="form-select" id="tipoLanc" name="tipoLanc" required>
                         <option selected disabled>Selecione</option>
                         <option>Receita</option>
                         <option>Despesa</option>
@@ -131,14 +134,12 @@
                 </div>
             </div>
 
-            <div class="d-flex justify-content-center mt-4">
-                <button type="submit" class="btn btn-primary px-5">Salvar Lançamento</button>
-            </div>
+            <div class="d-flex gap-3 mt-4">
+                <button type="button" class="btn btn-primary" onclick="cadLancamento()">Confirmar</button>
+                <button type="button" class="btn btn-secondary" onclick="history.back()">Voltar</button>
+              </div>
         </form>
     </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
