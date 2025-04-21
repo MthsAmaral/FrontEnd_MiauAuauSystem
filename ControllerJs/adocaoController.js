@@ -55,12 +55,22 @@ function validarCampos() {
       }
       else
       {
-        alert("Data Informada Inválida")
+        Swal.fire({
+          icon: "warning",
+          title: "Data Inválida",
+          timer: 1500,
+          timerProgressBar: true
+        })
       }
   }
   else
   {
-      alert("Campo(s) Não Preenchido(s)")
+    Swal.fire({
+      icon: "warning",
+      title: "Campo(s) Não Preenchido(s)",
+      timer: 1500,
+      timerProgressBar: true
+    })
   }
   limparForm();
 }
@@ -405,20 +415,39 @@ function cadAdocao() {
           method: 'POST', body: formData
       })
           .then((response) => {
+            if(!response.ok)
+              {
+                  sessionStorage.setItem('adocaoGravada', 'false');
+              }
+              else
+              {
+                  sessionStorage.setItem('adocaoGravada', 'true');
+              }
+              fadocao.reset();
+              window.location.href = "../TelasGerenciar/gerenAdocao.html";
               return response.json();
           })
           .then((json) => {
-              //alert("Adoção Cadastrada Com Sucesso");
-              fadocao.reset();
-              window.location.href = "../TelasGerenciar/gerenAdocao.html";
+            
           })
           .catch((error) => console.error(error))
   }
 }
 function excluirAdocao(id) {
 
-  const confirmacao = confirm("Tem certeza que deseja cancelar essa adoção ?");
-  if (confirmacao) {
+  Swal.fire({
+    title: "Você tem certeza ?",
+    text: "Você não poderá reverter isso!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Apagar",
+    cancelButtonText: "Cancelar"
+  }).then((result) => {
+    if (result.isConfirmed) 
+    {
+
       const URL = "http://localhost:8080/apis/adocao/excluir/" + id;
 
       fetch(URL, {
@@ -430,9 +459,14 @@ function excluirAdocao(id) {
       })
           .then((response) => {
               if(!response.ok)
-                  alert("Erro ao excluir a adoção");
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Erro ao Excluir a Adoção!',
+                  });
               else
+              {
                   window.location.reload();
+              } 
 
               return response.json();
           })
@@ -442,8 +476,10 @@ function excluirAdocao(id) {
           .catch((error) => {
               console.error("Erro ao excluir a adoção:", error);
           });
-  }
 
+    }
+  });
+  
 }
 
 
