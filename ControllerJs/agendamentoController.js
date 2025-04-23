@@ -13,7 +13,12 @@ function validarCamposAgendamento() {
   const dataAplicacao = document.getElementById("dataAplicacao").value;
 
   if (!animalSelecionado || !medicamentoSelecionado || !dataAplicacao) {
-    alert("Preencha todos os campos!");
+    Swal.fire({
+      icon: "warning",
+      title: "Campo(s) Não Preenchido(s)",
+      timer: 1500,
+      timerProgressBar: true
+    })
   }
   else{
     gravarAgendamento();
@@ -45,13 +50,20 @@ function gravarAgendamento() {
       return response.json();
     })
     .then(json => {
-      alert("Agendamento realizado com sucesso!");
+      Toast.fire({
+        icon: 'success',
+        title: 'Agendamento realizado com sucesso!',
+      });
+
       carregarAgendamentos();
       limparFormAgendamento();
     })
     .catch(error => {
       console.error("Erro ao agendar:", error);
-      alert("Erro ao tentar gravar agendamento. Verifique o console.");
+      Toast.fire({
+        icon: 'error',
+        title:'Erro ao gravar agendamento!'
+      });
     });
 }
 
@@ -97,10 +109,19 @@ async function excluirAgendamento(id) {
     });
   
     if (response.ok) {
+
+      Toast.fire({
+        icon: 'success',
+        title: 'Agendamento excluido com sucesso!',
+      });
       alert("Agendamento excluído.");
       carregarAgendamentos();
     } else {
-      alert("Erro ao excluir agendamento.");
+      
+      Toast.fire({
+        icon: 'error',
+        title:'Erro ao excluir agendamento!'
+      });
     }
   }
 }
