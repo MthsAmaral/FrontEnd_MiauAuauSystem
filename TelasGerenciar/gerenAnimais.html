@@ -125,7 +125,7 @@
     
     Toast.fire({
       icon: 'success',
-      title: 'Animal Alterado com Sucesso!',
+      title: 'Animal Alterado Com Sucesso!',
     });
 
   }
@@ -142,7 +142,7 @@
   {
     Toast.fire({
       icon: 'success',
-      title: 'Animal Gravado com Sucesso!',
+      title: 'Animal Gravado Com Sucesso!',
     });
   }
   else
@@ -153,7 +153,14 @@
       title: 'Erro ao Gravar Animal!',
     });
   }
-
+  if(sessionStorage.getItem('animalApagado') == 'true')
+  {
+    Toast.fire({
+      icon: 'success',
+      title: 'Animal Excluído Com Sucesso!',
+    });
+  }
+  sessionStorage.removeItem('animalApagado');
   sessionStorage.removeItem('animalGravado');
   sessionStorage.removeItem('animalAlterado');
 </script>

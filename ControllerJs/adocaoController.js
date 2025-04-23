@@ -212,12 +212,15 @@ function buscarAdocao() {
                         <img src="data:image/jpeg;base64,${json[i].animal.imagemBase64}" alt="Imagem do animal" style="width: 100px; height: 100px; object-fit: cover;">
                         </td>
                         <td>
-                        <span class="badge ${json[i].status === 'Aprovado' ? 'bg-success' : 'bg-warning text-dark'} fs-6 p-2">
+                        <span class="badge ${json[i].status === 'Aprovada' ? 'bg-success' : 'bg-warning text-dark'} fs-6 p-2">
                           ${json[i].status}
                         </span>
                         </td>
                         <td>
-                        <button type="button" class="btn btn-sm btn-info text-white"><i class="bi bi-file-earmark-text"></i></button>
+                        <button type="button"class="btn btn-sm btn-info text-white"onclick="emitirTermo(${json[i].codAdocao})"${json[i].status === "Aprovada" ? "disabled" : ""}> <i class="bi bi-file-earmark-text"></i></button>
+                        </td>
+                        <td>
+                        <button type="button" class="btn btn-sm btn-warning" onclick="editarAdocao(${json[i].codAdocao})"${json[i].status === "Aprovada" ? "disabled" : ""}><i class="bi bi-pencil-square"></i></button>
                         </td>
                         <td>
                         <button type="button" class="btn btn-sm btn-danger" onclick="excluirAnimal(${json[i].codAdocao})"><i class="bi bi-trash"></i></button>
@@ -262,12 +265,15 @@ function buscarAdocao() {
                         <img src="data:image/jpeg;base64,${json[i].animal.imagemBase64}" alt="Imagem do animal" style="width: 100px; height: 100px; object-fit: cover;">
                         </td>
                         <td>
-                        <span class="badge ${json[i].status === 'Aprovado' ? 'bg-success' : 'bg-warning text-dark'} fs-6 p-2">
+                        <span class="badge ${json[i].status === 'Aprovada' ? 'bg-success' : 'bg-warning text-dark'} fs-6 p-2">
                           ${json[i].status}
                         </span>
                         </td>
                         <td>
-                        <button type="button" class="btn btn-sm btn-info text-white"><i class="bi bi-file-earmark-text"></i></button>
+                        <button type="button"class="btn btn-sm btn-info text-white"onclick="emitirTermo(${json[i].codAdocao})"${json[i].status === "Aprovada" ? "disabled" : ""}> <i class="bi bi-file-earmark-text"></i></button>
+                        </td>
+                        <td>
+                        <button type="button" class="btn btn-sm btn-warning" onclick="editarAdocao(${json[i].codAdocao})"${json[i].status === "Aprovada" ? "disabled" : ""}><i class="bi bi-pencil-square"></i></button>
                         </td>
                         <td>
                         <button type="button" class="btn btn-sm btn-danger" onclick="excluirAdocao(${json[i].codAdocao})"><i class="bi bi-trash"></i></button>
@@ -358,8 +364,8 @@ function carregarUsuariosModal() {
 
       for (let i = 0; i < json.length; i++) {
         container.innerHTML += `
-          <div class="col-md-4 mb-3">
-            <div class="card card-select" style="width: 260px;"
+          <div class="col-md-4 mb-4">
+            <div class="card card-select" style="width: 260px; height: 170px;"
               onclick="selecionarUsuario(${json[i].cod}, '${json[i].nome}')"
               data-bs-dismiss="modal">
               <div class="card-body">
@@ -398,12 +404,20 @@ function cadAdocao() {
           method: 'PUT', body: formData
       })
           .then((response) => {
+              if(!response.ok)
+              {
+                  sessionStorage.setItem('adocaoAlterada', 'false');
+              }
+              else
+              {
+                  sessionStorage.setItem('adocaoAlterada', 'true');
+              }
+              fadocao.reset();
+              window.location.href = "../TelasGerenciar/gerenAdocao.html";
               return response.json();
           })
           .then((json) => {
-              //alert("Adoção Alterada Com Sucesso");
-              fadocao.reset();
-              window.location.href = "../TelasGerenciar/gerenAdocao.html";
+              
           })
           .catch((error) => console.error(error))
       
@@ -465,6 +479,7 @@ function excluirAdocao(id) {
                   });
               else
               {
+                  sessionStorage.setItem('adocaoApagada', 'true');
                   window.location.reload();
               } 
 
@@ -482,6 +497,115 @@ function excluirAdocao(id) {
   
 }
 
+function emitirTermo(id) {
+  
+  let URL = "http://localhost:8080/apis/adocao/buscar-id/"+id;
+  var formData = new FormData();
+
+  Swal.fire({
+    title: "Deseja emitir termo de responsabilidade ?",
+    text: "Você não poderá reverter isso!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Confirmar",
+    cancelButtonText: "Cancelar"
+  }).then((result) => {
+  if (result.isConfirmed)
+  {
+      fetch(URL, {
+      headers: {
+        Accept: 'application/json',
+      },
+      method: 'GET',
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Erro ao buscar dados da adoção.");
+        }
+        return response.json();
+      })
+      .then((json) => {
+        formData.append("codAdocao", id);
+        formData.append("cod_animal", json.animal.codAnimal);
+        formData.append("cod_usuario", json.usuario.codUsuario);
+        formData.append("data", json.data);
+        formData.append("status", "Aprovada");
+  
+        URL = "http://localhost:8080/apis/adocao/atualizar";
+        return fetch(URL, {
+          method: 'PUT',
+          body: formData, 
+        });
+      })
+      .then((response) => {
+        if (!response.ok) {
+          Toast.fire({
+            icon: 'error',
+            title: 'Erro ao Emitir Termo de Responsabilidade!',
+          });
+        }
+        else
+        {
+          sessionStorage.setItem('adocaoEmitida', 'true');
+          window.location.reload(); 
+        }
+  
+        return response.json();
+      })
+      .then(() => {
+        
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+  });
+  
+}
 
 
+
+
+function editarAdocao(id) {
+
+  window.location.href = "../TelasCadastros/cadAdocao.html?codAdocao=" + id;
+}
+
+function buscarAdocaoPeloId(id) {
+  const URL = "http://localhost:8080/apis/adocao/buscar-id/" + id;
+
+  fetch(URL, {
+      headers: {
+          'Accept': 'application/json'
+      },
+      method: 'GET'
+  })
+      .then((response) => {
+          if (!response.ok) {
+
+              window.location.href = "../TelasGerenciar/gerenAdocao.html";
+              throw new Error("Erro ao buscar a adoção: " + response.status);
+              
+          }
+          return response.json();
+      })
+      .then((json) => {
+          document.getElementById('codAdocao').value = id;
+          document.getElementById('cod_animal').value = json.animal.codAnimal;
+          document.getElementById('cod_usuario').value = json.usuario.codUsuario;
+          document.getElementById('data').value = json.data;
+          document.getElementById('status').value = json.status;
+          const botaoUsuario = document.getElementById("botaoSelecionarUsuario");
+          const botaoAnimal = document.getElementById("botaoSelecionarAnimal");
+
+          botaoUsuario.textContent =  `Adotante: ${json.usuario.nome}`;
+          botaoAnimal.textContent =  `Animal: ${json.animal.nome}`;
+      })
+      .catch((error) => {
+          console.error("Erro ao buscar a adoção:", error);
+      });
+
+}
 

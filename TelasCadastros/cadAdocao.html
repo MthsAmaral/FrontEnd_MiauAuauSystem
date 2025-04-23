@@ -51,7 +51,7 @@
   <div class="container mt-5">
     <div class="container-box">
 
-      <h2>Cadastrar Adoção</h2>
+      <h2>Cadastrar Solicitação de Adoção</h2>
 
       <form method="post" id="fadocao">
          
@@ -73,7 +73,7 @@
         </div>
         
         <div class="mb-3">
-          <label for="data" class="form-label">Data da Adoção</label>
+          <label for="data" class="form-label">Data da Solicitação de Adoção</label>
           <input type="date" id="data" name="data" class="form-control" required />
         </div>
 
@@ -86,6 +86,15 @@
     </div>
   </div>
 
+<script>
+  window.addEventListener("DOMContentLoaded", function () {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('codAdocao');
+      if (id) {
+        buscarAdocaoPeloId(id);
+      }
+    });
+</script>
 </body>
 
 </html>

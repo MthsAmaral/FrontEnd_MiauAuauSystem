@@ -292,6 +292,7 @@ function excluirAnimal(id) {
                       });
                 else
                 {
+                    sessionStorage.setItem('animalApagado', 'true');
                     window.location.reload();
                 }
                     
