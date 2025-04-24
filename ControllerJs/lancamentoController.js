@@ -288,7 +288,7 @@ function cadLancamento() {
   })
     .then((response) => {
       if (response.ok)
-        set.local
+        //setar o local storage
       return response.json();
     })
     .then((json) => {
