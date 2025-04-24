@@ -12,20 +12,20 @@ function selectTpLanc(id) {
     .then(function (text) {
       let json = JSON.parse(text);
       let select = "";
-      if(id){
+      if (id) {
         select = "<select class='form-select' name='codTpLanc' id='codTpLanc'>";
       }
-      else{
+      else {
         select = "<select class='form-select' name='codTpLanc' id='codTpLanc'> <option value='0' selected disabled hidden>Selecione uma opção</option>";
-      } 
+      }
 
       for (let i = 0; i < json.length; i++) {
-        if(id==json[i].cod){
+        if (id == json[i].cod) {
           select += `
             <option value='${json[i].cod}' selected>${json[i].descricao}</option>
           `;
         }
-        else{
+        else {
           select += `
             <option value='${json[i].cod}'>${json[i].descricao}</option>
           `;
@@ -54,20 +54,20 @@ function selectAnimal(id) {
     .then(function (text) {
       let json = JSON.parse(text);
       let select = "";
-      if(id){
+      if (id) {
         select = "<select class='form-select' name='codAnimal' id='codAnimal'>";
       }
-      else{
+      else {
         select = "<select class='form-select' name='codAnimal' id='codAnimal'> <option value='0' selected >Selecione (Opcional)</option>";
       }
 
       for (let i = 0; i < json.length; i++) {
-        if(id==json[i].codAnimal){
+        if (id == json[i].codAnimal) {
           select += `
             <option value='${json[i].codAnimal}' selected>${json[i].nome}</option>
           `;
         }
-        else{
+        else {
           select += `
             <option value='${json[i].codAnimal}'>${json[i].nome}</option>
           `;
@@ -97,38 +97,38 @@ function selectDebCred(deb, cred) {
       let json = JSON.parse(text);
       let selectDebito = "";
       let selectCredito = "";
-      if(deb){ //se tiver algum código por parâmetro, quer dizer que algo já foi selecionado
+      if (deb) { //se tiver algum código por parâmetro, quer dizer que algo já foi selecionado
         selectDebito = "<select class='form-select' name='debito' id='debito'>";
       }
-      else{ //se não á para selecionar pela primeira vez
+      else { //se não á para selecionar pela primeira vez
         selectDebito = "<select class='form-select' name='debito' id='debito'> <option value='0' selected disabled hidden>Selecione uma opção</option>";
       }
       //mesmo esquema do de cima
-      if(cred){
+      if (cred) {
         selectCredito = "<select class='form-select' name='credito' id='credito'>";
       }
-      else{
+      else {
         selectCredito = "<select class='form-select' name='credito' id='credito'> <option value='0' selected disabled hidden>Selecione uma opção</option>";
       }
 
       for (let i = 0; i < json.length; i++) {
-        if(deb == json[i].cod){ //se achei o respectivo código recebido, então o deixo como selecionado
+        if (deb == json[i].cod) { //se achei o respectivo código recebido, então o deixo como selecionado
           selectDebito += `
             <option value='${json[i].cod}' selected>${json[i].descricao}</option>
           `;
         }
-        else{ //se não apenas insiro uma nova option para o meu select
+        else { //se não apenas insiro uma nova option para o meu select
           selectDebito += `
             <option value='${json[i].cod}'>${json[i].descricao}</option>
           `;
         }
         //mesmo esquema do débito
-        if(cred == json[i].cod){
+        if (cred == json[i].cod) {
           selectCredito += `
             <option value='${json[i].cod}' selected>${json[i].descricao}</option>
           `;
         }
-        else{
+        else {
           selectCredito += `
             <option value='${json[i].cod}'>${json[i].descricao}</option>
           `;
@@ -170,21 +170,30 @@ function validarCadastrar() {
   if (codCredito == 0) {
     flag = true;
   }
-  if (valor < 0) {
+  if (valor <= 0) {
     flag = true;
   }
-  if(dataRecebida > dataAtual){//se data maior que a atual
+  if (dataRecebida > dataAtual) {//se data maior que a atual
     flag = true;
   }
 
   if (!flag) {
     let id = document.getElementById("id").value;
-    if(id){
+    if (id) {
       editarLancamento();
     }
-    else{
+    else {
       cadLancamento();
     }
+  }
+  else {
+    //exibir um alert aqui
+    Swal.fire({
+      icon: "error",
+      title: "Possui campos inválidos",
+      timer: 1500,
+      timerProgressBar: true
+    });
   }
 }
 
@@ -220,10 +229,26 @@ function cadLancamento() {
       return response.json();
     })
     .then((json) => {
-      alert("Resposta do servidor: " + JSON.stringify(json));
+      //alert modificado aqui
+      Swal.fire({
+        icon: "success",
+        title: "Lançamento Gravado com Sucesso",
+        timer: 1500,
+        timerProgressBar: true
+      });
+      //alert("Resposta do servidor: " + JSON.stringify(json));
+      console.log("Resposta do servidor: " + JSON.stringify(json));
       document.getElementById("formLanc").reset();
     })
-    .catch((error) => console.error("Erro ao CADASTRAR dados:", error));
+    .catch((error) => {
+      Swal.fire({
+        icon: "error",
+        title: "Erro ao cadastrar!!",
+        timer: 1500,
+        timerProgressBar: true
+      })
+      console.error("Erro ao CADASTRAR dados:", error);
+    });
 }
 
 function buscarLancamentos() {
@@ -247,23 +272,28 @@ function buscarLancamentos() {
         const descricaoDebito = json[i].debito ? json[i].debito.descricao : '-';
         const descricaoCredito = json[i].credito ? json[i].credito.descricao : '-';
 
+        // Verifica se a chave "arquivo" não é nula para decidir se cria o link ou não
+        const linkPDF = json[i].arquivo
+          ? `<a href="http://localhost:8080/apis/lancamento/arquivo/${json[i].cod}" target="_blank">PDF</a>`
+          : '<span>-</span>'; // Ou qualquer outra marcação de texto ou elemento vazio
+
         table += `
           <tr>
-            <td>${json[i].cod}</td>
-            <td>${json[i].data}</td>
-            <td>${json[i].descricao}</td>
-            <td>${descricaoTpLanc}</td>
-            <td>${nomeAnimal}</td>
-            <td>${descricaoDebito}</td>
-            <td>${descricaoCredito}</td>
-            <td>${json[i].valor}</td>
-            <td><a href="http://localhost:8080/apis/lancamento/arquivo/${json[i].cod}" target="_blank">PDF</a></td>
-            <td>
-              <button type="button" class="btn btn-sm btn-warning" onclick="editarLancamentoID(${json[i].cod})"><i class="bi bi-pencil-square"></i></button>
-            </td>
-            <td>
-              <button type="button" class="btn btn-sm btn-danger" onclick="excluirLancamento(${json[i].cod})"><i class="bi bi-trash"></i></button>
-            </td>
+              <td>${json[i].cod}</td>
+              <td>${json[i].data}</td>
+              <td>${json[i].descricao}</td>
+              <td>${descricaoTpLanc}</td>
+              <td>${nomeAnimal}</td>
+              <td>${descricaoDebito}</td>
+              <td>${descricaoCredito}</td>
+              <td>${json[i].valor}</td>
+              <td>${linkPDF}</td>
+              <td>
+                  <button type="button" class="btn btn-sm btn-warning" onclick="editarLancamentoID(${json[i].cod})"><i class="bi bi-pencil-square"></i></button>
+              </td>
+              <td>
+                  <button type="button" class="btn btn-sm btn-danger" onclick="excluirLancamento(${json[i].cod})"><i class="bi bi-trash"></i></button>
+              </td>
           </tr>`;
       }
       document.getElementById("resultado").innerHTML = table; // Exibe a tabela no elemento "resultado"
@@ -281,13 +311,27 @@ function excluirLancamento(id) {
       return response.json();
     })
     .then((json) => {
-      alert("Resposta do servidor: " + JSON.stringify(json));
+      Swal.fire({
+        icon: "success",
+        title: JSON.stringify(json),
+        timer: 1500,
+        timerProgressBar: true
+      });
+      //alert("Resposta do servidor: " + JSON.stringify(json));
       window.location.reload();
     })
-    .catch((error) => console.error("Erro ao EXCLUIR dados:", error));
+    .catch((error) => {
+      Swal.fire({
+        icon: "error",
+        title: "Erro ao excluir!!",
+        timer: 1500,
+        timerProgressBar: true
+      });
+      console.error("Erro ao EXCLUIR dados:", error);
+    });
 }
 
-function editarLancamento() {
+async function editarLancamento() {
   const URL = "http://localhost:8080/apis/lancamento/atualizar";
   document.getElementById("id").disabled = false;
   const fLancamento = document.getElementById("formLanc");
@@ -305,18 +349,56 @@ function editarLancamento() {
   formData.append("data", dataFormatada);
   console.log(formData); //exibição com a data formatada
 
-  fetch(URL, {
-    method: 'PUT',
-    body: formData,
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .then((json) => {
-      alert("Resposta do servidor: " + JSON.stringify(json));
-      window.location.href = "../TelasGerenciar/gerenLancamentos.html";
-    })
-    .catch((error) => console.error("Erro ao ATUALIZAR dados:", error));
+  //tratar PDF
+  let pdfAtualDiv = document.getElementById("pdfAtual");
+  let pdfInput = document.getElementById("pdf");
+
+  // Verifica se há um PDF novo (upload do usuário)
+  if (pdfAtualDiv.hidden === false) {
+    if (pdfInput.files.length > 0) {
+      // Há um novo arquivo enviado pelo usuário — usa esse
+      formData.set("pdf", pdfInput.files[0]);
+    } else {
+      // Nenhum novo arquivo — busca o atual com fetch e adiciona no formData
+      let linkPDF = pdfAtualDiv.querySelector("a");
+      if (linkPDF) {
+        await fetch(linkPDF.href)
+          .then(res => res.blob())
+          .then(blob => {
+            let nomeArquivo = linkPDF.href.split("/").pop(); // ou um nome padrão
+            formData.set("pdf", new File([blob], nomeArquivo, { type: blob.type }));
+          });
+      }
+    }
+  } else {
+    // pdfAtual está hidden → nada a fazer, não adiciona pdf
+  }
+  console.log(formData);
+
+  try {
+    const response = await fetch(URL, {
+      method: 'PUT',
+      body: formData,
+    });
+    const json = await response.json();
+
+    Swal.fire({
+      icon: "success",
+      title: "Lançamento editado com Sucesso!",
+      timer: 1500,
+      timerProgressBar: true
+    });
+    console.log("Resposta do servidor: " + JSON.stringify(json));
+    window.location.href = "../TelasGerenciar/gerenLancamentos.html";
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Erro ao editar o Lançamento!!",
+      timer: 1500,
+      timerProgressBar: true
+    });
+    console.error("Erro ao ATUALIZAR dados:", error);
+  }
 }
 
 function editarLancamentoID(id) {
@@ -339,21 +421,32 @@ function buscarLancID(id) {
       document.getElementById("descricao").value = json.descricao;
       document.getElementById("data").value = json.data;
       document.getElementById("valor").value = json.valor;
-      //tratar o PDF
-      let link = document.createElement('a');
-      link.href = `http://localhost:8080/apis/lancamento/arquivo/${json.cod}`;
-      link.target = '_blank';
-      link.textContent = 'PDF Atual';
 
+      // Supondo que você já tenha o objeto `json` do lançamento que está sendo editado
       let pdfAtualDiv = document.getElementById("pdfAtual");
-      pdfAtualDiv.appendChild(link);
-      pdfAtualDiv.hidden = false;
+
+      // Limpa qualquer conteúdo anterior antes de adicionar algo novo
+      pdfAtualDiv.innerHTML = "";
+
+      // Verifica se há um arquivo existente
+      if (json.arquivo) {
+        let link = document.createElement('a');
+        link.href = `http://localhost:8080/apis/lancamento/arquivo/${json.cod}`;
+        link.target = '_blank';
+        link.textContent = 'PDF Atual';
+
+        pdfAtualDiv.appendChild(link);
+        pdfAtualDiv.hidden = false;
+      } else {
+        // Se não houver arquivo, mantemos a div escondida
+        pdfAtualDiv.hidden = true;
+      }
 
       selectTpLanc(json.TpLanc.cod);
       if (json.animal && json.animal.codAnimal) {
         selectAnimal(json.animal.codAnimal);
       }
-      else{
+      else {
         selectAnimal("");
       }
       selectDebCred(json.debito.cod, json.credito.cod);
