@@ -28,11 +28,16 @@ function validarCampos() {
 
     if (nome != "" && email != "" && senha != "" && telefone != "" && cpf != "" && privilegio != "" && sexo != "" && cep != "" && rua != "" && bairro != "" && numero != "") {
         cadUsuario();
+        limparForm();
     }
     else {
-        alert("Campo(s) Não Preenchido(s)")
+        Swal.fire({
+            icon: "warning",
+            title: "Campo(s) Não Preenchido(s)",
+            timer: 1500,
+            timerProgressBar: true
+          })
     }
-    limparForm();
 }
 
 function cadUsuario() {
@@ -40,18 +45,29 @@ function cadUsuario() {
     var fusuario = document.getElementById("fusuario");
     var formData = new FormData(fusuario);
     var cod = document.getElementById("cod").value;
-    if (cod) // existe, atualiza
+    if (cod) 
     {
         const URL = "http://localhost:8080/apis/usuario/atualizar"
         fetch(URL, {
             method: 'PUT', body: formData
         })
             .then((response) => {
+                if(!response.ok)
+                {
+                    sessionStorage.setItem('usuarioAlterado', 'false');
+                }
+                else
+                {
+                    sessionStorage.setItem('usuarioAlterado', 'true');
+                }
+                fusuario.reset();
+                window.location.href = "../TelasGerenciar/gerenUsuarios.html";
                 return response.json();
+              
             })
             .then((json) => {
-                alert("Usuario Alterado Com Sucesso");
-                fusuario.reset();
+
+            
             })
             .catch((error) => console.error(error))
 
@@ -62,11 +78,22 @@ function cadUsuario() {
             method: 'POST', body: formData
         })
             .then((response) => {
+                
+                if(!response.ok)
+                {
+                    sessionStorage.setItem('usuarioGravado', 'false');
+                }
+                else
+                {
+                    sessionStorage.setItem('usuarioGravado', 'true');
+                }
+                fusuario.reset();
+                window.location.href = "../TelasGerenciar/gerenUsuarios.html";
                 return response.json();
             })
             .then((json) => {
-                alert("Usuario Cadastrado Com Sucesso");
-                fusuario.reset();
+                
+                
             })
             .catch((error) => console.error(error))
     }
@@ -165,8 +192,19 @@ function buscarUsuario() {
 
 function excluirUsuario(id) {
 
-    const confirmacao = confirm("Tem certeza que deseja excluir este usuario ?");
-    if (confirmacao) {
+    Swal.fire({
+        title: "Você tem certeza ?",
+        text: "Você não poderá reverter isso!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Apagar",
+        cancelButtonText: "Cancelar"
+      }).then((result) => {
+        if (result.isConfirmed) 
+        {
+
         const URL = "http://localhost:8080/apis/usuario/excluir/" + id;
 
         fetch(URL, {
@@ -177,15 +215,29 @@ function excluirUsuario(id) {
             method: 'DELETE'
         })
             .then((response) => {
+                if(!response.ok)
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Erro ao Excluir o Usuario!',
+                      });
+                else
+                {
+                    sessionStorage.setItem('usuarioApagado', 'true');
+                    window.location.reload();
+                }
+                    
                 return response.json();
             })
             .then((json) => {
-                alert("Usuario Excluido Com Sucesso");
-                window.location.reload();
+                
             })
-            .catch((error) => console.error("Erro ao excluir o usuario:", error));
-    }
+            .catch((error) => {
+                console.error("Erro ao excluir o usuario:", error);
+            });
 
+        }
+      });
+        
 }
 
 function editarUsuario(id) {

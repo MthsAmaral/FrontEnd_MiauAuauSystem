@@ -13,9 +13,10 @@
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="../ControllerJs/usuarioController.js"></script>
   <link rel="stylesheet" href="../css/telasGer.css" />
+  <link rel="stylesheet" href="../css/styles.css">
 </head>
 
 <body onload="buscarUsuario()">
@@ -109,6 +110,65 @@
       <button class="btn btn-secondary" onclick="history.back()"><i class="bi bi-arrow-left"></i>Voltar</button>
     </div>
   </main>
+  <script>
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top',
+      iconColor: 'white',
+      customClass: {
+        popup: 'colored-toast',
+      },
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true,
+    });
+  
+    
+    if (sessionStorage.getItem('usuarioAlterado') == 'true')
+     {
+      
+      Toast.fire({
+        icon: 'success',
+        title: 'Usuario Alterado Com Sucesso!',
+      });
+  
+    }
+    else
+    if(sessionStorage.getItem('usuarioAlterado') == 'false')
+    {
+      Toast.fire({
+        icon: 'error',
+        title: 'Erro ao Alterar Usuario!',
+      });
+    }
+  
+    if(sessionStorage.getItem('usuarioGravado') == 'true')
+    {
+      Toast.fire({
+        icon: 'success',
+        title: 'Usuario Gravado Com Sucesso!',
+      });
+    }
+    else
+    if(sessionStorage.getItem('usuarioGravado') == 'false')
+    {
+      Toast.fire({
+        icon: 'error',
+        title: 'Erro ao Gravar Usuario!',
+      });
+    }
+    if(sessionStorage.getItem('usuarioApagado') == 'true')
+    {
+      Toast.fire({
+        icon: 'success',
+        title: 'Usuario Excluído Com Sucesso!',
+      });
+    }
+    sessionStorage.removeItem('usuarioApagado');
+    sessionStorage.removeItem('usuarioGravado');
+    sessionStorage.removeItem('usuarioAlterado');
+  </script>
 </body>
 
 </html>
