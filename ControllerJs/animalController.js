@@ -101,7 +101,6 @@ function validarCampos() {
           timerProgressBar: true
         })
     }
-    limparForm();
 }
 
 function cadAnimal() {
@@ -161,6 +160,7 @@ function cadAnimal() {
             })
             .catch((error) => console.error(error))
     }
+    limparForm();
 }
 
 function buscarAnimal() {
