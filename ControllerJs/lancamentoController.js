@@ -1,3 +1,63 @@
+function verificaTpLanc() {
+  let tipoLanc = document.getElementById("codTpLanc");
+  let msg = document.getElementById("tipoLanc-msg");
+
+  if (parseInt(tipoLanc.value) == 0) {
+    tipoLanc.style.border = "2px solid red";
+    msg.style.display = "block";
+    msg.textContent = "Nenhum Tipo de Lançamento Selecionado";
+  } else {
+    tipoLanc.style.border = "";
+    msg.style.display = "none";
+    msg.textContent = "";
+  }
+}
+
+function verificaDebito() {
+  let debito = document.getElementById("debito");
+  let msg = document.getElementById("debito-msg");
+
+  if (parseInt(debito.value) == 0) {
+    debito.style.border = "2px solid red";
+    msg.style.display = "block";
+    msg.textContent = "Nenhum Débito Selecionado";
+  } else {
+    debito.style.border = "";
+    msg.style.display = "none";
+    msg.textContent = "";
+  }
+}
+
+function verificaCredito() {
+  let credito = document.getElementById("credito");
+  let msg = document.getElementById("credito-msg");
+
+  if (parseInt(credito.value) == 0) {
+    credito.style.border = "2px solid red";
+    msg.style.display = "block";
+    msg.textContent = "Nenhum Crédito Selecionado";
+  } else {
+    credito.style.border = "";
+    msg.style.display = "none";
+    msg.textContent = "";
+  }
+}
+
+function verificaAnimal() {
+  let animal = document.getElementById("codAnimal");
+  let msg = document.getElementById("animal-msg");
+
+  if (parseInt(animal.value) == 0) {
+    animal.style.border = "2px solid gold";
+    msg.style.display = "block";
+    msg.textContent = "Nenhum animal selecionado";
+  } else {
+    animal.style.border = "";
+    msg.style.display = "none";
+    msg.textContent = "";
+  }
+}
+
 function selectTpLanc(id) {
   //realizar a consulta do "Tipo Lançamento"
   let URL = "";
@@ -13,10 +73,10 @@ function selectTpLanc(id) {
       let json = JSON.parse(text);
       let select = "";
       if (id) {
-        select = "<select class='form-select' name='codTpLanc' id='codTpLanc'>";
+        select = "<select class='form-select' name='codTpLanc' id='codTpLanc' onmousedown='verificaTpLanc()'>";
       }
       else {
-        select = "<select class='form-select' name='codTpLanc' id='codTpLanc'> <option value='0' selected disabled hidden>Selecione uma opção</option>";
+        select = "<select class='form-select' name='codTpLanc' id='codTpLanc' onmousedown='verificaTpLanc()'> <option value='0' selected disabled hidden>Selecione uma opção</option>";
       }
 
       for (let i = 0; i < json.length; i++) {
@@ -55,10 +115,10 @@ function selectAnimal(id) {
       let json = JSON.parse(text);
       let select = "";
       if (id) {
-        select = "<select class='form-select' name='codAnimal' id='codAnimal'>";
+        select = "<select class='form-select' name='codAnimal' id='codAnimal' onmousedown='verificaAnimal()'>";
       }
       else {
-        select = "<select class='form-select' name='codAnimal' id='codAnimal'> <option value='0' selected >Selecione (Opcional)</option>";
+        select = "<select class='form-select' name='codAnimal' id='codAnimal' onmousedown='verificaAnimal()'> <option value='0' selected >Selecione (Opcional)</option>";
       }
 
       for (let i = 0; i < json.length; i++) {
@@ -98,17 +158,17 @@ function selectDebCred(deb, cred) {
       let selectDebito = "";
       let selectCredito = "";
       if (deb) { //se tiver algum código por parâmetro, quer dizer que algo já foi selecionado
-        selectDebito = "<select class='form-select' name='debito' id='debito'>";
+        selectDebito = "<select class='form-select' name='debito' id='debito' onmousedown='verificaDebito()'>";
       }
       else { //se não á para selecionar pela primeira vez
-        selectDebito = "<select class='form-select' name='debito' id='debito'> <option value='0' selected disabled hidden>Selecione uma opção</option>";
+        selectDebito = "<select class='form-select' name='debito' id='debito' onmousedown='verificaDebito()'> <option value='0' selected disabled hidden>Selecione uma opção</option>";
       }
       //mesmo esquema do de cima
       if (cred) {
-        selectCredito = "<select class='form-select' name='credito' id='credito'>";
+        selectCredito = "<select class='form-select' name='credito' id='credito' onmousedown='verificaCredito()'>";
       }
       else {
-        selectCredito = "<select class='form-select' name='credito' id='credito'> <option value='0' selected disabled hidden>Selecione uma opção</option>";
+        selectCredito = "<select class='form-select' name='credito' id='credito' onmousedown='verificaCredito()'> <option value='0' selected disabled hidden>Selecione uma opção</option>";
       }
 
       for (let i = 0; i < json.length; i++) {
@@ -150,6 +210,7 @@ function buscarSelects() {
   selectTpLanc("");
   selectAnimal("");
   selectDebCred("", "");
+  document.getElementById("formLanc").reset();
 }
 
 function validarCadastrar() {
@@ -226,6 +287,8 @@ function cadLancamento() {
     body: formData
   })
     .then((response) => {
+      if (response.ok)
+        set.local
       return response.json();
     })
     .then((json) => {
@@ -248,6 +311,58 @@ function cadLancamento() {
         timerProgressBar: true
       })
       console.error("Erro ao CADASTRAR dados:", error);
+    });
+}
+
+function buscarLancamentosFiltro(filtro) {
+  let URL = "http://localhost:8080/apis/lancamento/buscar/" + filtro;
+
+  fetch(URL, {
+    method: 'GET',
+    redirect: "follow"
+  })
+    .then((response) => {
+      return response.text();
+    })
+    .then(function (text) {
+      var json = JSON.parse(text); // Converte a resposta JSON
+      var table = "";
+
+      for (let i = 0; i < json.length; i++) {
+        // Inicializa variáveis para acessar as propriedades aninhadas com segurança
+        const descricaoTpLanc = json[i].TpLanc ? json[i].TpLanc.descricao : '-';
+        const nomeAnimal = json[i].animal ? json[i].animal.nome : '-';
+        const descricaoDebito = json[i].debito ? json[i].debito.descricao : '-';
+        const descricaoCredito = json[i].credito ? json[i].credito.descricao : '-';
+
+        // Verifica se a chave "arquivo" não é nula para decidir se cria o link ou não
+        const linkPDF = json[i].arquivo
+          ? `<a href="http://localhost:8080/apis/lancamento/arquivo/${json[i].cod}" target="_blank">PDF</a>`
+          : '<span>-</span>'; // Ou qualquer outra marcação de texto ou elemento vazio
+
+        table += `
+          <tr>
+              <td>${json[i].cod}</td>
+              <td>${json[i].data}</td>
+              <td>${json[i].descricao}</td>
+              <td>${descricaoTpLanc}</td>
+              <td>${nomeAnimal}</td>
+              <td>${descricaoDebito}</td>
+              <td>${descricaoCredito}</td>
+              <td>${json[i].valor}</td>
+              <td>${linkPDF}</td>
+              <td>
+                  <button type="button" class="btn btn-sm btn-warning" onclick="editarLancamentoID(${json[i].cod})"><i class="bi bi-pencil-square"></i></button>
+              </td>
+              <td>
+                  <button type="button" class="btn btn-sm btn-danger" onclick="excluirLancamento(${json[i].cod})"><i class="bi bi-trash"></i></button>
+              </td>
+          </tr>`;
+      }
+      document.getElementById("resultado").innerHTML = table; // Exibe a tabela no elemento "resultado"
+    })
+    .catch(function (error) {
+      console.error(error); // Exibe erros, se houver
     });
 }
 

@@ -48,12 +48,12 @@
         });
 
         document.addEventListener("DOMContentLoaded", function () {
-            const dataInput = document.getElementById("data");
-            const msg = document.getElementById("data-msg");
+            let dataInput = document.getElementById("data");
+            let msg = document.getElementById("data-msg");
 
             dataInput.addEventListener("change", function () {
-                const dataSelecionada = new Date(dataInput.value);
-                const hoje = new Date();
+                let dataSelecionada = new Date(dataInput.value);
+                let hoje = new Date();
                 hoje.setHours(0, 0, 0, 0); // Ignora hora na comparação
 
                 if (dataSelecionada > hoje) {
@@ -155,12 +155,14 @@
                 <div class="col-md-4">
                     <label for="tipoLancSelect" class="form-label">Tipo de Lançamento</label>
                     <div id="tipoLancSelect"></div>
+                    <small id="tipoLanc-msg" class="form-text text-danger" style="display: none;"></small>
                 </div>
 
                 <!--Animal -> procisa de consulta a tabela Animal-->
                 <div class="col-md-4">
                     <label for="animalSelect" class="form-label">Animal</label>
                     <div id="animalSelect"></div>
+                    <small id="animal-msg" class="form-text text-warning" style="display: none;"></small>
                 </div>
             </div>
 
@@ -170,12 +172,14 @@
                 <div class="col-md-6">
                     <label for="debitoSelect" class="form-label">Débito</label>
                     <div id="debitoSelect"></div>
+                    <small id="debito-msg" class="form-text text-danger" style="display: none;"></small>
                 </div>
 
                 <!--Cŕedito -> Precisa de consulta a tabela Tipo Pagamento-->
                 <div class="col-md-6">
                     <label for="creditoSelect" class="form-label">Crédito</label>
                     <div id="creditoSelect"></div>
+                    <small id="credito-msg" class="form-text text-danger" style="display: none;"></small>
                 </div>
             </div>
 
