@@ -13,18 +13,19 @@ function validarCampos() {
     if (nome !== "" && formaFarmaceutica !== "" && descricao !== "") {
         cadMedicamento();
     } else {
-        Toast.fire({
-            icon: 'error',
-            title: 'Campo(s) Não Preenchido(s)!',
-          });
+        Swal.fire({
+            icon: "warning",
+            title: "Campo(s) Não Preenchido(s)",
+            timer: 1500,
+            timerProgressBar: true
+          })
     }
-    limparForm();
 }
 
 function cadMedicamento() {
     const ftipomedicamento = document.getElementById("ftipomedicamento");
     const formData = new FormData(ftipomedicamento);
-    console.log(formData);
+    //console.log(formData);
     const cod = document.getElementById("cod").value;
 
     if (cod) // existe, atualiza
@@ -35,14 +36,21 @@ function cadMedicamento() {
             body: formData
         })
             .then((response) => {
+                if(!response.ok)
+                {
+                    sessionStorage.setItem('medicamentoAlterado', 'false');
+                }
+                else
+                {
+                    sessionStorage.setItem('medicamentoAlterado', 'true');
+                }
+                ftipomedicamento.reset();
+                window.location.href = "../TelasGerenciar/gerenMedicamentos.html";
                 return response.json();
+            
             })
             .then((json) => {
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Medicamento Alterado Com Sucesso!',
-                  });
-                ftipomedicamento.reset();
+
             })
             .catch((error) => console.error(error))
     }
@@ -52,17 +60,25 @@ function cadMedicamento() {
             method: 'POST', body: formData
         })
             .then((response) => {
+                    
+                if(!response.ok)
+                {
+                    sessionStorage.setItem('medicamentoGravado', 'false');
+                }
+                else
+                {
+                    sessionStorage.setItem('medicamentoGravado', 'true');
+                }
+                ftipomedicamento.reset();
+                window.location.href = "../TelasGerenciar/gerenMedicamentos.html";
                 return response.json();
             })
             .then((json) => {
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Medicamento '+json.nome+' cadastrado Com Sucesso!',
-                  });
-                ftipomedicamento.reset();
+                
             })
-            .catch((error) => console.error("Erro ao cadastrar Tipo Medicamento!! " + error))
+            .catch((error) => console.error(error))
     }
+    limparForm();
 }
 
 function buscarMedicamento() {
@@ -113,7 +129,7 @@ function buscarMedicamento() {
             .then(function (text) {
                 var json = JSON.parse(text); // Converte a resposta JSON
 
-                var table = ""; // Começa a tabela com uma borda simples
+                var table = "<table border='1'>"; // Começa a tabela com uma borda simples
                 for (let i = 0; i < json.length; i++) {
                     table += `<tr>
                         <td>${json[i].cod}</td>
@@ -128,6 +144,7 @@ function buscarMedicamento() {
 
                       </tr>`;
                 }
+                table += "</table>";
                 resultado.innerHTML = table; // Exibe a tabela no elemento "resultado"
             })
             .catch(function (error) {
@@ -137,25 +154,51 @@ function buscarMedicamento() {
 }
 
 function excluirMedicamento(id) {
-    const confirmacao = confirm("Tem certeza que deseja excluir este medicamento ?");
-    if (confirmacao) {
-        const URL = "http://localhost:8080/apis/tipo-medicamento/excluir/" + id;
 
-        fetch(URL, {
-            method: 'DELETE'
-        })
-            .then((response) => {
-                return response.json();
+    Swal.fire({
+        title: "Você tem certeza ?",
+        text: "Você não poderá reverter isso!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Apagar",
+        cancelButtonText: "Cancelar"
+      }).then((result) => {
+        if (result.isConfirmed) 
+        {
+            const URL = "http://localhost:8080/apis/tipo-medicamento/excluir/" + id;
+
+            fetch(URL, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                method: 'DELETE'
             })
-            .then((json) => {
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Medicamento Excluido Com Sucesso!',
-                  });
-                window.location.reload();
-            })
-            .catch((error) => console.error("Erro ao excluir o medicamento:", error));
-    }
+                .then((response) => {
+                    if(!response.ok)
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Erro ao Excluir o Medicamento!',
+                          });
+                    else
+                    {
+                        sessionStorage.setItem('medicamentoApagado', 'true');
+                        window.location.reload();
+                    }
+                    return response.json();
+                })
+                .then((json) => {
+                    
+                })
+                .catch((error) => {
+                    console.error("Erro ao excluir o medicamento:", error);
+                });
+        }
+      });
+    
+    
 }
 
 function editarMedicamento(id) {
@@ -173,6 +216,7 @@ function buscarMedicamentoPeloId(id) {
     })
         .then((response) => {
             if (!response.ok) {
+                window.location.href = "../TelasGerenciar/gerenMedicamentos.html";
                 throw new Error("Erro ao buscar o medicamento: " + response.status);
             }
             return response.json();
@@ -185,9 +229,5 @@ function buscarMedicamentoPeloId(id) {
         })
         .catch((error) => {
             console.error("Erro ao buscar o medicamento:", error);
-            Toast.fire({
-                icon: 'error',
-                title: 'Erro ao buscar o medicamento!',
-              });
         })
 }
