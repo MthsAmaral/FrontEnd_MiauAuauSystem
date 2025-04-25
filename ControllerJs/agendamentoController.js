@@ -112,8 +112,7 @@ function gravarAgendamento() {
 
 
 function carregarAgendamentos() {
-  const tbody = document.querySelector("#tabelaAgendamentos tbody");
-  tbody.innerHTML = "";
+  const resultado = document.getElementById("resultado");
 
   const url = "http://localhost:8080/apis/agendar-medicamento/buscar/%20"; // espaço codificado como %20 para simular "sem filtro"
   
@@ -121,27 +120,41 @@ function carregarAgendamentos() {
       method: 'GET',
       redirect: "follow"
   })
-  .then((response) => {
-      return response.text(); // Recebe como texto
-  })
-  .then((text) => {
-      const lista = JSON.parse(text); // Converte para JSON
-      lista.forEach(item => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-              <td>${item.animal.nome}</td>
-              <td>${item.medicamento.nome}</td>
-              <td>${item.dataAplicacao}</td>
-              <td>
-                  <button class="btn btn-sm btn-danger" onclick="excluirAgendamento(${item.codAgendarMedicamento})">Excluir</button>
-              </td>
-          `;
-          tbody.appendChild(tr);
-      });
-  })
-  .catch((error) => {
-      console.error("Erro ao carregar agendamentos:", error);
-  });
+    .then((response) => {
+        return response.text(); // Recebe como texto
+    })
+    .then(function (text){
+
+        var json = JSON.parse(text); // Converte para JSON
+
+        console.log(json);
+
+        var table = "<table border='1'>"; 
+        for(let i = 0; i < json.length; i++)
+        {
+          //formatar data
+          const dataOriginal = json[i].dataAplicacao;
+          const [year, month, day] = dataOriginal.split('-'); 
+          const dataFormatada = `${day}/${month}/${year.slice(-2)}`;
+
+          table += `<tr>
+                <td>${json[i].animal.nome}</td>
+                <td>${json[i].medicamento.nome}</td>
+                <td>${dataFormatada}</td>
+                <td>
+                  <button type="button" class="btn btn-sm btn-warning" onclick="editarAgendamento(${json[i].codAgendarMedicamento})"><i class="bi bi-pencil-square"></i></button>
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-danger" onclick="excluirAgendamento(${json[i].codAgendarMedicamento})">Excluir</button>
+                </td>
+              </tr>`;
+        }
+        table+= "</table>";
+        resultado.innerHTML = table;
+    })
+    .catch((error) => {
+        console.error("Erro ao carregar agendamentos:", error);
+    });
 }
 
 function excluirAgendamento(id) {

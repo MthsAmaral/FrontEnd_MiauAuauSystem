@@ -237,3 +237,20 @@ object-fit: cover; /* Garante que a imagem preencha o espaço sem distorcer */
   height: 32px;  
 }
 */
+
+
+.card-select {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.card-select:hover {
+  transform: scale(1.02);
+}
+
+.preview-box {
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+}
