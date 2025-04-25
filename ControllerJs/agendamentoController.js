@@ -1,12 +1,49 @@
 let animalSelecionado = null;
 let medicamentoSelecionado = null;
 
+document.addEventListener("DOMContentLoaded", () => {
+  carregarAgendamentos();
+  carregarAnimais();
+  carregarMedicamentos();
+});
+
 function limparFormAgendamento() {
   document.getElementById("formAgendamento").reset();
   document.getElementById("animalSelecionado").classList.add("d-none");
   document.getElementById("medicamentoSelecionado").classList.add("d-none");
   animalSelecionado = null;
   medicamentoSelecionado = null;
+}
+
+function validarData(dataString) 
+{
+    const regexData = /^\d{4}-\d{2}-\d{2}$/;
+    if (!regexData.test(dataString)) {
+      return false;
+    }
+
+    const [ano, mes, dia] = dataString.split("-").map(Number);
+    const data = new Date(ano, mes - 1, dia);
+
+    if (
+      data.getFullYear() !== ano ||
+      data.getMonth() !== mes - 1 ||
+      data.getDate() !== dia
+    ) 
+    {
+      return false; 
+    }
+  
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+    data.setHours(0, 0, 0, 0);
+  
+    if (data <= hoje)
+    {
+      return false; 
+    }
+  
+    return true; 
 }
 
 function validarCamposAgendamento() {
@@ -21,7 +58,17 @@ function validarCamposAgendamento() {
     })
   }
   else{
-    gravarAgendamento();
+    if(validarData(dataAplicacao))
+      gravarAgendamento();
+    else
+    {
+      Swal.fire({
+        icon: "warning",
+        title: "Data Inválida",
+        timer: 1500,
+        timerProgressBar: true
+      })
+    }
   }
 }
 
@@ -45,25 +92,21 @@ function gravarAgendamento() {
   })
     .then(response => {
       if (!response.ok) {
-        throw new Error("Erro na requisição: " + response.status);
+        sessionStorage.setItem('agendamentoGravado','false');
       }
+      else
+      {
+        window.location.reload();
+        sessionStorage.setItem('agendamentoGravado','true');
+      }
+  
       return response.json();
     })
     .then(json => {
-      Toast.fire({
-        icon: 'success',
-        title: 'Agendamento realizado com sucesso!',
-      });
-
-      carregarAgendamentos();
-      limparFormAgendamento();
+      
     })
     .catch(error => {
-      console.error("Erro ao agendar:", error);
-      Toast.fire({
-        icon: 'error',
-        title:'Erro ao gravar agendamento!'
-      });
+      console.error(error);
     });
 }
 
@@ -101,30 +144,52 @@ function carregarAgendamentos() {
   });
 }
 
-async function excluirAgendamento(id) {
-  if (confirm("Deseja realmente excluir este agendamento?"))
-  {
-    const response = await fetch(`http://localhost:8080/apis/agendar-medicamento/excluir/${id}`, {
-      method: "DELETE"
-    });
+function excluirAgendamento(id) {
   
-    if (response.ok) {
-
-      Toast.fire({
-        icon: 'success',
-        title: 'Agendamento excluido com sucesso!',
-      });
-      alert("Agendamento excluído.");
-      carregarAgendamentos();
-    } else {
-      
-      Toast.fire({
-        icon: 'error',
-        title:'Erro ao excluir agendamento!'
-      });
+  Swal.fire({
+    title: "Você tem certeza ?",
+    text: "Você não poderá reverter isso!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Apagar",
+    cancelButtonText: "Cancelar"
+  }).then((result) => {
+    if (result.isConfirmed) 
+    {
+      const URL = "http://localhost:8080/apis/agendar-medicamento/excluir/" + id;
+    
+      fetch(URL, {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: 'DELETE'
+      })
+        .then((response) =>{
+          if(!response.ok)
+            Toast.fire({
+              icon: 'error',
+              title: 'Erro ao Excluir Agendamento!',
+            });
+          else
+          {
+            sessionStorage.setItem('agendamentoApagado', 'true');
+            window.location.reload();
+          }
+        })
+        .then((json)=>{
+  
+        })
+        .catch((error)=>{
+          console.error("Erro ao excluir o agendamento:", error);
+        })
     }
+  });
+
   }
-}
+
 
 
 
@@ -168,7 +233,7 @@ async function carregarMedicamentos() {
         <div class="card card-select" data-med-id="${med.id}" data-bs-dismiss="modal">
           <div class="card-body">
             <h5 class="card-title">${med.nome}</h5>
-            <p class="card-text">Forma: ${med.forma}<br>Descrição: ${med.descricao}</p>
+            <p class="card-text">Forma: ${med.formaFarmaceutica}<br>Descrição: ${med.descricao}</p>
           </div>
         </div>
       `;
@@ -178,11 +243,6 @@ async function carregarMedicamentos() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  carregarAgendamentos();
-  carregarAnimais();
-  carregarMedicamentos();
-});
 
 
 
@@ -199,7 +259,7 @@ function selecionarMedicamento(med) {
     <div class="d-flex justify-content-between align-items-center">
       <div>
         <strong>${med.nome}</strong><br>
-        Forma: ${med.forma}<br>
+        Forma: ${med.formaFarmaceutica}<br>
         Descrição: ${med.descricao}
       </div>
       <button class="btn btn-sm btn-outline-danger" onclick="removerMedicamento()">Remover</button>

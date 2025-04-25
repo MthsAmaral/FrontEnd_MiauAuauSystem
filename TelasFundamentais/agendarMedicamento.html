@@ -116,6 +116,62 @@
     </div>
   </div>
 
+  <script>
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top',
+      iconColor: 'white',
+      customClass: {
+        popup: 'colored-toast',
+      },
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true,
+    });
+
+    if (sessionStorage.getItem('agendamentoGravado') == 'true') {
+      Toast.fire({
+        icon: 'success',
+        title: 'Agendamento Gravado Com Sucesso!',
+      });
+    }
+    else
+    if (sessionStorage.getItem('agendamentoGravado') == 'false') {
+      Toast.fire({
+        icon: 'error',
+        title: 'Erro ao Gravar Agendamento!',
+      });
+    }
+    if(sessionStorage.getItem('agendamentoAlterado') == 'true')
+    {
+      Toast.fire({
+        icon: 'success',
+        title: 'Agendamento Alterada Com Sucesso!',
+      });
+    }
+    else
+    if(sessionStorage.getItem('agendamentoAlterado') == 'false')
+    {
+      Toast.fire({
+        icon: 'error',
+        title: 'Erro ao Alterar Agendamento!',
+      });
+    }
+    if(sessionStorage.getItem('adocaoApagado') == 'true')
+    {
+      Toast.fire({
+        icon: 'success',
+        title: 'Adoção Excluída Com Sucesso!',
+      });
+    }
+    
+    sessionStorage.removeItem('agendamentoApagado')
+    sessionStorage.removeItem('agendamentoAlterado');
+    sessionStorage.removeItem('agendamentoGravado');
+
+  </script>
+
 </body>
 
 </html>
