@@ -13,7 +13,10 @@ function validarCampos() {
     if (nome !== "" && formaFarmaceutica !== "" && descricao !== "") {
         cadMedicamento();
     } else {
-        alert("Campo(s) Não Preenchido(s)");
+        Toast.fire({
+            icon: 'error',
+            title: 'Campo(s) Não Preenchido(s)!',
+          });
     }
     limparForm();
 }
@@ -35,7 +38,10 @@ function cadMedicamento() {
                 return response.json();
             })
             .then((json) => {
-                alert("Medicamento Alterado Com Sucesso");
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Medicamento Alterado Com Sucesso!',
+                  });
                 ftipomedicamento.reset();
             })
             .catch((error) => console.error(error))
@@ -49,7 +55,10 @@ function cadMedicamento() {
                 return response.json();
             })
             .then((json) => {
-                alert("Medicamento Cadastrado Com Sucesso" + JSON.stringify(json));
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Medicamento '+json.nome+' cadastrado Com Sucesso!',
+                  });
                 ftipomedicamento.reset();
             })
             .catch((error) => console.error("Erro ao cadastrar Tipo Medicamento!! " + error))
@@ -139,7 +148,10 @@ function excluirMedicamento(id) {
                 return response.json();
             })
             .then((json) => {
-                alert("Medicamento Excluido Com Sucesso!");
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Medicamento Excluido Com Sucesso!',
+                  });
                 window.location.reload();
             })
             .catch((error) => console.error("Erro ao excluir o medicamento:", error));
@@ -173,6 +185,9 @@ function buscarMedicamentoPeloId(id) {
         })
         .catch((error) => {
             console.error("Erro ao buscar o medicamento:", error);
-            alert("Erro ao buscar o medicamento.");
+            Toast.fire({
+                icon: 'error',
+                title: 'Erro ao buscar o medicamento!',
+              });
         })
 }
