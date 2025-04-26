@@ -51,7 +51,7 @@
       <div class="row mb-3">
         <div class="col-md-3">
           <label for="peso" class="form-label">Peso (kg)</label>
-          <input type="number" class="form-control form-sm" id="peso" name="peso">
+          <input type="number" class="form-control form-sm" id="peso" name="peso" placeholder="Peso do animal">
         </div>
         <div class="col-md-3">
           <label for="castrado" class="form-label">Castrado</label>
@@ -69,10 +69,40 @@
             <option value="Sim">Sim</option>
             <option value="Não">Não</option>
           </select>
-
+        </div>
+        <div class="col-md-3">
+          <label for="especie" class="form-label">Espécie</label>
+          <select class="form-control form-sm" id="especie" name="especie" required>
+            <option value="" hidden>Selecione a espécie</option>
+            <option value="Cachorro">Cachorro</option>
+            <option value="Gato">Gato</option>
+          </select>
+        </div>
+      </div>
+      <div class="row mb-4">
+        <div class="col-md-3">
+          <label for="cor" class="form-label">Cor</label>
+          <select class="form-control form-sm" id="cor" name="cor" required>
+            <option value="" hidden>Selecione a cor</option>
+            <option value="" hidden>Selecione a cor</option>
+            <option value="Branco">Branco</option>
+            <option value="Preto">Preto</option>
+            <option value="Cinza">Cinza</option>
+            <option value="Bege">Bege</option>
+            <option value="Marrom">Marrom</option>
+            <option value="Caramelo">Caramelo</option>
+            <option value="Dourado">Dourado</option>
+            <option value="Laranja">Laranja</option>
+            <option value="Tigrado">Tigrado</option>
+            <option value="Bicolor">Tigrado</option>
+            <option value="Tricolor">Tricolor</option>
+            <option value="Escaminha">Escaminha</option>
+            <option value="Merle">Merle</option>
+            <option value="Sable">Sable</option>
+          </select>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-4">
           <label for="imagemBase64" class="form-label">Foto do Animal</label>
           <div class="file-upload-wrapper">
             <input type="file" id="imagemBase64" name="imagemBase64" required>
@@ -88,7 +118,6 @@
             </label>
           </div>
         </div>
-
       </div>
 
       <div class="d-flex gap-3 mt-3">

@@ -157,7 +157,9 @@ function buscarAnimalAdocao() {
                 <h5 class="card-title"><strong>Nome:</strong> ${json[i].nome}</h5>
                 <p class="card-text mb-1"><strong>Sexo:</strong> ${json[i].sexo}</p>
                 <p class="card-text mb-1"><strong>Castrado:</strong> ${json[i].castrado}</p>
+                <p class="card-text mb-1"><strong>Espécie:</strong> ${json[i].especie}</p>
                 <p class="card-text mb-1"><strong>Raça:</strong> ${json[i].raca}</p>
+                <p class="card-text mb-1"><strong>Cor:</strong> ${json[i].cor}</p>
                 <p class="card-text mb-1"><strong>Idade:</strong> ${idade}</p>
                 <p class="card-text mb-1"><strong>Peso:</strong> ${json[i].peso} kg</p>
                 <button class="btn btn-primary mt-5" onclick="selecionarAnimal('${json[i].codAnimal}')">Quero Adotar</button>
@@ -548,8 +550,7 @@ function emitirTermo(id) {
         }
         else
         {
-          sessionStorage.setItem('adocaoEmitida', 'true');
-          window.location.reload(); 
+          gerarPdf(id)
         }
   
         return response.json();
@@ -563,6 +564,50 @@ function emitirTermo(id) {
   }
   });
   
+}
+
+function gerarPdf(id) 
+{
+  const URL = "http://localhost:8080/apis/adocao/download-pdf/" + id;
+
+  Swal.fire({
+    title: 'Gerando PDF...',
+    text: 'Aguarde Enquanto o Termo é Gerado!',
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  });
+
+  fetch(URL, {
+      method: 'GET',
+      headers: { Accept: 'application/pdf' }
+  })
+  .then(response => {
+      if (!response.ok) {
+          throw new Error("Erro ao gerar PDF.");
+      }
+      return response.blob(); 
+  })
+  .then(blob => {
+    setTimeout(() => {
+      Swal.close();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = "termo_de_adocao_" + id + ".pdf";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+      sessionStorage.setItem('adocaoEmitida', 'true');
+      window.location.reload();
+  }, 2000); 
+     
+  })
+  .catch(error => {
+      console.error(error);
+  });
 }
 
 
