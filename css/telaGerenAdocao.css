@@ -107,7 +107,7 @@ body {
 
 /* === CONTAINER PRINCIPAL === */
 .container-box {
-    width: 1400px;
+    width: 1450px;
     background-color: var(--cor-clara);     /* Cor de fundo do container */
     border-radius: 20px;                    /* Bordas arredondadas */
     padding: 30px;                          /* Preenchimento interno */
