@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   carregarAgendamentos();
   carregarAnimais();
   carregarMedicamentos();
+  carregarNotificacoes();
 });
 
 function limparFormAgendamento() {
@@ -84,6 +85,7 @@ function gravarAgendamento() {
   formData.append("animal", animalSelecionado.codAnimal);
   formData.append("medicamento", medicamentoSelecionado.cod);
   formData.append("dataAplicacao", dataAplicacao);
+  formData.append("status","false");
 
 
   fetch("http://localhost:8080/apis/agendar-medicamento/gravar", {
@@ -110,6 +112,45 @@ function gravarAgendamento() {
     });
 }
 
+function alterarAgendamento(codAgendarMedicamento, animal, medicamento, dataAplicacao, status) {
+
+  console.log('Cod Agendar Medicamento:', codAgendarMedicamento);
+  console.log('Animal:', animal);
+  console.log('Medicamento:', medicamento);
+  console.log('Data Aplicacao:', dataAplicacao);
+  console.log('Status:', status);
+
+  // Repassar os dados para a função de alterar do backend
+  const url = "http://localhost:8080/apis/agendar-medicamento/atualizar";
+  
+  const formData = new FormData();
+    formData.append("codAgendarMedicamento", codAgendarMedicamento);
+    formData.append("animal", animal.codAnimal); // Certifique-se de que animal.codAnimal esteja correto
+    formData.append("medicamento", medicamento.cod); // Certifique-se de que medicamento.cod esteja correto
+    formData.append("dataAplicacao", dataAplicacao);
+    formData.append("status", status);
+  
+  fetch(url, {
+    method: "PUT",
+    body: formData
+  })
+    .then(response => {
+      if (!response.ok) {
+        sessionStorage.setItem('agendamentoAlterado', 'false');
+      } else {
+        sessionStorage.setItem('agendamentoAlterado', 'true');
+        window.location.reload(); // Recarregar a página após a alteração
+      }
+      return response.json();
+    })
+    .then(json => {
+      console.log('Notificação marcada como lida:', json);
+    })
+    .catch(error => {
+      console.error('Erro ao alterar agendamento:', error);
+    });
+}
+
 
 function carregarAgendamentos() {
   const resultado = document.getElementById("resultado");
@@ -127,7 +168,7 @@ function carregarAgendamentos() {
 
         var json = JSON.parse(text); // Converte para JSON
 
-        console.log(json);
+        //console.log(json);
 
         var table = "<table border='1'>"; 
         for(let i = 0; i < json.length; i++)
@@ -141,9 +182,13 @@ function carregarAgendamentos() {
                 <td>${json[i].animal.nome}</td>
                 <td>${json[i].medicamento.nome}</td>
                 <td>${dataFormatada}</td>
+                <td>${json[i].status}</td>
+                <!--
                 <td>
                   <button type="button" class="btn btn-sm btn-warning" onclick="editarAgendamento(${json[i].codAgendarMedicamento})"><i class="bi bi-pencil-square"></i></button>
                 </td>
+                -->
+
                 <td>
                   <button class="btn btn-sm btn-danger" onclick="excluirAgendamento(${json[i].codAgendarMedicamento})">Excluir</button>
                 </td>

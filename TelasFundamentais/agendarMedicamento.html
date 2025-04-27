@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Agendamento de Medicamento</title>
 
+
+  <!-- Adicione o ícone de sino (Bootstrap Icons) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
@@ -19,10 +22,6 @@
 
   <!--css menu-->
   <link rel="stylesheet" href="../css/index.css" />
-
-  <style>
-    
-  </style>
 </head>
 
 <body onload="carregarAgendamentos()">
@@ -38,35 +37,17 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav ms-auto me-auto central-navbar">
+          <!-- Menu Dropdowns -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Operações</a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="./agendarMedicamento.html">Agendar Medicamento</a>
-              <li><a class="dropdown-item" href=".realizarLancamentos.html">Realizar Lançamento</a>
-              </li>
+              <li><a class="dropdown-item" href="./agendarMedicamento.html">Agendar Medicamento</a></li>
+              <li><a class="dropdown-item" href=".realizarLancamentos.html">Realizar Lançamento</a></li>
             </ul>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Cadastro</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="../TelasCadastros/cadUsuario.html">Usuário</a></li>
-              <li><a class="dropdown-item" href="../TelasCadastros/cadAnimal.html">Animal</a></li>
-              <li><a class="dropdown-item" href="../TelasCadastros/cadTipoLancamento.html">Tipo de Lançamento</a></li>
-              <li><a class="dropdown-item" href="../TelasCadastros/cadTipoMedicamento.html">Tipo de Medicamento</a></li>
-              <li><a class="dropdown-item" href="../TelasCadastros/cadAdocao.html">Adoção</a></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Gerenciar</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="./gerenUsuarios.html">Usuário</a></li>
-              <li><a class="dropdown-item" href="./gerenAnimais.html">Animal</a></li>
-              <li><a class="dropdown-item" href="./gerenTipoLancamentos.html">Tipo de Lançamento</a></li>
-              <li><a class="dropdown-item" href="./gerenMedicamentos.html">Tipo de Medicamento</a></li>
-              <li><a class="dropdown-item" href="./gerenAdocao.html">Adoção</a></li>
-              <li><a class="dropdown-item" href="./gerenciarDoacoes.html">Doação</a></li>
-            </ul>
-          </li>
+          <!-- ... outros menus ... -->
+  
+          <!-- Menu de Login -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Login</a>
             <ul class="dropdown-menu">
@@ -74,12 +55,37 @@
               <li><a class="dropdown-item" href="#">Sair</a></li>
             </ul>
           </li>
+
         </ul>
+        
+        <!-- Menu de Notificações -->
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="notificacoesButton" data-bs-toggle="modal" data-bs-target="#modalNotificacoes">
+              <i class="bi bi-bell"></i> <!-- Ícone de sino -->
+              <span class="badge bg-danger" id="notificacoesCount">0</span> <!-- Contador de notificações -->
+            </a>
+          </li>
+        </ul>
+        
       </div>
     </div>
   </nav>
 
-
+  <!-- Modal Notificações -->
+  <div class="modal fade" id="modalNotificacoes" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Notificações de Medicamentos</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="listaNotificacoes">
+          <!-- Aqui serão listadas as notificações -->
+        </div>
+      </div>
+    </div>
+  </div>
 
 
   <main class="container container-box mt-5">
@@ -130,8 +136,9 @@
           <th>Animal</th>
           <th>Medicamento</th>
           <th>Próxima Aplicação</th>
+          <th>Marcado como lido</th>
           <th>Ações</th>
-          <th></th>
+          <!--<th></th>-->
         </tr>
       </thead>
       <tbody id ="resultado">
@@ -220,8 +227,124 @@
     sessionStorage.removeItem('agendamentoAlterado');
     sessionStorage.removeItem('agendamentoGravado');
 
+
+
+
+
+
+
+
+
+
+    // Função que será chamada ao clicar no botão de notificações
+    document.getElementById('notificacoesButton').addEventListener('click', function() {
+      carregarNotificacoes(); // Carregar notificações ao abrir o modal
+    });
+
+    // Função que carrega as notificações
+    function carregarNotificacoes() {
+  const listaNotificacoes = document.getElementById("listaNotificacoes");
+  const notificacoesCount = document.getElementById("notificacoesCount"); // Contador de notificações no ícone
+
+  const url = "http://localhost:8080/apis/agendar-medicamento/buscar/%20"; // espaço codificado como %20 para simular "sem filtro"
+
+  fetch(url, {
+      method: 'GET',
+      redirect: "follow"
+  })
+    .then((response) => {
+        return response.text(); // Recebe como texto
+    })
+    .then(function (text){
+        var json = JSON.parse(text); // Converte para JSON
+
+        // Obter data atual
+        const hoje = new Date();
+        let notificacoes = [];
+
+        // Filtrar agendamentos com datas próximas (digamos, até 7 dias de antecedência)
+        json.forEach(agendamento => {
+          if (!agendamento.status) {
+              //console.log('Agendamento carregado:', agendamento);
+              const dataAplicacao = new Date(agendamento.dataAplicacao); // Data do agendamento
+              const diffTime = dataAplicacao - hoje; // Diferença em milissegundos
+              const diffDays = diffTime / (1000 * 3600 * 24); // Convertendo para dias
+
+              // Verificar se a data do agendamento é próxima (dentro de 7 dias)
+              if (diffDays >= 0 && diffDays <= 2) {
+                // Adicionar a notificação
+                const notificacao = {
+                animal: agendamento.animal.nome,
+                medicamento: agendamento.medicamento.nome,
+                diasRestantes: Math.ceil(diffDays),
+                id: agendamento.codAgendarMedicamento,
+                animalId: agendamento.animal.codAnimal,
+                medicamentoId: agendamento.medicamento.codTipoMedicamento, // <--- corrigido
+                dataAplicacao: agendamento.dataAplicacao // <--- adicionado
+              };
+
+
+                notificacoes.push(notificacao);
+              }
+          }
+        });
+
+        // Atualizar o contador de notificações
+        notificacoesCount.textContent = notificacoes.length;
+
+        // Exibir as notificações no modal
+        if (notificacoes.length > 0) {
+          let notificacaoHTML = "";
+          notificacoes.forEach(notificacao => {
+            notificacaoHTML += `<div class="alert alert-info d-flex justify-content-between">
+            <div>
+               O animal <b class="animal" data-id="${notificacao.animalId}">${notificacao.animal}</b> precisa receber o medicamento 
+              <b class="medicamento" data-id="${notificacao.medicamentoId}">${notificacao.medicamento}</b> em <b class="diasRestantes">${notificacao.diasRestantes} dias</b>.
+              <span class="data-aplicacao" style="display:none">${notificacao.dataAplicacao}</span>
+            </div>
+            <button class="btn btn-sm btn-success" onclick="marcarComoLido(${notificacao.id}, this)">Marcar como lido</button>
+          </div>`;
+
+          });
+          listaNotificacoes.innerHTML = notificacaoHTML;
+        } else {
+          listaNotificacoes.innerHTML = "<p>Não há agendamentos próximos.</p>";
+        }
+    })
+    .catch((error) => {
+        console.error("Erro ao carregar notificações:", error);
+    });
+}
+
+function marcarComoLido(id, botao) {
+  const notification = botao.closest('.alert');
+  notification.style.backgroundColor = '#e0e0e0';
+  botao.disabled = true;
+  botao.innerHTML = 'Lido';
+
+  // Capturar os IDs do animal e medicamento
+  const animalId = notification.querySelector('.animal').dataset.id;
+  const medicamentoId = notification.querySelector('.medicamento').dataset.id;
+  const dataAplicacao = notification.querySelector('.data-aplicacao').textContent;
+
+  // Verifica se os IDs estão definidos corretamente
+  if (animalId && medicamentoId) {
+    // Chama a função de alteração com os valores corretos
+    alterarAgendamento(id, {codAnimal: animalId}, {cod: medicamentoId}, dataAplicacao, true);
+  } else {
+    console.error('IDs inválidos: animalId ou medicamentoId estão indefinidos');
+  }
+}
+
+
+
+
+
+
+
+
   </script>
-
 </body>
-
 </html>
+
+

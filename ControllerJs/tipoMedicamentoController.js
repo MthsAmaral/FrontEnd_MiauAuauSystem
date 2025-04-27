@@ -135,7 +135,8 @@ function buscarMedicamento() {
                         <td>${json[i].cod}</td>
                         <td>${json[i].nome}</td>
                         <td>${json[i].formaFarmaceutica}</td>
-                        <td>${json[i].descricao}</td><td>
+                        <td>${json[i].descricao}</td>
+                        <td>
                         <button type="button" class="btn btn-sm btn-warning" onclick="editarMedicamento(${json[i].cod})"><i class="bi bi-pencil-square"></i></button>
                         </td>
                         <td>

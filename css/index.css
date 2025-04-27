@@ -5,6 +5,7 @@
     --cor-caramelo: #d3a96a;        /* Cor usada em botões e cabeçalhos de tabela */
     --cor-petroleo: #073b4c;        /* Cor escura usada na navbar e textos */
     --cor-destaque: #d5a96c;        /* Cor para destacar um item no menu */
+    --cor-caramelo-claro: #e3c28d;
 }
 
 /* === ESTILO GLOBAL === */
@@ -151,7 +152,7 @@ input[type="text"]:focus {
 }
 
 .table th {
-    background-color: var(--cor-caramelo-claro); /* Cor para o cabeçalho */
+    background-color: var(--cor-verde-claro); /* Cor para o cabeçalho */
     color: var(--cor-petroleo);                 /* Texto escuro */
     font-weight: 600;
 }
