@@ -214,18 +214,18 @@ function buscarAdocao() {
                         <img src="data:image/jpeg;base64,${json[i].animal.imagemBase64}" alt="Imagem do animal" style="width: 100px; height: 100px; object-fit: cover;">
                         </td>
                         <td>
-                        <span class="badge ${json[i].status === 'Aprovada' ? 'bg-success' : 'bg-warning text-dark'} fs-6 p-2">
-                          ${json[i].status}
+                        <span class="badge 
+                          ${json[i].status === 'Aprovada'  ? 'bg-success'   : json[i].status === 'Cancelada' ? 'bg-danger' : 'bg-warning text-dark' } fs-6 p-2"> ${json[i].status}
                         </span>
                         </td>
                         <td>
-                        <button type="button"class="btn btn-sm btn-info text-white"onclick="emitirTermo(${json[i].codAdocao})"${json[i].status === "Aprovada" ? "disabled" : ""}> <i class="bi bi-file-earmark-text"></i></button>
+                        <button type="button"class="btn btn-sm btn-info text-white"onclick="emitirTermo(${json[i].codAdocao})"${json[i].status === "Aprovada" || json[i].status === "Cancelada" ? "disabled" : ""}> <i class="bi bi-file-earmark-text"></i></button>
                         </td>
                         <td>
-                        <button type="button" class="btn btn-sm btn-warning" onclick="editarAdocao(${json[i].codAdocao})"${json[i].status === "Aprovada" ? "disabled" : ""}><i class="bi bi-pencil-square"></i></button>
+                        <button type="button" class="btn btn-sm btn-warning" onclick="editarAdocao(${json[i].codAdocao})"${json[i].status === "Aprovada" || json[i].status === 'Cancelada' ? "disabled" : ""}><i class="bi bi-pencil-square"></i></button>
                         </td>
                         <td>
-                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirAnimal(${json[i].codAdocao})"><i class="bi bi-trash"></i></button>
+                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirAnimal(${json[i].codAdocao}, ${json[i].status})"><i class="bi bi-trash"></i></button>
                         </td>
                         
                       </tr>`;
@@ -267,18 +267,18 @@ function buscarAdocao() {
                         <img src="data:image/jpeg;base64,${json[i].animal.imagemBase64}" alt="Imagem do animal" style="width: 100px; height: 100px; object-fit: cover;">
                         </td>
                         <td>
-                        <span class="badge ${json[i].status === 'Aprovada' ? 'bg-success' : 'bg-warning text-dark'} fs-6 p-2">
-                          ${json[i].status}
+                        <span class="badge 
+                          ${json[i].status === 'Aprovada'  ? 'bg-success'   : json[i].status === 'Cancelada' ? 'bg-danger' : 'bg-warning text-dark' } fs-6 p-2"> ${json[i].status}
                         </span>
                         </td>
                         <td>
-                        <button type="button"class="btn btn-sm btn-info text-white"onclick="emitirTermo(${json[i].codAdocao})"${json[i].status === "Aprovada" ? "disabled" : ""}> <i class="bi bi-file-earmark-text"></i></button>
+                        <button type="button"class="btn btn-sm btn-info text-white"onclick="emitirTermo(${json[i].codAdocao})"${json[i].status === "Aprovada" || json[i].status === "Cancelada" ? "disabled" : ""}> <i class="bi bi-file-earmark-text"></i></button>
                         </td>
                         <td>
-                        <button type="button" class="btn btn-sm btn-warning" onclick="editarAdocao(${json[i].codAdocao})"${json[i].status === "Aprovada" ? "disabled" : ""}><i class="bi bi-pencil-square"></i></button>
+                        <button type="button" class="btn btn-sm btn-warning" onclick="editarAdocao(${json[i].codAdocao})"${json[i].status === "Aprovada" || json[i].status === "Cancelada" ? "disabled" : ""}><i class="bi bi-pencil-square"></i></button>
                         </td>
                         <td>
-                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirAdocao(${json[i].codAdocao})"><i class="bi bi-trash"></i></button>
+                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirAdocao(${json[i].codAdocao}, '${json[i].status}')"${json[i].status}><i class="bi bi-trash"></i></button>
                         </td>
                       </tr>`;
         }
@@ -574,54 +574,122 @@ function cadAdocao() {
   }
   limparForm();
 }
-function excluirAdocao(id) {
-
-  Swal.fire({
-    title: "Você tem certeza ?",
-    text: "Você não poderá reverter isso!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Apagar",
-    cancelButtonText: "Cancelar"
-  }).then((result) => {
-    if (result.isConfirmed) 
-    {
-
-      const URL = "http://localhost:8080/apis/adocao/excluir/" + id;
-
-      fetch(URL, {
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-          },
-          method: 'DELETE'
-      })
-          .then((response) => {
-              if(!response.ok)
-                Toast.fire({
-                    icon: 'error',
-                    title: 'Erro ao Excluir a Adoção!',
-                  });
-              else
-              {
-                  sessionStorage.setItem('adocaoApagada', 'true');
-                  window.location.reload();
-              } 
-
-              return response.json();
-          })
-          .then((json) => {
-              
-          })
-          .catch((error) => {
-              console.error("Erro ao excluir a adoção:", error);
-          });
-
-    }
-  });
+function excluirAdocao(id, status) {
   
+  if (status != "Pendente")
+  {
+    Swal.fire({
+      title: "Você tem certeza ?",
+      text: "Você não poderá reverter isso!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Apagar",
+      cancelButtonText: "Cancelar"
+    }).then((result) => {
+      if (result.isConfirmed) 
+      {
+  
+        const URL = "http://localhost:8080/apis/adocao/excluir/" + id;
+  
+        fetch(URL, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: 'DELETE'
+        })
+            .then((response) => {
+                if(!response.ok)
+                  Toast.fire({
+                      icon: 'error',
+                      title: 'Erro ao Excluir a Adoção!',
+                    });
+                else
+                {
+                    sessionStorage.setItem('adocaoApagada', 'true');
+                    window.location.reload();
+                } 
+  
+                return response.json();
+            })
+            .then((json) => {
+                
+            })
+            .catch((error) => {
+                console.error("Erro ao excluir a adoção:", error);
+            });
+  
+      }
+    });
+  }
+  else
+  {
+    let URL = "http://localhost:8080/apis/adocao/buscar-id/"+id;
+    var formData = new FormData();
+
+    Swal.fire({
+      title: "Deseja cancelar esta solicitação de adoção?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Confirmar",
+      cancelButtonText: "Cancelar"
+    }).then((result) => {
+    if (result.isConfirmed)
+    {
+        fetch(URL, {
+        headers: {
+          Accept: 'application/json',
+        },
+        method: 'GET',
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Erro ao buscar dados da adoção.");
+          }
+          return response.json();
+        })
+        .then((json) => {
+          formData.append("codAdocao", id);
+          formData.append("cod_animal", json.animal.codAnimal);
+          formData.append("cod_usuario", json.usuario.codUsuario);
+          formData.append("data", json.data);
+          formData.append("status", "Cancelada");
+    
+          URL = "http://localhost:8080/apis/adocao/atualizar";
+          return fetch(URL, {
+            method: 'PUT',
+            body: formData, 
+          });
+        })
+        .then((response) => {
+          if (!response.ok) {
+            Toast.fire({
+              icon: 'error',
+              title: 'Erro ao Cancelar Adoção!',
+            });
+          }
+          else
+          {
+             sessionStorage.setItem('adocaoCancelada', 'true');
+             window.location.reload();
+          }
+    
+          return response.json();
+        })
+        .then(() => {
+          
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+    });
+
+  }
 }
 
 function emitirTermo(id) {
@@ -734,9 +802,6 @@ function gerarPdf(id)
       console.error(error);
   });
 }
-
-
-
 
 function editarAdocao(id) {
 

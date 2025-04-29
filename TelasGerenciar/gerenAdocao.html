@@ -167,11 +167,20 @@
         title: 'Adoção Excluída Com Sucesso!',
       });
     }
-    
+    else
+    if(sessionStorage.getItem('adocaoCancelada') == 'true')
+    {
+      Toast.fire({
+        icon: 'success',
+        title: 'Adoção Cancelada Com Sucesso!',
+      });
+
+    }
     sessionStorage.removeItem('adocaoEmitida');
     sessionStorage.removeItem('adocaoApagada')
     sessionStorage.removeItem('adocaoAlterada');
     sessionStorage.removeItem('adocaoGravada');
+    sessionStorage.removeItem('adocaoCancelada');
   </script>
 
 </body>
