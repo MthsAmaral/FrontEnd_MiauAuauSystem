@@ -358,3 +358,112 @@ function removerAnimal() {
   div.classList.add("d-none");
   div.innerHTML = "";
 }
+
+
+
+
+
+
+
+//SCRIPT NOTIFICAÇÕES
+
+
+// Função que será chamada ao clicar no botão de notificações
+document.getElementById('notificacoesButton').addEventListener('click', function () {
+  carregarNotificacoes(); // Carregar notificações ao abrir o modal
+});
+
+// Função que carrega as notificações
+function carregarNotificacoes() {
+  const listaNotificacoes = document.getElementById("listaNotificacoes");
+  const notificacoesCount = document.getElementById("notificacoesCount"); // Contador de notificações no ícone
+
+  const url = "http://localhost:8080/apis/agendar-medicamento/buscar/%20"; // espaço codificado como %20 para simular "sem filtro"
+
+  fetch(url, {
+    method: 'GET',
+    redirect: "follow"
+  })
+    .then((response) => {
+      return response.text(); // Recebe como texto
+    })
+    .then(function (text) {
+      var json = JSON.parse(text); // Converte para JSON
+
+      // Obter data atual
+      const hoje = new Date();
+      let notificacoes = [];
+
+      // Filtrar agendamentos com datas próximas (digamos, até 7 dias de antecedência)
+      json.forEach(agendamento => {
+        if (!agendamento.status) {
+          //console.log('Agendamento carregado:', agendamento);
+          const dataAplicacao = new Date(agendamento.dataAplicacao); // Data do agendamento
+          const diffTime = dataAplicacao - hoje; // Diferença em milissegundos
+          const diffDays = diffTime / (1000 * 3600 * 24); // Convertendo para dias
+
+          // Verificar se a data do agendamento é próxima (dentro de 7 dias)
+          if (diffDays >= 0 && diffDays <= 2) {
+            // Adicionar a notificação
+            const notificacao = {
+              animal: agendamento.animal.nome,
+              medicamento: agendamento.medicamento.nome,
+              diasRestantes: Math.ceil(diffDays),
+              id: agendamento.codAgendarMedicamento,
+              animalId: agendamento.animal.codAnimal,
+              medicamentoId: agendamento.medicamento.codTipoMedicamento, // <--- corrigido
+              dataAplicacao: agendamento.dataAplicacao // <--- adicionado
+            };
+
+
+            notificacoes.push(notificacao);
+          }
+        }
+      });
+
+      // Atualizar o contador de notificações
+      notificacoesCount.textContent = notificacoes.length;
+
+      // Exibir as notificações no modal
+      if (notificacoes.length > 0) {
+        let notificacaoHTML = "";
+        notificacoes.forEach(notificacao => {
+          notificacaoHTML += `<div class="alert alert-info d-flex justify-content-between">
+        <div>
+           O animal <b class="animal" data-id="${notificacao.animalId}">${notificacao.animal}</b> precisa receber o medicamento 
+          <b class="medicamento" data-id="${notificacao.medicamentoId}">${notificacao.medicamento}</b> em <b class="diasRestantes">${notificacao.diasRestantes} dia(s)</b>.
+          <span class="data-aplicacao" style="display:none">${notificacao.dataAplicacao}</span>
+        </div>
+        <button class="btn btn-sm btn-success" onclick="marcarComoLido(${notificacao.id}, this)">Marcar como lido</button>
+      </div>`;
+
+        });
+        listaNotificacoes.innerHTML = notificacaoHTML;
+      } else {
+        listaNotificacoes.innerHTML = "<p>Não há agendamentos próximos.</p>";
+      }
+    })
+    .catch((error) => {
+      console.error("Erro ao carregar notificações:", error);
+    });
+}
+
+function marcarComoLido(id, botao) {
+  const notification = botao.closest('.alert');
+  notification.style.backgroundColor = '#e0e0e0';
+  botao.disabled = true;
+  botao.innerHTML = 'Lido';
+
+  // Capturar os IDs do animal e medicamento
+  const animalId = notification.querySelector('.animal').dataset.id;
+  const medicamentoId = notification.querySelector('.medicamento').dataset.id;
+  const dataAplicacao = notification.querySelector('.data-aplicacao').textContent;
+
+  // Verifica se os IDs estão definidos corretamente
+  if (animalId && medicamentoId) {
+    // Chama a função de alteração com os valores corretos
+    alterarAgendamento(id, { codAnimal: animalId }, { cod: medicamentoId }, dataAplicacao, true);
+  } else {
+    console.error('IDs inválidos: animalId ou medicamentoId estão indefinidos');
+  }
+}
