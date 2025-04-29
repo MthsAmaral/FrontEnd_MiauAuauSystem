@@ -8,6 +8,8 @@ function limparForm() {
     fdados.sexo.value = "";
     fdados.castrado.value = "";
     fdados.imagemBase64.value = "";
+    fdados.cor = "";
+    fdados.especie = "";
     document.getElementById('file-name').textContent = 'Selecionar Foto';
 }
 function validarImagem(imagem) {
@@ -58,8 +60,10 @@ function validarCampos() {
     const castrado = document.getElementById("castrado").value;
     const adotado = document.getElementById("adotado").value;
     const imagem = document.getElementById("imagemBase64").value;
+    const cor = document.getElementById("cor").value;
+    const especie = document.getElementById("especie").value;
     
-    if (nome != "" && sexo != "" && raca != "" && dataNascimento != "" && peso > 0 && castrado != "" && adotado != "") {
+    if (nome != "" && sexo != "" && raca != "" && dataNascimento != "" && peso > 0 && castrado != "" && adotado != "" && cor != "" && especie != "") {
         
         if (validarData(dataNascimento))
         {
@@ -342,6 +346,8 @@ function buscarAnimalPeloId(id) {
             document.getElementById('sexo').value = json.sexo;
             document.getElementById('castrado').value = json.castrado;
             document.getElementById('adotado').value = json.adotado;
+            document.getElementById('cor').value = json.cor;
+            document.getElementById('especie').value = json.especie;
         })
         .catch((error) => {
             console.error("Erro ao buscar o animal:", error);

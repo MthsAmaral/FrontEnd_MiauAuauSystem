@@ -72,7 +72,7 @@ function validarCampos() {
       timerProgressBar: true
     })
   }
-  limparForm();
+  
 }
 
 function buscarAnimalAdocao() {
@@ -157,10 +157,12 @@ function buscarAnimalAdocao() {
                 <h5 class="card-title"><strong>Nome:</strong> ${json[i].nome}</h5>
                 <p class="card-text mb-1"><strong>Sexo:</strong> ${json[i].sexo}</p>
                 <p class="card-text mb-1"><strong>Castrado:</strong> ${json[i].castrado}</p>
+                <p class="card-text mb-1"><strong>Espécie:</strong> ${json[i].especie}</p>
                 <p class="card-text mb-1"><strong>Raça:</strong> ${json[i].raca}</p>
+                <p class="card-text mb-1"><strong>Cor:</strong> ${json[i].cor}</p>
                 <p class="card-text mb-1"><strong>Idade:</strong> ${idade}</p>
                 <p class="card-text mb-1"><strong>Peso:</strong> ${json[i].peso} kg</p>
-                <button class="btn btn-primary mt-5" onclick="selecionarAnimal('${json[i].codAnimal}')">Quero Adotar</button>
+                <button class="btn btn-primary mt-5" onclick="exibirForm('${json[i].codAnimal}')">Quero Adotar</button>
               </div>
             </div>
           </div>
@@ -288,6 +290,130 @@ function buscarAdocao() {
       });
   }
 }
+function solicitarAdocao(id)
+{
+  
+  const token = localStorage.getItem("token");
+  if (token)
+  {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const payload = JSON.parse(window.atob(base64)); // recupera todas as informaçoes no token
+    const formData = new FormData();
+    const dataAtual = new Date();
+    const dataFormatada = dataAtual.toISOString().slice(0,10);
+    formData.append("cod_animal", id);
+    formData.append("cod_usuario", payload.cod_usuario);
+    formData.append("status", "Pendente");
+    formData.append("data", dataFormatada);
+    
+    const URL = "http://localhost:8080/apis/adocao/solicitar"
+    fetch(URL, {
+        method: 'POST', body: formData,
+        headers: { 'Authorization': token }
+    })
+    .then((response) => {
+        if(response.ok)
+        {
+          sessionStorage.setItem("adocaoSolicitada", 'true');
+          window.location.reload();
+        }
+        else
+        {
+          Swal.fire({
+            icon: "error",
+            title: "Erro ao Enviar Solicitação de Adoção!",
+            timer: 1500,
+            timerProgressBar: true
+          })
+        }
+        return response.json();
+    })
+    .then((json) => {
+
+    })
+    .catch((error) => console.error(error))
+    }
+    else
+    {
+      Swal.fire({
+        icon: "error",
+        title: "Acesso Não Autorizado!",
+        timer: 1500,
+        timerProgressBar: true
+      })
+    }
+
+}
+
+function logar(nome, senha, id) 
+{
+  const URL = "http://localhost:8080/autenticacao"
+  const formData = new FormData();
+  formData.append("nome", nome);
+  formData.append("senha", senha);
+  var flag = 1;
+  fetch(URL, { method: 'post', body: formData })
+      .then(response => {
+          if (!response.ok)
+          {      
+            Swal.fire({
+              icon: "error",
+              title: "Nome e/ou Senha Incorreto(s)",
+              timer: 1500,
+              timerProgressBar: true
+            })
+            flag = 0;
+          }  
+          
+          return response.text();
+      })
+      .then(texto => {
+        localStorage.setItem("token", texto)
+        if (flag == 1)
+          solicitarAdocao(id);
+      })
+      .catch(err => alert(err.message))
+}
+function exibirForm(id) 
+{
+  let usernameInput;
+  let passwordInput;
+
+  return Swal.fire({
+    title: 'Entrar',
+    html: `
+      <input type="text" id="nome" name="nome" class="swal2-input" placeholder="Nome" style="width: 350px;">
+      <input type="password" id="senha" name="senha"class="swal2-input" placeholder="Senha" style="width: 350px;">
+    `,
+    confirmButtonText: 'Confirmar',
+    focusConfirm: false,
+    didOpen: () => {
+      const popup = Swal.getPopup();
+      usernameInput = popup.querySelector('#nome');
+      passwordInput = popup.querySelector('#senha');
+      usernameInput.onkeyup = (event) => event.key === 'Enter' && Swal.clickConfirm();
+      passwordInput.onkeyup = (event) => event.key === 'Enter' && Swal.clickConfirm();
+    },
+    preConfirm: () => {
+      const username = usernameInput.value;
+      const password = passwordInput.value;
+      if (!username || !password) {
+        Swal.showValidationMessage('Informe seu nome e senha');
+        return;
+      }
+      return { username, password};
+    }
+  }).then((result) => {
+    if (result.isConfirmed) 
+    {
+      const { username, password } = result.value;
+      logar(username, password, id); 
+    } 
+    
+  });
+}
+
 
 
 function selecionarAnimal(id, animal) {
@@ -365,7 +491,7 @@ function carregarUsuariosModal() {
       for (let i = 0; i < json.length; i++) {
         container.innerHTML += `
           <div class="col-md-4 mb-4">
-            <div class="card card-select" style="width: 260px; height: 170px;"
+            <div class="card card-select" style="width: 245px; height: 200px;"
               onclick="selecionarUsuario(${json[i].cod}, '${json[i].nome}')"
               data-bs-dismiss="modal">
               <div class="card-body">
@@ -446,6 +572,7 @@ function cadAdocao() {
           })
           .catch((error) => console.error(error))
   }
+  limparForm();
 }
 function excluirAdocao(id) {
 
@@ -548,8 +675,7 @@ function emitirTermo(id) {
         }
         else
         {
-          sessionStorage.setItem('adocaoEmitida', 'true');
-          window.location.reload(); 
+          gerarPdf(id)
         }
   
         return response.json();
@@ -563,6 +689,50 @@ function emitirTermo(id) {
   }
   });
   
+}
+
+function gerarPdf(id) 
+{
+  const URL = "http://localhost:8080/apis/adocao/download-pdf/" + id;
+
+  Swal.fire({
+    title: 'Gerando PDF...',
+    text: 'Aguarde Enquanto o Termo é Gerado!',
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  });
+
+  fetch(URL, {
+      method: 'GET',
+      headers: { Accept: 'application/pdf' }
+  })
+  .then(response => {
+      if (!response.ok) {
+          throw new Error("Erro ao gerar PDF.");
+      }
+      return response.blob(); 
+  })
+  .then(blob => {
+    setTimeout(() => {
+      Swal.close();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = "termo_de_adocao_" + id + ".pdf";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+      sessionStorage.setItem('adocaoEmitida', 'true');
+      window.location.reload();
+  }, 2000); 
+     
+  })
+  .catch(error => {
+      console.error(error);
+  });
 }
 
 

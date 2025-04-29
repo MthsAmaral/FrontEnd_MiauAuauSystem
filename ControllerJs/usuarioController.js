@@ -11,6 +11,8 @@ function limparForm() {
     fdados.rua.value = "";
     fdados.bairro.value = "";
     fdados.numero.value = "";
+    fdados.cidade.value = "";
+    fdados.estado.value = "";
 }
 
 function validarCampos() {
@@ -25,8 +27,10 @@ function validarCampos() {
     const rua = document.getElementById("rua").value;
     const bairro = document.getElementById("bairro").value;
     const numero = document.getElementById("numero").value;
+    const cidade = document.getElementById("cidade").value;
+    const estado = document.getElementById("estado").value;
 
-    if (nome != "" && email != "" && senha != "" && telefone != "" && cpf != "" && privilegio != "" && sexo != "" && cep != "" && rua != "" && bairro != "" && numero != "") {
+    if (nome != "" && email != "" && senha != "" && telefone != "" && cpf != "" && privilegio != "" && sexo != "" && cep != "" && rua != "" && bairro != "" && numero != "" && cidade != "" && estado != "") {
         cadUsuario();
     }
     else {
@@ -104,6 +108,8 @@ function buscarUsuario() {
                         <td>${json[i].rua}</td>
                         <td>${json[i].bairro}</td>
                         <td>${json[i].numero}</td>
+                        <td>${json[i].cidade}</td>
+                        <td>${json[i].estado}</td>
                         <td>
                         <button type="button" class="btn btn-sm btn-warning" onclick="editarUsuario(${json[i].cod})"><i class="bi bi-pencil-square"></i></button>
                         </td>
@@ -145,6 +151,8 @@ function buscarUsuario() {
                         <td>${json[i].rua}</td>
                         <td>${json[i].bairro}</td>
                         <td>${json[i].numero}</td>
+                        <td>${json[i].cidade}</td>
+                        <td>${json[i].estado}</td>
                         <td>
                         <button type="button" class="btn btn-sm btn-warning" onclick="editarUsuario(${json[i].cod})"><i class="bi bi-pencil-square"></i></button>
                         </td>
@@ -223,6 +231,8 @@ function buscarUsuarioPeloId(id) {
             document.getElementById('rua').value = json.rua;
             document.getElementById('bairro').value = json.bairro;
             document.getElementById('numero').value = json.numero;
+            document.getElementById('cidade').value = json.cidade;
+            document.getElementById('estado').value = json.estado;
         })
         .catch((error) => {
             console.error("Erro ao buscar o usuario:", error);
