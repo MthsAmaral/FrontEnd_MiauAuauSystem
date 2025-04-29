@@ -15,6 +15,7 @@
 
   <!-- CSS personalizado -->
   <link rel="stylesheet" href="../css/telasCad.css" />
+
   <script>
     window.addEventListener("DOMContentLoaded", function () {
       const params = new URLSearchParams(window.location.search);
@@ -32,7 +33,7 @@
 
     <form method="post" id="fusuario" enctype="multipart/form-data">
       <input type="hidden" id="cod" name="cod">
-    
+
       <div class="row mb-3">
         <div class="col-md-6">
           <label for="nome" class="form-label">Nome</label>
@@ -43,11 +44,14 @@
           <input type="text" class="form-control form-control-sm" id="email" name="email" placeholder="Insira o seu email" required>
         </div>
       </div>
-        <div class="col-md-6">
+
+      <div class="row mb-3">
+        <div class="col-md-12">
           <label for="senha" class="form-label">Senha</label>
-          <input type="text" class="form-control form-control-sm" id="senha" name="senha" placeholder="Insira sua senha" required>
+          <input type="password" class="form-control form-control-sm" id="senha" name="senha" placeholder="Insira sua senha" required>
         </div>
       </div>
+
       <div class="row mb-3">
         <div class="col-md-4">
           <label for="telefone" class="form-label">Telefone</label>
@@ -66,6 +70,7 @@
           </select>
         </div>
       </div>
+
       <div class="row mb-3">
         <div class="col-md-4">
           <label for="sexo" class="form-label">Sexo</label>
@@ -84,7 +89,7 @@
           <input type="text" class="form-control form-control-sm" id="rua" name="rua" placeholder="Rua" required>
         </div>
       </div>
-    
+
       <div class="row mb-3">
         <div class="col-md-6">
           <label for="bairro" class="form-label">Bairro</label>
@@ -95,10 +100,23 @@
           <input type="text" class="form-control form-control-sm" id="numero" name="numero" placeholder="Número" required>
         </div>
       </div>
-    
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="cidade" class="form-label">Cidade</label>
+          <input type="text" class="form-control form-control-sm" id="cidade" name="cidade" placeholder="Cidade" required>
+        </div>
+        <div class="col-md-6">
+          <label for="estado" class="form-label">Estado</label>
+          <input type="text" class="form-control form-control-sm" id="estado" name="estado" placeholder="Estado" required>
+        </div>
+      </div>
+
       <div class="d-flex gap-3 mt-4">
         <button type="button" class="btn btn-primary" onclick="validarCampos()">Confirmar</button>
-        <a href="../TelasGerenciar/gerenUsuarios.html"> <button type="button" class="btn btn-secondary">Voltar</button></a>
+        <a href="../TelasGerenciar/gerenUsuarios.html">
+          <button type="button" class="btn btn-secondary">Voltar</button>
+        </a>
       </div>
     </form>
   </main>
