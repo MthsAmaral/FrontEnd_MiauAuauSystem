@@ -74,82 +74,76 @@ function validarCamposAgendamento() {
 }
 
 function gravarAgendamento() {
+  const form = document.getElementById("formAgendamento");
+  const codAgendamento = form.dataset.id;
   const dataAplicacao = document.getElementById("dataAplicacao").value;
-  /*console.log("Tentando agendar:", {
-    codAnimal: animalSelecionado.codAnimal,
-    codTipoMedicamento: medicamentoSelecionado.cod,
-    dataAplicacao
-  });*/
 
   const formData = new FormData();
   formData.append("animal", animalSelecionado.codAnimal);
-  formData.append("medicamento", medicamentoSelecionado.cod);
+
+  // Verifique se o medicamentoSelecionado tem a estrutura correta
+  if (medicamentoSelecionado && medicamentoSelecionado.cod) {
+    formData.append("medicamento", medicamentoSelecionado.cod);  // Use o campo 'codTipoMedicamento'
+  } else {
+    console.error("Medicamento não selecionado ou inválido.");
+  }
+
   formData.append("dataAplicacao", dataAplicacao);
-  formData.append("status","false");
+  formData.append("status", "false");
 
-
-  fetch("http://localhost:8080/apis/agendar-medicamento/gravar", {
-    method: "POST",
-    body: formData
-  })
-    .then(response => {
-      if (!response.ok) {
-        sessionStorage.setItem('agendamentoGravado','false');
-      }
-      else
-      {
-        window.location.reload();
-        sessionStorage.setItem('agendamentoGravado','true');
-      }
   
-      return response.json();
+
+  if (codAgendamento) {
+    // Atualizar
+
+    const statusSelect = document.getElementById("statusSelect");
+    formData.set("status", statusSelect.value);//sobrescreve status
+    formData.append("codAgendarMedicamento", codAgendamento);
+    
+
+    fetch("http://localhost:8080/apis/agendar-medicamento/atualizar", {
+      method: "PUT",
+      body: formData
     })
-    .then(json => {
-      
+      .then(response => {
+        console.log(response);
+        if (!response.ok) {
+          
+          sessionStorage.setItem('agendamentoAlterado', 'false');
+        } else {
+
+          sessionStorage.setItem('agendamentoAlterado', 'true');
+          window.location.reload();
+        }
+        return response.json();
+      })
+      .catch(error => {
+        console.error('Erro ao atualizar agendamento:', error);
+      });
+
+  } else {
+    formData.append("status", "false");
+    // Criar novo
+    fetch("http://localhost:8080/apis/agendar-medicamento/gravar", {
+      method: "POST",
+      body: formData
     })
-    .catch(error => {
-      console.error(error);
-    });
+      .then(response => {
+        console.log(response);
+        if (!response.ok) {
+          sessionStorage.setItem('agendamentoGravado', 'false');
+        } else {
+          sessionStorage.setItem('agendamentoGravado', 'true');
+          window.location.reload();
+        }
+        return response.json();
+      })
+      .catch(error => {
+        console.error('Erro ao gravar agendamento:', error);
+      });
+  }
 }
 
-function alterarAgendamento(codAgendarMedicamento, animal, medicamento, dataAplicacao, status) {
-
-  console.log('Cod Agendar Medicamento:', codAgendarMedicamento);
-  console.log('Animal:', animal);
-  console.log('Medicamento:', medicamento);
-  console.log('Data Aplicacao:', dataAplicacao);
-  console.log('Status:', status);
-
-  // Repassar os dados para a função de alterar do backend
-  const url = "http://localhost:8080/apis/agendar-medicamento/atualizar";
-  
-  const formData = new FormData();
-    formData.append("codAgendarMedicamento", codAgendarMedicamento);
-    formData.append("animal", animal.codAnimal); // Certifique-se de que animal.codAnimal esteja correto
-    formData.append("medicamento", medicamento.cod); // Certifique-se de que medicamento.cod esteja correto
-    formData.append("dataAplicacao", dataAplicacao);
-    formData.append("status", status);
-  
-  fetch(url, {
-    method: "PUT",
-    body: formData
-  })
-    .then(response => {
-      if (!response.ok) {
-        sessionStorage.setItem('agendamentoAlterado', 'false');
-      } else {
-        sessionStorage.setItem('agendamentoAlterado', 'true');
-        window.location.reload(); // Recarregar a página após a alteração
-      }
-      return response.json();
-    })
-    .then(json => {
-      console.log('Notificação marcada como lida:', json);
-    })
-    .catch(error => {
-      console.error('Erro ao alterar agendamento:', error);
-    });
-}
 
 
 function carregarAgendamentos() {
@@ -183,11 +177,10 @@ function carregarAgendamentos() {
                 <td>${json[i].medicamento.nome}</td>
                 <td>${dataFormatada}</td>
                 <td>${json[i].status}</td>
-                <!--
+                
                 <td>
                   <button type="button" class="btn btn-sm btn-warning" onclick="editarAgendamento(${json[i].codAgendarMedicamento})"><i class="bi bi-pencil-square"></i></button>
                 </td>
-                -->
 
                 <td>
                   <button class="btn btn-sm btn-danger" onclick="excluirAgendamento(${json[i].codAgendarMedicamento})">Excluir</button>
@@ -201,6 +194,44 @@ function carregarAgendamentos() {
         console.error("Erro ao carregar agendamentos:", error);
     });
 }
+
+function editarAgendamento(codAgendarMedicamento) {
+  fetch(`http://localhost:8080/apis/agendar-medicamento/buscar-id/${codAgendarMedicamento}`)
+    .then(response => {
+      if (!response.ok) {
+        sessionStorage.setItem('agendamentoAlterado', 'false');
+      } else {
+        sessionStorage.setItem('agendamentoAlterado', 'true');
+      }
+      return response.json();
+    })
+    .then(agendamento => {
+      //console.log(agendamento);
+
+      // Preenche o form diretamente na tela
+      document.getElementById("formAgendamento").dataset.id = codAgendarMedicamento;
+      document.getElementById("dataAplicacao").value = agendamento.dataAplicacao;
+
+      selecionarAnimal(agendamento.animal);
+      selecionarMedicamento(agendamento.medicamento);
+
+      // Exibir campo de status
+      const statusContainer = document.getElementById("statusContainer");
+      const statusSelect = document.getElementById("statusSelect");
+      statusContainer.classList.remove("d-none");
+      statusSelect.value = agendamento.status.toString();
+
+      // Armazenar status como fallback
+      statusAtualAgendamento = agendamento.status;
+    })
+    .catch(error => {
+      console.error(error.message);
+    });
+}
+
+
+
+
 
 function excluirAgendamento(id) {
   
@@ -252,53 +283,71 @@ function excluirAgendamento(id) {
 
 
 //CARREGAR LISTAS
-async function carregarAnimais() {
+function carregarAnimais() {
   const container = document.querySelector("#modalAnimais .modal-body");
   container.innerHTML = "";
 
-  const response = await fetch("http://localhost:8080/apis/animal/buscar/%20");
-  if (response.ok) {
-    const lista = await response.json();
-    lista.forEach(animal => {
-      const col = document.createElement("div");
-      col.className = "col-md-4 mb-3";
-      col.innerHTML = `
-        <div class="card card-select" data-animal-id="${animal.id}" data-bs-dismiss="modal">
-          <img src="data:image/jpeg;base64,${animal.imagemBase64}" class="card-img-top" />
-          <div class="card-body">
-            <h5 class="card-title">${animal.nome}</h5>
-            <p class="card-text">Raça: ${animal.raca}<br>Sexo: ${animal.sexo}</p>
+  fetch("http://localhost:8080/apis/animal/buscar/%20")
+    .then(response =>{
+      if(!response.ok)
+      {
+        throw new Error("Erro ao carregar animais.");
+      }
+      return response.json();
+    })
+    .then(lista => {
+      lista.forEach(animal => {
+        const col = document.createElement("div");
+        col.className = "col-md-4 mb-3";
+        col.innerHTML = `
+          <div class="card card-select" data-animal-id="${animal.id}" data-bs-dismiss="modal">
+            <img src="data:image/jpeg;base64,${animal.imagemBase64}" class="card-img-top" />
+            <div class="card-body">
+              <h5 class="card-title">${animal.nome}</h5>
+              <p class="card-text">Raça: ${animal.raca}<br>Sexo: ${animal.sexo}</p>
+            </div>
           </div>
-        </div>
-      `;
-      col.querySelector('.card-select').addEventListener('click', () => selecionarAnimal(animal));
-      container.appendChild(col);
-    });    
-  }
+        `;
+        col.querySelector('.card-select').addEventListener('click', () => selecionarAnimal(animal));
+        container.appendChild(col);
+      });
+    })
+    .catch(error => {
+      console.error(error.message);
+    });
 }
 
-async function carregarMedicamentos() {
+function carregarMedicamentos() {
   const container = document.querySelector("#modalMedicamentos .modal-body");
   container.innerHTML = "";
 
-  const response = await fetch("http://localhost:8080/apis/tipo-medicamento/buscar/%20");
-  if (response.ok) {
-    const lista = await response.json();
-    lista.forEach(med => {
-      const col = document.createElement("div");
-      col.className = "col-md-4 mb-3";
-      col.innerHTML = `
-        <div class="card card-select" data-med-id="${med.id}" data-bs-dismiss="modal">
-          <div class="card-body">
-            <h5 class="card-title">${med.nome}</h5>
-            <p class="card-text">Forma: ${med.formaFarmaceutica}<br>Descrição: ${med.descricao}</p>
+  fetch("http://localhost:8080/apis/tipo-medicamento/buscar/%20")
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Erro ao carregar medicamentos.");
+      }
+      return response.json();
+    })
+    .then(lista => {
+      //console.log(lista);
+      lista.forEach(med => {
+        const col = document.createElement("div");
+        col.className = "col-md-4 mb-3";
+        col.innerHTML = `
+          <div class="card card-select" data-med-id="${med.id}" data-bs-dismiss="modal">
+            <div class="card-body">
+              <h5 class="card-title">${med.nome}</h5>
+              <p class="card-text">Forma: ${med.formaFarmaceutica}<br>Descrição: ${med.descricao}</p>
+            </div>
           </div>
-        </div>
-      `;
-      col.querySelector('.card-select').addEventListener('click', () => selecionarMedicamento(med));
-      container.appendChild(col);
+        `;
+        col.querySelector('.card-select').addEventListener('click', () => selecionarMedicamento(med));
+        container.appendChild(col);
+      });
+    })
+    .catch(error => {
+      console.error(error.message);
     });
-  }
 }
 
 
@@ -308,16 +357,20 @@ async function carregarMedicamentos() {
 
 //medicamento
 function selecionarMedicamento(med) {
+  // Normaliza campos para garantir consistência
+  med.cod = med.cod || med.codTipoMedicamento;
+  med.forma = med.forma || med.formaFarmaceutica;
 
   //console.log("Medicamento selecionado:", med);
 
   medicamentoSelecionado = med;
+
   const div = document.getElementById("medicamentoSelecionado");
   div.innerHTML = `
     <div class="d-flex justify-content-between align-items-center">
       <div>
         <strong>${med.nome}</strong><br>
-        Forma: ${med.formaFarmaceutica}<br>
+        Forma: ${med.forma}<br>
         Descrição: ${med.descricao}
       </div>
       <button class="btn btn-sm btn-outline-danger" onclick="removerMedicamento()">Remover</button>
@@ -367,11 +420,6 @@ function removerAnimal() {
 
 //SCRIPT NOTIFICAÇÕES
 
-
-// Função que será chamada ao clicar no botão de notificações
-document.getElementById('notificacoesButton').addEventListener('click', function () {
-  carregarNotificacoes(); // Carregar notificações ao abrir o modal
-});
 
 // Função que carrega as notificações
 function carregarNotificacoes() {
@@ -462,8 +510,44 @@ function marcarComoLido(id, botao) {
   // Verifica se os IDs estão definidos corretamente
   if (animalId && medicamentoId) {
     // Chama a função de alteração com os valores corretos
-    alterarAgendamento(id, { codAnimal: animalId }, { cod: medicamentoId }, dataAplicacao, true);
+    atualizarStatusAgendamento(id, true);
   } else {
     console.error('IDs inválidos: animalId ou medicamentoId estão indefinidos');
   }
 }
+
+function atualizarStatusAgendamento(id, novoStatus) {
+  fetch(`http://localhost:8080/apis/agendar-medicamento/buscar-id/${id}`)
+    .then(response => response.json())
+    .then(agendamento => {
+      const formData = new FormData();
+      formData.append("codAgendarMedicamento", agendamento.codAgendarMedicamento);
+      formData.append("animal", agendamento.animal.codAnimal);
+      formData.append("medicamento", agendamento.medicamento.cod || agendamento.medicamento.codTipoMedicamento);
+      formData.append("dataAplicacao", agendamento.dataAplicacao);
+      formData.append("status", novoStatus);
+
+      // Log para debug
+      /*for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }*/
+
+      return fetch("http://localhost:8080/apis/agendar-medicamento/atualizar", {
+        method: "PUT",
+        body: formData
+      });
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Erro ao atualizar o agendamento.");
+      }
+      console.log("Agendamento atualizado com sucesso.");
+      window.location.reload();
+
+    })
+    .catch(error => {
+      console.error("Erro ao marcar como lido:", error);
+    });
+}
+
+

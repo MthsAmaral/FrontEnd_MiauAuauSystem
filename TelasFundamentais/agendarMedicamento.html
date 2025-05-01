@@ -62,7 +62,7 @@
         <!-- Menu de Notificações -->
         <ul class="navbar-nav ms-auto">
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="notificacoesButton" data-bs-toggle="modal"
+            <a class="nav-link dropdown-toggle" href="#" id="botaoNotificacoes" data-bs-toggle="modal"
               data-bs-target="#modalNotificacoes">
               <i class="bi bi-bell"></i> <!-- Ícone de sino -->
               <span class="badge bg-danger" id="notificacoesCount">0</span> <!-- Contador de notificações -->
@@ -93,7 +93,7 @@
   <main class="container container-box mt-5">
     <h2 class="mb-4">Agendar Medicamento(s)</h2>
 
-    <form id="formAgendamento">
+    <form id="formAgendamento" data-id="">
       <!-- Animal -->
       <div class="mb-3">
         <label class="form-label">Animal:</label><br />
@@ -119,6 +119,14 @@
         </div>
       </div>
 
+      <div id="statusContainer" class="d-none mb-3 col-md-2">
+        <label for="statusSelect" class="form-label">Status marcado como lido:</label>
+        <select id="statusSelect" class="form-select">
+          <option value="false">Desativado</option>
+          <option value="true">Ativado</option>
+        </select>
+      </div>
+
       <div class="d-flex gap-3 mt-4">
         <button type="button" class="btn btn-primary" onclick="validarCamposAgendamento()">Confirmar
           Agendamento</button>
@@ -140,7 +148,7 @@
           <th>Próxima Aplicação</th>
           <th>Marcado como lido</th>
           <th>Ações</th>
-          <!--<th></th>-->
+          <th></th>
         </tr>
       </thead>
       <tbody id="resultado">
@@ -175,6 +183,16 @@
   </div>
 
   <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const botao = document.getElementById('botaoNotificacoes');
+      if (botao) {
+        botao.addEventListener('click', function () {
+          carregarNotificacoes();
+        });
+      }
+    });
+
 
     const Toast = Swal.mixin({
       toast: true,
