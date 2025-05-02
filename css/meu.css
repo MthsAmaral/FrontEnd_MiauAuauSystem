@@ -222,6 +222,7 @@ input[type="text"]:focus {
 }
 
 .card {
+    
     border-radius: 15px; /* Arredonda as bordas */
     overflow: hidden; /* Garante que o conteúdo do card não exceda as bordas */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adiciona uma leve sombra */
@@ -234,8 +235,8 @@ input[type="text"]:focus {
   }
   
   .card img {
-    width: 275px; /* Largura fixa */
-    height: 275px; /* Altura fixa */
+    width: 100%; /* Largura fixa */
+    height: 100%; /* Altura fixa */
     object-fit: cover; /* Preenche o espaço cortando o excesso */
     border-radius: 10px; /* Arredonda a imagem */
     display: block; /* Remove o espaçamento extra ao redor */

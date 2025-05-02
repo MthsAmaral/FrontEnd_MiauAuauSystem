@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="../css/styles.css">
 </head>
 
-<body onload="buscarAdocao()">
+<body onload="buscarAdocao(); buscarAnos();">
 
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
@@ -78,8 +78,19 @@
     <div class="container-box">
       <h2>Gerenciar Solicitações de Adoção</h2>
 
-      <input type="text" id="filtro" class="form-control mb-3" placeholder="Filtrar por ano" onkeyup="buscarAdocao()">
-
+      <div class="d-flex gap-3 mb-3">
+        <select id="filtroAno" class="form-control" onchange="buscarAdocao()">
+          <option value="">Todos os anos</option>
+        </select>
+        <select id="filtroStatus" class="form-select" onchange="buscarAdocao()">
+          <option value="">Todos os status</option>
+          <option value="Aprovada">Aprovada</option>
+          <option value="Pendente">Pendente</option>
+          <option value="Cancelada">Cancelada</option>
+        </select>
+      </div>
+      
+      
       <table class="table">
         <thead>
           <tr>

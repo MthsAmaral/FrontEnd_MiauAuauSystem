@@ -149,19 +149,19 @@ function buscarAnimalAdocao() {
           container.innerHTML += `
           <div class="card mb-3 shadow-sm" style="border-radius: 15px;">
           <div class="row g-0">
-            <div class="col-md-3 d-flex align-items-center justify-content-center p-2">
-              <img src="data:image/jpeg;base64,${json[i].imagemBase64}" class="img-fluid rounded"  alt="Foto do Animal">
+            <div class="col-md-4 d-flex align-items-center justify-content-center p-2">
+              <img src="data:image/jpeg;base64,${json[i].imagemBase64}" alt="Foto do Animal">
             </div>
-            <div class="col-md-9">
+            <div class="col-md-8">
               <div class="card-body">
                 <h5 class="card-title"><strong>Nome:</strong> ${json[i].nome}</h5>
                 <p class="card-text mb-1"><strong>Sexo:</strong> ${json[i].sexo}</p>
-                <p class="card-text mb-1"><strong>Castrado:</strong> ${json[i].castrado}</p>
                 <p class="card-text mb-1"><strong>Espécie:</strong> ${json[i].especie}</p>
                 <p class="card-text mb-1"><strong>Raça:</strong> ${json[i].raca}</p>
                 <p class="card-text mb-1"><strong>Cor:</strong> ${json[i].cor}</p>
-                <p class="card-text mb-1"><strong>Idade:</strong> ${idade}</p>
                 <p class="card-text mb-1"><strong>Peso:</strong> ${json[i].peso} kg</p>
+                <p class="card-text mb-1"><strong>Idade:</strong> ${idade}</p>
+                
                 <button class="btn btn-primary mt-5" onclick="exibirForm('${json[i].codAnimal}')">Quero Adotar</button>
               </div>
             </div>
@@ -180,11 +180,31 @@ function buscarAnimalAdocao() {
 
 }
 function buscarAdocao() {
-  let filtro = document.getElementById("filtro").value
+  let filtroAno = document.getElementById("filtroAno").value;
+  let filtroStatus = document.getElementById("filtroStatus").value;
+  let filtro = "";
+  if (filtroAno.length > 0 && filtroStatus.length > 0)
+  {
+    filtro = filtroAno + " " + filtroStatus;
+  }
+  else
+  if(filtroAno.length > 0)
+  {
+    filtro =  filtro + filtroAno + " ";
+  }
+  else
+  if(filtroStatus.length > 0)
+  {
+    filtro = " " + filtro + filtroStatus;
+  }
+  console.log(filtroAno)
+  console.log(filtroStatus)
+  console.log(filtro)
   const resultado = document.getElementById("resultado");
   if (filtro.length > 0) // busca com filtro
   {
-    const url = "http://localhost:8080/apis/adocao/buscar/" + filtro;
+    console.log(filtro)
+    const url = "http://localhost:8080/apis/adocao/buscar/"+filtro;
     fetch(url, {
       method: 'GET', redirect: "follow"
     })
@@ -225,7 +245,7 @@ function buscarAdocao() {
                         <button type="button" class="btn btn-sm btn-warning" onclick="editarAdocao(${json[i].codAdocao})"${json[i].status === "Aprovada" || json[i].status === 'Cancelada' ? "disabled" : ""}><i class="bi bi-pencil-square"></i></button>
                         </td>
                         <td>
-                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirAnimal(${json[i].codAdocao}, ${json[i].status})"><i class="bi bi-trash"></i></button>
+                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirAdocao(${json[i].codAdocao}, '${json[i].status}')"${json[i].status})"><i class="bi bi-trash"></i></button>
                         </td>
                         
                       </tr>`;
@@ -290,6 +310,33 @@ function buscarAdocao() {
       });
   }
 }
+
+function buscarAnos() {
+  const filtroAno = document.getElementById("filtroAno");
+  const url = "http://localhost:8080/apis/adocao/buscarAno";
+  fetch(url, {
+    method: 'GET',
+    redirect: "follow"
+  })
+    .then((response) => {
+      return response.json(); 
+    })
+    .then(function (json) 
+    {
+     
+      let options = "<option value=''>Todos os anos</option>";
+      for (let i = 0; i < json.length; i++) 
+      {
+        options += `<option value="${json[i]}">${json[i]}</option>`;
+      }
+      filtroAno.innerHTML = options;
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
+    
+}
+
 function solicitarAdocao(id)
 {
   
@@ -576,11 +623,11 @@ function cadAdocao() {
 }
 function excluirAdocao(id, status) {
   
-  if (status != "Pendente")
+  if (status != "Pendente" && status != "Aprovada")
   {
     Swal.fire({
-      title: "Você tem certeza ?",
-      text: "Você não poderá reverter isso!",
+      title: "Deseja apagar está solicitação de adoção ?",
+      text: "Não poderá reverter isso!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -630,7 +677,7 @@ function excluirAdocao(id, status) {
     var formData = new FormData();
 
     Swal.fire({
-      title: "Deseja cancelar esta solicitação de adoção?",
+      title: "Deseja cancelar está solicitação de adoção ?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
