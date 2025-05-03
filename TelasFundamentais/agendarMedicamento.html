@@ -13,7 +13,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-  <link rel="stylesheet" href="../css/telasCad.css" />
   <script src="../ControllerJs/agendamentoController.js"> </script>
 
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.min.css" rel="stylesheet">
@@ -23,6 +22,27 @@
 
   <!--css menu-->
   <link rel="stylesheet" href="../css/index.css" />
+  <style>
+    .bg-white {
+      background-color: #fff !important;
+    }
+
+    .object-fit-cover {
+      object-fit: cover;
+    }
+
+    .card-select.border-primary {
+      border: 2px solid #0d6efd;
+      box-shadow: 0 0 5px rgba(13, 110, 253, 0.5);
+    }
+
+    #btnBuscarAnimal {
+    
+    height: 100%; /* iguala a altura do input */
+}
+
+
+  </style>
 </head>
 
 <body onload="carregarAgendamentos()">
@@ -94,20 +114,26 @@
     <h2 class="mb-4">Agendar Medicamento(s)</h2>
 
     <form id="formAgendamento" data-id="">
+
       <!-- Animal -->
       <div class="mb-3">
         <label class="form-label">Animal:</label><br />
 
         <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
-          data-bs-target="#modalAnimais">Selecionar Animal</button>
+          data-bs-target="#modalAnimais">
+          Selecionar Animais
+        </button>
         <div id="animalSelecionado" class="mt-2 preview-box d-none"></div>
       </div>
 
       <!-- Medicamento -->
       <div class="mb-3">
         <label class="form-label">Medicamento:</label><br />
+
         <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
-          data-bs-target="#modalMedicamentos">Selecionar Medicamento</button>
+          data-bs-target="#modalMedicamentos">
+          Selecionar Medicamento
+        </button>
         <div id="medicamentoSelecionado" class="mt-2 preview-box d-none"></div>
       </div>
 
@@ -140,6 +166,16 @@
   <main class="container container-box mt-5">
     <!-- Tabela de Agendamentos -->
     <h2 class="mb-4">Agendamentos Cadastrados</h2>
+
+    <!-- barra pesquisa-->
+    <div class="input-group mb-3 " style="max-width: 400px;">
+      <input type="text" class="form-control" id="filtroAgendamento" placeholder="Filtrar por nome do animal">
+      <button class="btn btn-outline-primary" style="height: 100%;" type="button" onclick="carregarAgendamentos()">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+
+
     <table class="table">
       <thead>
         <tr>
@@ -164,7 +200,36 @@
           <h5 class="modal-title">Selecionar Animal</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-        <div class="modal-body row" id="listaAnimais"></div>
+
+
+
+        <!-- barra pesquisa -->
+        <div class="input-group mb-3 mx-auto" style="max-width: 400px;">
+          <input type="text" class="form-control" id="filtro" placeholder="Filtrar por nome do animal">
+          <button class="btn btn-outline-primary" style="height: 100%;" type="button" id="btnBuscarAnimal">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+
+
+
+        <!-- Corpo com os cartões dos animais -->
+        <div class="modal-body row" id="listaAnimais">
+          <!-- Os cards dos animais são inseridos via JS -->
+        </div>
+
+        <!-- Rodapé com botões -->
+        <div class="modal-footer d-flex justify-content-between">
+
+          <button type="button" class="btn btn-outline-secondary" onclick="voltarSelecaoAnimais()"
+            data-bs-dismiss="modal">
+            Voltar
+          </button>
+
+          <button type="button" class="btn btn-primary" onclick="confirmarSelecaoAnimais()" data-bs-dismiss="modal">
+            Confirmar Seleção
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -183,6 +248,11 @@
   </div>
 
   <script>
+
+    //quando clicar botao de busca chama a função
+    document.getElementById("btnBuscarAnimal").addEventListener("click", () => {
+      carregarAnimais();
+    });
 
     document.addEventListener("DOMContentLoaded", function () {
       const botao = document.getElementById('botaoNotificacoes');
@@ -245,4 +315,5 @@
 
   </script>
 </body>
+
 </html>
