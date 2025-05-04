@@ -261,3 +261,26 @@ input[type="text"]:focus {
     font-weight: bold; /* Destaca o título */
     color: #333; /* Cor do título */
   }
+  .empty-container {
+    display: flex;
+    flex-direction: column; /* Coloca o ícone e o texto em coluna */
+    align-items: center;    /* Centraliza horizontalmente */
+    justify-content: center; /* Centraliza verticalmente */
+    padding: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.empty-container i {
+    font-size: 3rem; /* Tamanho do ícone */
+    color: #6c757d;  /* Cor do ícone */
+    margin-bottom: 1rem; /* Espaço entre o ícone e o texto */
+}
+
+.empty-container p {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: #6c757d;
+    text-align: center;
+}
