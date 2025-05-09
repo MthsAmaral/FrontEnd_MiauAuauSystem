@@ -1,0 +1,240 @@
+/* === VARIÁVEIS DE CORES === */
+:root {
+  --cor-clara: #f5f5f5;/* Cor de fundo clara */
+  --cor-verde-claro: #cdeeea;/* Cor verde clara */
+  --cor-caramelo: #d3a96a;/* Cor caramelo */
+  --cor-petroleo: #073b4c;/* Cor petróleo (escuro) */
+  --cor-destaque: #d5a96c;/* Cor de destaque (tom de caramelo claro) */
+  --cor-caramelo-claro: #e6bb7e;/* Cor caramelo claro */
+}
+
+/* === ESTILO GLOBAL === */
+body {
+  background-color: var(--cor-verde-claro);/* Define o fundo da página como a cor verde clara */
+  font-family: 'Poppins', sans-serif;/* Define a fonte padrão da página */
+  margin: 0;/* Remove as margens padrão */
+  padding: 0;/* Remove o padding padrão */
+}
+
+/* === CONTAINER PRINCIPAL === */
+.container-box {
+  background-color: var(--cor-clara);/* Define o fundo do container como a cor clara */
+  border-radius: 20px;/* Bordas arredondadas de 20px */
+  padding: 30px;/* Espaçamento interno de 30px */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);/* Sombra suave ao redor do container */
+}
+
+/* === TÍTULO === */
+h2 {
+  color: var(--cor-petroleo);/* Define a cor do título como petróleo */
+  font-weight: 700;/* Define o peso da fonte como negrito */
+  margin-bottom: 20px;/* Define uma margem inferior de 20px */
+  text-shadow: 3px 3px 6px rgba(211, 169, 106, 0.7);/* Adiciona uma sombra no texto com tom de caramelo */
+}
+
+/* === ESTILOS DO FORMULÁRIO === */
+.form-label {
+  font-weight: 500;/* Define o peso da fonte das labels como médio */
+  color: var(--cor-petroleo);/* Define a cor da fonte das labels como petróleo */
+}
+
+.form-control {
+  border-radius: 10px;/* Bordas arredondadas de 10px */
+  border: 1px solid #ccc;/* Borda de 1px com cor cinza clara */
+  padding: 10px;/* Espaçamento interno de 10px */
+  transition: border-color 0.3s;/* Transição suave para a cor da borda */
+}
+
+.form-control:focus {
+  border-color: var(--cor-caramelo);/* Muda a cor da borda para caramelo quando o campo está em foco */
+  box-shadow: 0 0 5px rgba(211, 169, 106, 0.5);/* Adiciona uma sombra suave no foco */
+}
+
+/* === BOTÕES === */
+.btn {
+  padding: 10px 22px;/* Padding de 10px vertical e 22px horizontal */
+  border-radius: 25px;/* Bordas arredondadas de 25px */
+  font-weight: 600;/* Peso da fonte dos botões em semi-negrito */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);/* Sombra suave ao redor do botão */
+  display: inline-flex;/* Define o botão como flexível em linha */
+  align-items: center;/* Alinha os itens dentro do botão no centro */
+  gap: 8px;/* Espaçamento de 8px entre os itens */
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;/* Transição suave para transformações, sombra e cor de fundo */
+}
+
+.btn-primary {
+  background: linear-gradient(to right, var(--cor-caramelo), var(--cor-caramelo-claro));/* Gradiente de caramelo para caramelo claro no fundo */
+  border: none;/* Remove a borda */
+  color: var(--cor-petroleo);/* Define a cor da fonte como petróleo */
+}
+
+.btn-primary:hover {
+  background: linear-gradient(to right, #c49a5d, #dbac6d);/* Alteração do gradiente para tons mais escuros de caramelo no hover */
+  transform: translateY(-4px);/* Eleva o botão ao passar o mouse sobre ele */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);/* Aumenta a sombra quando o botão é pressionado */
+}
+
+.btn-secondary {
+  background: linear-gradient(to right, #cdeeea, #e2f8f5);/* Gradiente de verde claro para azul claro no fundo */
+  border: none;/* Remove a borda */
+  color: var(--cor-petroleo);/* Define a cor da fonte como petróleo */
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(to right, #b6d9d6, #d2f0ed);/* Alteração do gradiente para tons mais claros de verde e azul */
+  transform: translateY(-4px);/* Eleva o botão no hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);/* Aumenta a sombra no hover */
+}
+
+/* === SELEÇÃO CARAMELO === */
+select.form-control {
+  /*background-color: var(--cor-verde-claro);*/
+  /* Comentado, mas se fosse usado, definiria o fundo do select como verde claro */
+  color: var(--cor-petroleo);/* Define a cor do texto do select como petróleo */
+}
+
+/* Aplica estilo aos SELECTs com aparência de dropdown bonito */
+select.form-control {
+  appearance: none;/* Remove o estilo nativo do select */
+  -webkit-appearance: none;/* Remove o estilo nativo no WebKit */
+  -moz-appearance: none;/* Remove o estilo nativo no Firefox */
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23073b4c" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');/* Adiciona um ícone de seta para baixo no select */
+  background-repeat: no-repeat;/* Não repete a imagem do ícone */
+  background-position: right 1rem center;/* Posiciona o ícone à direita com 1rem de distância */
+  background-size: 1rem;/* Define o tamanho do ícone */
+  padding-right: 2.5rem;/* Adiciona um padding extra à direita para o ícone */
+  cursor: pointer;/* Muda o cursor para uma mão ao passar sobre o select */
+}
+
+select.form-control option:checked {
+  background-color: var(--cor-verde-claro);/* Muda o fundo da opção selecionada para verde claro */
+}
+
+/* === RESPONSIVIDADE === */
+@media (max-width: 768px) {
+  .container-box {
+    padding: 20px;/* Reduz o padding do container para 20px em telas pequenas */
+  }
+
+  h2 {
+    font-size: 1.5rem;/* Reduz o tamanho da fonte do título */
+  }
+
+  .form-control {
+    padding: 8px;/* Reduz o padding dos campos de formulário */
+  }
+
+  .btn {
+    padding: 8px 16px;/* Reduz o padding dos botões */
+  }
+}
+
+/* === ESTILOS PARA TELAS MUITO PEQUENAS === */
+@media (max-width: 576px) {
+  h2 {
+    font-size: 1.3rem;/* Reduz o tamanho da fonte do título em telas menores */
+  }
+
+  .form-label {
+    font-size: 0.9rem;/* Reduz o tamanho da fonte das labels */
+  }
+
+  .form-control {
+    font-size: 0.9rem;/* Reduz o tamanho da fonte dos campos de formulário */
+  }
+
+  .btn {
+    width: 100%;/* Faz os botões ocuparem toda a largura disponível */
+    font-size: 0.9rem;/* Reduz o tamanho da fonte do botão */
+  }
+}
+
+/* === ESTILOS DE ERRO === */
+.input-error {
+  border-color: red;/* Muda a cor da borda para vermelho em caso de erro */
+}
+
+.error-message {
+  color: red;/* Define a cor da mensagem de erro como vermelho */
+  font-size: 0.9rem;/* Define o tamanho da fonte da mensagem de erro */
+  margin-top: 5px;/* Adiciona uma margem superior de 5px */
+}
+
+.file-upload-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  height: 50px;
+  border: 2px dashed #007bff;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.file-upload-wrapper:hover {
+  background-color: #eef4ff;
+  border-color: #0056b3;
+}
+
+.file-upload-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  padding: 0 15px;
+  color: #007bff;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.file-upload-wrapper input[type="file"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.upload-icon {
+  flex-shrink: 0;
+  color: #007bff;
+}
+
+.file-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-select {
+  transition: transform 0.2s, box-shadow 0.2s;/* Animação para suavizar o efeito */
+  cursor: pointer;/* Define o cursor como "selecionando" */
+}
+
+.card-select:hover {
+  transform: scale(1.05);/* Aumenta ligeiramente o tamanho do card */
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);/* Adiciona uma sombra */
+  border: 2px solid #007bff;/* Destaca a borda com cor azul */
+}
+
+.card-select img {
+  width: 100%;/* Faz a imagem ocupar toda a largura disponível do card */
+  height: 220px;
+  object-fit: cover;/* Garante que a imagem preencha o espaço sem distorcer */
+}
+
+/* AJUSTA TAMANHO DAS CÈLULAS FORMULARIO
+.form-control.form-sm {
+  font-size: 0.85rem;  
+  padding: 4px 8px;  
+  height: 32px;  
+}
+*/

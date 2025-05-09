@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Usuário</title>
+
+  <!--Fonte-->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!--Alerts-->
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.min.css" rel="stylesheet"></link>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.all.min.js"></script>
+
+  <!--Imports Locais-->
+  <script src="../ControllerJs/usuarioController.js"></script>
+  <link rel="stylesheet" href="../css/styleNavBar.css" />
+  <link rel="stylesheet" href="../css/telasCad.css" />
+
+  <script>
+    window.addEventListener("DOMContentLoaded", function () {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('cod');
+      if (id) {
+        buscarUsuarioPeloId(id);
+      }
+    });
+  </script>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="../indexAdm.html">
+        Sistema MiauAuau
+        <img src="../img/logo.png" alt="Logo Sistema MiauAuau" style="max-height: 50px;">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto me-auto central-navbar">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Operações</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="../TelasFundamentais/agendarMedicamento.html">Agendar Medicamento</a>
+              <li><a class="dropdown-item" href="../TelasFundamentais/realizarLancamentos.html">Realizar Lançamento</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Cadastro</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="../TelasCadastros/cadAnimal.html">Animal</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadAdocao.html">Adoção</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadTipoLancamento.html">Tipo de Lançamento</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadTipoMedicamento.html">Tipo de Medicamento</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadTipoPagamento.html">Tipo de Pagamento</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadUsuario.html">Usuário</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Gerenciar</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenAdocao.html">Adoção</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenAnimais.html">Animal</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenciarDoacoes.html">Doação</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenLancamentos.html">Lançamentos</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoLancamentos.html">Tipo de Lançamento</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenMedicamentos.html">Tipo de Medicamento</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Tipo de Pagamento</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenUsuarios.html">Usuário</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Login</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Entrar</a></li>
+              <li><a class="dropdown-item" href="#">Sair</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container container-box mt-5">
+    <h2 class="mb-4">Cadastro de Usuário</h2>
+
+    <form method="post" id="fusuario" enctype="multipart/form-data">
+      <input type="hidden" id="cod" name="cod">
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="nome" class="form-label">Nome</label>
+          <input type="text" class="form-control form-control-sm" id="nome" name="nome" placeholder="Nome do usuário" required>
+        </div>
+        <div class="col-md-6">
+          <label for="email" class="form-label">Email</label>
+          <input type="text" class="form-control form-control-sm" id="email" name="email" placeholder="Insira o seu email" required>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <label for="senha" class="form-label">Senha</label>
+          <input type="password" class="form-control form-control-sm" id="senha" name="senha" placeholder="Insira sua senha" required>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label for="telefone" class="form-label">Telefone</label>
+          <input type="text" class="form-control form-control-sm" id="telefone" name="telefone" placeholder="Insira seu telefone" required>
+        </div>
+        <div class="col-md-4">
+          <label for="cpf" class="form-label">CPF</label>
+          <input type="text" class="form-control form-control-sm" id="cpf" name="cpf" placeholder="Informe seu CPF" required>
+        </div>
+        <div class="col-md-4">
+          <label for="privilegio" class="form-label">Privilégio</label>
+          <select class="form-control form-control-sm" id="privilegio" name="privilegio" required>
+            <option hidden selected>Selecione</option>
+            <option value="A">ADM</option>
+            <option value="C">Comum</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label for="sexo" class="form-label">Sexo</label>
+          <select class="form-control form-control-sm" id="sexo" name="sexo" required>
+            <option hidden selected>Selecione</option>
+            <option value="M">Masculino</option>
+            <option value="F">Feminino</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="cep" class="form-label">CEP</label>
+          <input type="text" class="form-control form-control-sm" id="cep" name="cep" placeholder="CEP" required>
+        </div>
+        <div class="col-md-4">
+          <label for="rua" class="form-label">Rua</label>
+          <input type="text" class="form-control form-control-sm" id="rua" name="rua" placeholder="Rua" required>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="bairro" class="form-label">Bairro</label>
+          <input type="text" class="form-control form-control-sm" id="bairro" name="bairro" placeholder="Bairro" required>
+        </div>
+        <div class="col-md-6">
+          <label for="numero" class="form-label">Número</label>
+          <input type="text" class="form-control form-control-sm" id="numero" name="numero" placeholder="Número" required>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="cidade" class="form-label">Cidade</label>
+          <input type="text" class="form-control form-control-sm" id="cidade" name="cidade" placeholder="Cidade" required>
+        </div>
+        <div class="col-md-6">
+          <label for="estado" class="form-label">Estado</label>
+          <input type="text" class="form-control form-control-sm" id="estado" name="estado" placeholder="Estado" required>
+        </div>
+      </div>
+
+      <div class="d-flex gap-3 mt-4">
+        <button type="button" class="btn btn-primary" onclick="validarCampos()">Confirmar</button>
+        <button class="btn btn-secondary" onclick="history.back()"><i class="bi bi-arrow-left"></i>Voltar</button>
+      </div>
+    </form>
+  </main>
+</body>
+
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Pagamento via Pix</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--Fonte-->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!--Alerts-->
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.min.css" rel="stylesheet"></link>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.all.min.js"></script>
+
+  <!--Inports Locais-->
+  <link rel="stylesheet" href="../css/styleNavBar.css">
+  <link rel="stylesheet" href="../css/telasGer.css">
+
+  <script>
+    function copiarPix() {
+      navigator.clipboard.writeText("12.345.678/0001-90");
+      alert("Chave Pix copiada!");
+    }
+  </script>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="../indexAdm.html">
+        Sistema MiauAuau
+        <img src="../img/logo.png" alt="Logo Sistema MiauAuau" style="max-height: 50px;">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto me-auto central-navbar">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Operações</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="../TelasFundamentais/agendarMedicamento.html">Agendar Medicamento</a>
+              <li><a class="dropdown-item" href="../TelasFundamentais/realizarLancamentos.html">Realizar Lançamento</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Cadastro</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="../TelasCadastros/cadAnimal.html">Animal</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadAdocao.html">Adoção</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadTipoLancamento.html">Tipo de Lançamento</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadTipoMedicamento.html">Tipo de Medicamento</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadTipoPagamento.html">Tipo de Pagamento</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadUsuario.html">Usuário</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Gerenciar</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenAdocao.html">Adoção</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenAnimais.html">Animal</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenciarDoacoes.html">Doação</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenLancamentos.html">Lançamentos</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoLancamentos.html">Tipo de Lançamento</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenMedicamentos.html">Tipo de Medicamento</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Tipo de Pagamento</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenUsuarios.html">Usuário</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Login</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Entrar</a></li>
+              <li><a class="dropdown-item" href="#">Sair</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Tela Pix -->
+  <main class="container container-box text-center mt-5">
+    <h2 class="mb-4">Pagamento via Pix</h2>
+
+    <div class="d-flex flex-column align-items-center gap-4">
+      <div>
+        <h5>Chave Pix (CNPJ)</h5>
+        <p>12.345.678/0001-90</p>
+        <p onclick="copiarPix()" class="fs-5 fw-bold text-primary" style="cursor: pointer;">
+            Copiar pix
+        </p>
+      </div>
+
+      <div>
+        <h5>QR Code para pagamento</h5>
+        <img src="../img/qrcode_exemplo.png" alt="QR Code Pix" class="rounded border border-secondary" style="width: 250px; height: 250px;">
+      </div>
+
+      <div>
+        <button class="btn btn-secondary mt-4" onclick="history.back()">Voltar</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

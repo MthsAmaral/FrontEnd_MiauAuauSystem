@@ -1,0 +1,127 @@
+/* === VARIÁVEIS DE CORES === */
+:root {
+    --cor-clara: #f5f5f5;          /* Cor de fundo clara usada em elementos como dropdown */
+    --cor-verde-claro: #cdeeea;     /* Cor de fundo principal do body */
+    --cor-caramelo: #d3a96a;        /* Cor usada em botões e cabeçalhos de tabela */
+    --cor-petroleo: #073b4c;        /* Cor escura usada na navbar e textos */
+    --cor-destaque: #d5a96c;        /* Cor para destacar um item no menu */
+}
+
+/* === ESTILO GLOBAL === */
+body {
+    background-color: var(--cor-verde-claro); /* Cor de fundo da página */
+    font-family: 'Poppins', sans-serif;       /* Fonte principal da página */
+    margin: 0;                                /* Remove margens externas padrão */
+    padding: 0;                               /* Remove preenchimentos internos padrão */
+}
+
+
+/* === CONTAINER PRINCIPAL DE CONTEÚDO === */
+.container-box {
+    background-color: var(--cor-clara);           /* Fundo claro */
+    border-radius: 20px;                          /* Cantos arredondados */
+    padding: 30px;                                /* Espaço interno */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);     /* Sombra leve para profundidade */
+}
+
+/* === TÍTULOS === */
+h2 {
+    color: var(--cor-petroleo);                  /* Cor escura para contraste */
+    font-weight: 700;                            /* Negrito */
+    margin-bottom: 20px;                         /* Espaço abaixo */
+    text-shadow: 3px 3px 6px rgba(211, 169, 106, 0.7); /* Sombra suave com tom caramelo */
+}
+
+/* === CAMPOS DE TEXTO === */
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    transition: border-color 0.3s, box-shadow 0.3s; /* Transições suaves ao focar */
+}
+
+input[type="text"]:focus {
+    border-color: var(--cor-caramelo);           /* Cor de borda ao focar */
+    box-shadow: 0 0 5px rgba(211, 169, 106, 0.5); /* Sombra caramelo leve */
+}
+
+/* === TABELA === */
+.table {
+    width: 100%;
+    border-collapse: collapse; /* Remove espaçamentos entre bordas */
+}
+
+.table th,
+.table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd; /* Linha inferior clara */
+}
+
+.table th {
+    background-color: var(--cor-caramelo-claro); /* Cor para o cabeçalho */
+    color: var(--cor-petroleo);                 /* Texto escuro */
+    font-weight: 600;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;                  /* Alternância de cores nas linhas */
+}
+
+/* === BOTÕES === */
+.btn {
+    padding: 10px 22px;
+    border-radius: 25px;              /* Botões arredondados */
+    font-weight: 600;                 /* Negrito */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra leve */
+    display: inline-flex;             /* Permite ícones + texto lado a lado */
+    align-items: center;              /* Centraliza verticalmente */
+    gap: 8px;                         /* Espaço entre ícone e texto */
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(to right, var(--cor-caramelo), var(--cor-caramelo-claro));
+    border: none;
+    color: var(--cor-petroleo);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(to right, #c49a5d, #dbac6d); /* Tom mais escuro no hover */
+    transform: translateY(-4px); /* Efeito de "elevar" o botão */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-secondary {
+    background: linear-gradient(to right, #cdeeea, #e2f8f5);
+    border: none;
+    color: var(--cor-petroleo);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(to right, #b6d9d6, #d2f0ed);
+    transform: translateY(-4px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.queroadotar {
+    background-color: orange; /* Cor amarela mais suave com opacidade */
+    color: white; /* Cor do texto escuro */
+    padding: 12px 16px; /* Espaçamento interno */
+    border-radius: 20px; /* Bordas arredondadas */
+    text-align: center; /* Alinha o texto ao centro */
+    font-weight: bold; /* Texto em negrito */
+    text-decoration: none; /* Remove o sublinhado */
+    display: inline-block; /* Permite que o link seja tratado como um bloco */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Transições suaves */
+    margin-right: 10px;
+}
+
+/* Efeito ao passar o mouse sobre o link "Quero Adotar" */
+.queroadotar:hover {
+    background-color: rgba(255, 165, 0, 0.8); /* Muda para uma cor amarela mais forte */
+    color: white; /* Muda o texto para branco */
+    transform: scale(1.05); /* Aumenta o tamanho do link suavemente */
+}
