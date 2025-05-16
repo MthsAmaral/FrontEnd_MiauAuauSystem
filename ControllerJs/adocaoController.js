@@ -341,6 +341,288 @@ function buscarAnimalAdocao() {
   }
 
 }
+
+function buscarAnimalAdocaoVersaoGabriel() {
+
+  const filtroCor = document.getElementById("filtroCor").value;
+  const filtroEspecie = document.getElementById("filtroEspecie").value;
+  const filtroSexo = document.getElementById("filtroSexo").value;
+  const filtroRaca = document.getElementById("filtroRaca").value;
+  
+  let filtro = ""; 
+  let aux = ""; 
+  
+
+  if (filtroCor.length > 0)
+  {
+    aux = aux + filtroCor;
+  } 
+  else 
+  {
+    aux = aux + " "; 
+  }
+  
+  if (filtroEspecie.length > 0)
+  {
+    if (aux.trim().length > 0) 
+    {
+      aux = aux + " " + filtroEspecie;
+    } 
+    else 
+    {
+      aux = aux + filtroEspecie;
+    }
+  } 
+  else
+  {
+    aux = aux + " ";
+  }
+  
+  if (filtroSexo.length > 0)
+  {
+    if (aux.trim().length > 0)
+    {
+      aux = aux + " " + filtroSexo; 
+    } 
+    else
+    {
+      aux = aux + filtroSexo;
+    }
+  } else {
+    aux = aux + " "; 
+  }
+  
+  if (filtroRaca.length > 0) 
+  {
+    if (aux.trim().length > 0)
+    {
+      aux = aux + " " + filtroRaca;
+    } 
+    else 
+    {
+      aux = aux + filtroRaca;
+    }
+  } else {
+    aux = aux + " "; 
+  }
+  
+  if(aux.trim().length > 0)
+  {
+    filtro = aux;
+  }
+  
+  const container = document.getElementById("resultado");
+  container.innerHTML = "";
+  if (filtro.length <= 0) 
+  {
+    const url = "http://localhost:8080/apis/animal/buscar-filtro/%20";
+    fetch(url, {
+      method: 'GET', redirect: "follow"
+    })
+      .then((response) => {
+        return response.text();
+      })
+      .then(function (text) {
+        var json = JSON.parse(text); // Converte a resposta JSON
+        for (let i = 0; i < json.length; i++) {
+          if (json[i].adotado == 'Não') {
+            const dataNascimento = new Date(json[i].dataNascimento);
+            const hoje = new Date();
+
+            let diferencaAno = hoje.getFullYear() - dataNascimento.getFullYear();
+            if (hoje.getMonth() < dataNascimento.getMonth() || (hoje.getMonth() === dataNascimento.getMonth() && hoje.getDate() < dataNascimento.getDate())) {
+              diferencaAno--;
+            }
+
+            let diferencaMes = 0;
+            let diferencaDias = 0;
+
+            if (diferencaAno === 0) {
+              diferencaMes = hoje.getMonth() - dataNascimento.getMonth();
+              if (hoje.getDate() < dataNascimento.getDate()) {
+                diferencaMes--;
+              }
+              if (diferencaMes < 0) {
+                diferencaMes += 12;
+              }
+
+              const inicioMes = new Date(hoje.getFullYear(), hoje.getMonth(), 0);
+              diferencaDias = Math.abs(
+                Math.floor((hoje - dataNascimento) / (1000 * 60 * 60 * 24))
+              );
+            }
+
+            let idade;
+            if (diferencaAno > 0) {
+              if (diferencaAno > 1)
+                idade = `${diferencaAno} anos`;
+              else
+                idade = `${diferencaAno} ano`;
+            }
+            else if (diferencaMes > 0) {
+              if (diferencaMes > 1)
+                idade = `${diferencaMes} meses`;
+              else
+                idade = `${diferencaMes} mes`;
+            }
+            else if (diferencaDias > 0) {
+              if (diferencaDias > 1)
+                idade = `${diferencaDias} dias`;
+              else
+                idade = `${diferencaDias} dia`;
+            } else {
+              idade = "Recém-nascido";
+            }
+            container.innerHTML += `
+            <div class="animal-card">
+            <img src="data:image/jpeg;base64,${json[i].imagemBase64}" alt="Animal" />
+            <div class="animal-info">
+              <h3>${json[i].nome}</h3>
+              <div class="tags">
+                <div class="tag"><i class="fas fa-venus-mars"></i> ${json[i].sexo}</div>
+                <div class="tag"><i class="fas fa-cut"></i> ${json[i].castrado}</div>
+                <div class="tag"><i class="fas fa-birthday-cake"></i> ${idade}</div>
+                <div class="tag"><i class="fas fa-weight"></i> ${json[i].peso} kg</div>
+              </div>
+        
+              <div class="details">
+                <p><i class="fas fa-paw"></i> <strong>Espécie:</strong> ${json[i].especie}</p>
+                <p><i class="fas fa-dna"></i> <strong>Raça:</strong> ${json[i].raca}</p>
+                <p><i class="fas fa-palette"></i> <strong>Cor:</strong> ${json[i].cor}</p>
+              </div>
+        
+              <button class="adopt-btn2">Quero Adotar</button>
+            </div>
+          </div>
+            `
+          }
+
+        }
+        if (container.innerHTML == "") {
+          container.innerHTML = `
+              <div class="banner_adocao">
+          <div class="banner_texto">
+    
+            <p> No momento, não encontramos nenhum animal disponível para adoção que atenda aos filtros selecionados.</p>
+          </div>
+          <div class="banner_imagem">
+            <img src="../img/animaltriste.jpg" alt="Animal triste" />
+          </div>
+        </div>
+          `;
+      }
+      
+      })
+      .catch(function (error) {
+        console.error(error); // Exibe erros, se houver
+      });
+  }
+  else {
+    const url = "http://localhost:8080/apis/animal/buscar-filtro/"+filtro;
+    fetch(url, {
+      method: 'GET', redirect: "follow"
+    })
+      .then((response) => {
+        return response.text();
+      })
+      .then(function (text) {
+        
+        var json = JSON.parse(text); // Converte a resposta JSON
+        for (let i = 0; i < json.length; i++) {
+          if (json[i].adotado == 'Não') {
+            const dataNascimento = new Date(json[i].dataNascimento);
+            const hoje = new Date();
+
+            let diferencaAno = hoje.getFullYear() - dataNascimento.getFullYear();
+            if (hoje.getMonth() < dataNascimento.getMonth() || (hoje.getMonth() === dataNascimento.getMonth() && hoje.getDate() < dataNascimento.getDate())) {
+              diferencaAno--;
+            }
+
+            let diferencaMes = 0;
+            let diferencaDias = 0;
+
+            if (diferencaAno === 0) {
+              diferencaMes = hoje.getMonth() - dataNascimento.getMonth();
+              if (hoje.getDate() < dataNascimento.getDate()) {
+                diferencaMes--;
+              }
+              if (diferencaMes < 0) {
+                diferencaMes += 12;
+              }
+
+              const inicioMes = new Date(hoje.getFullYear(), hoje.getMonth(), 0);
+              diferencaDias = Math.abs(
+                Math.floor((hoje - dataNascimento) / (1000 * 60 * 60 * 24))
+              );
+            }
+
+            let idade;
+            if (diferencaAno > 0) {
+              if (diferencaAno > 1)
+                idade = `${diferencaAno} anos`;
+              else
+                idade = `${diferencaAno} ano`;
+            }
+            else if (diferencaMes > 0) {
+              if (diferencaMes > 1)
+                idade = `${diferencaMes} meses`;
+              else
+                idade = `${diferencaMes} mes`;
+            }
+            else if (diferencaDias > 0) {
+              if (diferencaDias > 1)
+                idade = `${diferencaDias} dias`;
+              else
+                idade = `${diferencaDias} dia`;
+            } else {
+              idade = "Recém-nascido";
+            }
+            container.innerHTML += `
+            <div class="animal-card">
+            <img src="data:image/jpeg;base64,${json[i].imagemBase64}" alt="Animal" />
+            <div class="animal-info">
+              <h3>${json[i].nome}</h3>
+              <div class="tags">
+                <div class="tag"><i class="fas fa-venus-mars"></i> ${json[i].sexo}</div>
+                <div class="tag"><i class="fas fa-cut"></i> ${json[i].castrado}</div>
+                <div class="tag"><i class="fas fa-birthday-cake"></i> ${idade}</div>
+                <div class="tag"><i class="fas fa-weight"></i> ${json[i].peso} kg</div>
+              </div>
+        
+              <div class="details">
+                <p><i class="fas fa-paw"></i> <strong>Espécie:</strong> ${json[i].especie}</p>
+                <p><i class="fas fa-dna"></i> <strong>Raça:</strong> ${json[i].raca}</p>
+                <p><i class="fas fa-palette"></i> <strong>Cor:</strong> ${json[i].cor}</p>
+              </div>
+        
+              <button class="adopt-btn2">Quero Adotar</button>
+            </div>
+          </div>`
+          }
+
+        }
+        if (container.innerHTML == "") {
+          container.innerHTML = `
+              <div class="banner_adocao">
+          <div class="banner_texto">
+    
+            <p> No momento, não encontramos nenhum animal disponível para adoção que atenda aos filtros selecionados.</p>
+          </div>
+          <div class="banner_imagem">
+            <img src="../img/animaltriste.jpg" alt="Animal triste" />
+          </div>
+        </div>
+          `;
+      }
+      
+      
+      })
+      .catch(function (error) {
+        console.error(error); // Exibe erros, se houver
+      });
+  }
+
+}
 function buscarAdocao() {
   let filtroAno = document.getElementById("filtroAno").value;
   let filtroStatus = document.getElementById("filtroStatus").value;
