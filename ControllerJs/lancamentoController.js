@@ -145,7 +145,7 @@ function selectAnimal(id) {
 function selectDebCred(deb, cred) {
   //realizar a consulta do "Crédito" e "Débito"
   let URL = "";
-  URL = "http://localhost:8080/apis/tipo-pagamento/buscar/%20";
+  URL = "http://localhost:8080/apis/plano-contas-gerencial/buscar/%20";
   fetch(URL, {
     method: 'GET',
     redirect: "follow"
@@ -261,18 +261,6 @@ function validarCadastrar() {
 function cadLancamento() {
   let URL = "http://localhost:8080/apis/lancamento/gravar";
   let formData = new FormData(document.getElementById("formLanc"));
-  console.log(formData);
-
-  //tratar a data, excluir e inserir no formato que quero
-  //formData.delete("data");
-  //console.log(formData);
-  //formData.append("data", document.getElementById("data").value);
-  let dataInput = document.getElementById("data").value;
-  // Converte de "aaaa--dmmd" para "dd/mm/aaaa"
-  //const partes = dataInput.split("-");
-  //const dataFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`;
-  //formData.append("data", dataFormatada);
-  //console.log(formData);
 
   fetch(URL, {
     method: 'POST',
@@ -280,11 +268,9 @@ function cadLancamento() {
   })
     .then((response) => {
       if (response.ok)
-        //setar o local storage
         return response.json();
     })
     .then((json) => {
-      //alert modificado aqui
       Swal.fire({
         icon: "success",
         title: "Lançamento Gravado com Sucesso",
@@ -295,7 +281,6 @@ function cadLancamento() {
         document.getElementById("formLanc").reset();
         window.location.reload(true);
       });
-      //alert("Resposta do servidor: " + JSON.stringify(json));
     })
     .catch((error) => {
       Swal.fire({
@@ -461,17 +446,6 @@ async function editarLancamento() {
   const fLancamento = document.getElementById("formLanc");
   let formData = new FormData(fLancamento);
   document.getElementById("id").disabled = true;
-  console.log(formData);
-
-  //formData.delete("data");
-  //console.log(formData); //exibição sem a data
-  //formData.append("data", document.getElementById("data").value);
-  //let dataInput = document.getElementById("data").value;
-  // Converte de "aaaa-mm-dd" para "dd/mm/aaaa"
-  //const partes = dataInput.split("-");
-  //const dataFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`;
-  //formData.append("data", dataFormatada);
-  //console.log(formData); //exibição com a data formatada
 
   //tratar PDF
   let pdfAtualDiv = document.getElementById("pdfAtual");
@@ -482,7 +456,8 @@ async function editarLancamento() {
     if (pdfInput.files.length > 0) {
       // Há um novo arquivo enviado pelo usuário — usa esse
       formData.set("pdf", pdfInput.files[0]);
-    } else {
+    }
+    else {
       // Nenhum novo arquivo — busca o atual com fetch e adiciona no formData
       let linkPDF = pdfAtualDiv.querySelector("a");
       if (linkPDF) {
@@ -494,10 +469,7 @@ async function editarLancamento() {
           });
       }
     }
-  } else {
-    // pdfAtual está hidden → nada a fazer, não adiciona pdf
   }
-  console.log(formData);
 
   try {
     const response = await fetch(URL, {
@@ -578,8 +550,8 @@ function buscarLancID(id) {
 function buscarLancPeriodo() {
   let URL = "http://localhost:8080/apis/lancamento/buscar";
   let formData = new FormData();
-  formData.append("dataIni", document.getElementById("elementoHTML").value);
-  formData.append("dataFim", document.getElementById("elementoHTML2").value);
+  formData.append("dataIni", document.getElementById("elementoHTML").value); //data inicio
+  formData.append("dataFim", document.getElementById("elementoHTML2").value); //data fim
 
   fetch(URL, {
     method: 'GET',

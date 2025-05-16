@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gerenciar Tipos de Pagamentos</title>
+  <title>Gerenciar Plano de Contas Gerencial</title>
 
   <!--Fonte-->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
@@ -52,9 +52,10 @@
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="../TelasCadastros/cadAnimal.html">Animal</a></li>
               <li><a class="dropdown-item" href="../TelasCadastros/cadAdocao.html">Adoção</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadTipoPagamento.html">Plano de Contas Gerencial</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadPlanoContasReferencial.html">Plano de Contas Referencial</a></li>
               <li><a class="dropdown-item" href="../TelasCadastros/cadTipoLancamento.html">Tipo de Lançamento</a></li>
               <li><a class="dropdown-item" href="../TelasCadastros/cadTipoMedicamento.html">Tipo de Medicamento</a></li>
-              <li><a class="dropdown-item" href="../TelasCadastros/cadTipoPagamento.html">Tipo de Pagamento</a></li>
               <li><a class="dropdown-item" href="../TelasCadastros/cadUsuario.html">Usuário</a></li>
             </ul>
           </li>
@@ -65,9 +66,10 @@
               <li><a class="dropdown-item" href="../TelasGerenciar/gerenAnimais.html">Animal</a></li>
               <li><a class="dropdown-item" href="../TelasGerenciar/gerenciarDoacoes.html">Doação</a></li>
               <li><a class="dropdown-item" href="../TelasGerenciar/gerenLancamentos.html">Lançamentos</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Plano de Contas Gerencial</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Plano de Contas Referencial</a></li>
               <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoLancamentos.html">Tipo de Lançamento</a></li>
               <li><a class="dropdown-item" href="../TelasGerenciar/gerenMedicamentos.html">Tipo de Medicamento</a></li>
-              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Tipo de Pagamento</a></li>
               <li><a class="dropdown-item" href="../TelasGerenciar/gerenUsuarios.html">Usuário</a></li>
             </ul>
           </li>
@@ -85,7 +87,7 @@
 
   <!-- Conteúdo principal -->
   <main class="container container-box mt-5">
-    <h2>Gerenciar Tipos de Pagamentos</h2>
+    <h2>Gerenciar Plano de Contas Gerencial</h2>
 
      <!-- Campo de filtro -->
      <input type="text" id="filtro" placeholder="Filtrar por nome do Lançamento" onkeyup="buscarTipoPagFiltro()">
@@ -97,6 +99,7 @@
           <tr>
             <th>ID</th>
             <th>Descrição</th>
+            <th>Referencial</th>
             <th>Ações</th>
           </tr>
         </thead>

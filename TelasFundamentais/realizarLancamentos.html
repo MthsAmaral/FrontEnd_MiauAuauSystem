@@ -65,7 +65,12 @@
             let msg = document.getElementById("data-msg");
 
             dataInput.addEventListener("change", function () {
-                let dataSelecionada = new Date(dataInput.value);
+                // Dividir a data recebida no formato dd/mm/yyyy
+                let dataArray = dataInput.value.split('/');
+                
+                // Criar a data no formato yyyy-mm-dd
+                let dataSelecionada = new Date(`${dataArray[2]}-${dataArray[1]}-${dataArray[0]}`);
+
                 let hoje = new Date();
                 hoje.setHours(0, 0, 0, 0); // Ignora hora na comparação
 
@@ -108,9 +113,10 @@
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="../TelasCadastros/cadAnimal.html">Animal</a></li>
                   <li><a class="dropdown-item" href="../TelasCadastros/cadAdocao.html">Adoção</a></li>
+                  <li><a class="dropdown-item" href="../TelasCadastros/cadTipoPagamento.html">Plano de Contas Gerencial</a></li>
+                  <li><a class="dropdown-item" href="../TelasCadastros/cadPlanoContasReferencial.html">Plano de Contas Referencial</a></li>
                   <li><a class="dropdown-item" href="../TelasCadastros/cadTipoLancamento.html">Tipo de Lançamento</a></li>
                   <li><a class="dropdown-item" href="../TelasCadastros/cadTipoMedicamento.html">Tipo de Medicamento</a></li>
-                  <li><a class="dropdown-item" href="../TelasCadastros/cadTipoPagamento.html">Tipo de Pagamento</a></li>
                   <li><a class="dropdown-item" href="../TelasCadastros/cadUsuario.html">Usuário</a></li>
                 </ul>
               </li>
@@ -121,9 +127,10 @@
                   <li><a class="dropdown-item" href="../TelasGerenciar/gerenAnimais.html">Animal</a></li>
                   <li><a class="dropdown-item" href="../TelasGerenciar/gerenciarDoacoes.html">Doação</a></li>
                   <li><a class="dropdown-item" href="../TelasGerenciar/gerenLancamentos.html">Lançamentos</a></li>
+                  <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Plano de Contas Gerencial</a></li>
+                  <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Plano de Contas Referencial</a></li>
                   <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoLancamentos.html">Tipo de Lançamento</a></li>
                   <li><a class="dropdown-item" href="../TelasGerenciar/gerenMedicamentos.html">Tipo de Medicamento</a></li>
-                  <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Tipo de Pagamento</a></li>
                   <li><a class="dropdown-item" href="../TelasGerenciar/gerenUsuarios.html">Usuário</a></li>
                 </ul>
               </li>
@@ -137,7 +144,7 @@
             </ul>
           </div>
         </div>
-    </nav>
+      </nav>
 
     <!--Parte do Formulário-->
     <div class="container container-box mt-5 mb-5">
