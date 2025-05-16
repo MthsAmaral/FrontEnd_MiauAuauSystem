@@ -777,3 +777,58 @@ footer {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
 }
+/* Dropdown geral */
+.nav-item.dropdown {
+  position: relative;
+}
+
+.nav-link.dropdown-toggle {
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+  position: relative;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-link.dropdown-toggle:hover {
+  color: #d5a96c;
+}
+
+/* Estilo do menu dropdown */
+.dropdown-menu {
+  display: none; /* Esconde o menu inicialmente */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #073b4c; /* Mesma cor da barra de navegação */
+  padding: 1rem 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  z-index: 1000;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* Mostra o menu ao passar o mouse */
+.nav-item.dropdown:hover .dropdown-menu {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Itens dentro do menu */
+.dropdown-item {
+  color: #ffffff;
+  padding: 0.8rem 1.5rem;
+  text-decoration: none;
+  font-weight: 600;
+  display: block;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #d5a96c;
+  color: #073b4c;
+}
