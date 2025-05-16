@@ -6,30 +6,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <title>Página Inicial</title>
-  <link rel="stylesheet" href="css/indexGege.css" />
+  <link rel="stylesheet" href="css/indexNovo.css"/>
 </head>
 
 <body>
   <nav class="navbar">
     <a href="index.html" style="text-decoration: none;"><div class="logo-container">
+      <span class="logo-text">Grupo MiauAuau</span>
       <img src="img/logo.png" alt="Sistema MiauAuau" class="logo" />
-      <span class="logo-text">MiauAuau</span>
     </div></a>
     <ul class="nav-links">
       <li><a href="#">Início</a></li>
       <li><a href="#">Sobre</a></li>
       <li><a href="#">Serviços</a></li>
       <li><a href="#">Contato</a></li>
-      <li><a href="indexAdm.html">Logar</a></li>
+      <li><a href="indexAdm.html">Acesso Restrito</a></li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Acesse sua conta</a>
+        <ul class="dropdown-menu custom-dropdown-menu">
+          <li><a class="dropdown-item" href="./TelasFundamentais/telaLogin.html">Entrar</a></li>
+          <li><a class="dropdown-item" href="#">Sair</a></li>
+        </ul>
+      </li>
     </ul>
   </nav>
   <main>
-    <section class="carrosel">
+
+    <div class="carrosel">
         <div class="carousel-container">
             <div class="carousel">
-              <img src="banner1.png" class="carousel-slide active" alt="Banner 1">
-              <img src="banner2.png" class="carousel-slide" alt="Banner 2">
-              <img src="banner3.png" class="carousel-slide" alt="Banner 3">
+              <img src="img/banner1.png" class="carousel-slide active" alt="Banner 1">
+              <img src="img/banner2.png" class="carousel-slide" alt="Banner 2">
+              <img src="img/banner3.png" class="carousel-slide" alt="Banner 3">
               
               <button class="nav prev">
                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
@@ -71,13 +79,13 @@
     </section>
     <section class="adopt-section">
         <div class="banner-card">
-            <img src="cat.png" alt="Gato para adoção" class="animal-img left">
+            <img src="img/cat.png" alt="Gato para adoção" class="animal-img left">
             <div class="banner-text">
               <h3>Se interessou?</h3>
               <p>Adote um animalzinho e transforme duas vidas: a dele e a sua.</p>
               <button class="adopt-btn" onclick="window.location.href='adocao.html'">Quero Adotar</button>
             </div>
-            <img src="dog.png" alt="Cachorro para adoção" class="animal-img right">
+            <img src="img/dog.png" alt="Cachorro para adoção" class="animal-img right">
           </div> 
     </section>
     <section class="impact-section">
@@ -113,7 +121,7 @@
         <span class="fechar" onclick="fecharModal()">&times;</span>
 
         <div class="modal-banner">
-        <img src="banner_doe.png" alt="">
+        <img src="img/banner_doe.png" alt="">
         </div>
         <h2>Agende Sua Doação aqui!</h2>
         <form action="" method="">
@@ -189,7 +197,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      Desenvolvido por &copy;Grupo do gabriel e gege
+      &copy; 2025 Grupo Miau Au Au.
     </div>
   </footer>
   <button id="scrollTopBtn" onclick="scrollToTop()">
