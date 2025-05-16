@@ -2,10 +2,11 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 body{
   background-color: #f8f0e5;
+
 }
 /* barra de navegação */
 .navbar {
@@ -13,30 +14,72 @@ body{
   justify-content: space-between;
   align-items: center;
   background: #073b4c;
-  padding: 1rem 2rem;
+  padding: 1.35rem 3rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   position: sticky;
   top: 0;
   z-index: 1000;
+  position: relative;
+}
+
+.navbar::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px; 
+  background-color: #d5a96c; 
+  opacity: 2; 
+  z-index: -1; 
 }
 .logo-container {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  position: relative; /* Necessário para o ::after funcionar */
 }
+
 .logo {
   height: 50px;
   width: auto;
+}
+
+.logo-container:hover {
+  color:#d5a96c ;
+  text-shadow: 2px 2px 6px rgba(211, 169, 106, 0.5);
+}
+/* Linha vermelha e efeito hover */
+.logo-container::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  bottom: -8px; left: 0;
+  background-color: #d5a96c;
+  transform: scaleX(0);
+  transform-origin: bottom right;
   transition: transform 0.3s ease;
 }
-.logo:hover {
-  transform: scale(1.1);
+
+.logo-container:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }
+
 .logo-text {
   color: #ffffff;
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+  transition: color 0.3s ease; /* Transição suave para a cor */
 }
+
+.logo-container:hover .logo-text {
+  color: #d5a96c; /* Nova cor quando o mouse está sobre a logo */
+}
+
+
 .nav-links {
   display: flex;
   gap: 2rem;
@@ -45,7 +88,7 @@ body{
 .nav-links a {
   color: #ffffff;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 700;
   position: relative;
   transition: color 0.3s ease;
 }
@@ -56,15 +99,16 @@ body{
   bottom: -4px;
   width: 0%;
   height: 2px;
-  background-color: #f97316; 
+  background-color: #d5a96c; 
   transition: width 0.3s ease-in-out;
 }
 .nav-links a:hover {
-  color: #f97316;
+  color: #d5a96c;
 }
 .nav-links a:hover::after {
   width: 100%;
 }
+
 @media (max-width: 768px) {
   .nav-links {
     display: none;
