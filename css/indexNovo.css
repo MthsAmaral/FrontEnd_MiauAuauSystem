@@ -14,7 +14,7 @@ body{
   justify-content: space-between;
   align-items: center;
   background: #073b4c;
-  padding: 1.35rem 3rem;
+  padding: 1.37rem 3rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   position: sticky;
   top: 0;
@@ -30,7 +30,7 @@ body{
   width: 100%;
   height: 2px; 
   background-color: #d5a96c; 
-  opacity: 2; 
+  opacity: 1; 
   z-index: -1; 
 }
 .logo-container {
@@ -53,9 +53,9 @@ body{
 .logo-container::after {
   content: '';
   position: absolute;
-  width: 100%;
+  width: 111%;
   height: 3px;
-  bottom: -8px; left: 0;
+  bottom: -8px; left: -12px;
   background-color: #d5a96c;
   transform: scaleX(0);
   transform-origin: bottom right;
@@ -68,7 +68,8 @@ body{
 }
 
 .logo-text {
-  color: #ffffff;
+  
+  color: #f5f5f5;
   font-weight: 700;
   font-size: 1.8rem;
   letter-spacing: 1px;
@@ -86,28 +87,34 @@ body{
   list-style: none;
 }
 .nav-links a {
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 700;
+  font-weight: 500;
   position: relative;
-  transition: color 0.3s ease;
+  text-decoration: none; 
+  color: #f5f5f5; 
 }
+
 .nav-links a::after {
   content: '';
   position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 0%;
+  width: 100%;
   height: 2px;
-  background-color: #d5a96c; 
-  transition: width 0.3s ease-in-out;
+  bottom: 0;
+  left: 0;
+  background-color: #d5a96c;
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease;
 }
+
 .nav-links a:hover {
   color: #d5a96c;
 }
+
 .nav-links a:hover::after {
-  width: 100%;
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }
+
 
 @media (max-width: 768px) {
   .nav-links {
@@ -783,24 +790,28 @@ footer {
 }
 
 .nav-link.dropdown-toggle {
-  color: #ffffff;
-  font-weight: 700;
-  cursor: pointer;
-  position: relative;
-  text-decoration: none;
-  transition: color 0.3s ease;
+  display: inline-block;
+  padding: 10px 15px; /* Espaçamento interno */
+  background-color: #d5a96c; /* Cor de fundo */
+  color: #ffffff; /* Cor do texto */
+  border: 2px solid #d5a96c; /* Borda */
+  border-radius: 8px; /* Bordas arredondadas */
+  text-align: center;
+  text-decoration: none; /* Remove o sublinhado */
 }
 
 .nav-link.dropdown-toggle:hover {
-  color: #d5a96c;
+  background-color: #d5a96c; /* Cor de fundo ao passar o mouse */
+  color: #ffffff; /* Cor do texto ao passar o mouse */
 }
 
 /* Estilo do menu dropdown */
 .dropdown-menu {
+  list-style: none;
   display: none; /* Esconde o menu inicialmente */
   position: absolute;
   top: 100%;
-  left: 0;
+  left: -4px;
   background-color: #073b4c; /* Mesma cor da barra de navegação */
   padding: 1rem 0;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -820,15 +831,24 @@ footer {
 
 /* Itens dentro do menu */
 .dropdown-item {
-  color: #ffffff;
-  padding: 0.8rem 1.5rem;
+  white-space: nowrap;
+  color: #f5f5f5;
+  padding: 0.8rem 2.1rem;
   text-decoration: none;
   font-weight: 600;
   display: block;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
-
-.dropdown-item:hover {
-  background-color: #d5a96c;
-  color: #073b4c;
+.acesso-restrito a {
+  
+  display: inline-block; /* Para tornar o link como um bloco e aplicar padding */
+  background-color: red; /* Fundo vermelho */
+  color: white; /* Texto branco */
+  padding: 0.5rem 1rem; /* Espaçamento interno */
+  border-radius: 8px; /* Bordas arredondadas */
+  text-decoration: none; /* Remove sublinhado */
+  font-weight: bold; /* Texto em negrito */
+  transition: background-color 0.3s ease; /* Transição suave ao passar o mouse */
 }
+
+

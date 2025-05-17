@@ -7,7 +7,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <title>Página de Adoção</title>
   <link rel="stylesheet" href="css/indexNovo.css"/>
+  <!-- JS CONTROLER -->
   <script src="./ControllerJs/adocaoController.js"></script>
+  <script src="./ControllerJs/acessoController.js"></script>
+
+  <!-- FONTE -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
 
    <!--Alerts-->
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.min.css" rel="stylesheet"></link>
@@ -15,7 +20,7 @@
 
 </head>
 
-<body onload="buscarAnimalAdocaoVersaoGabriel(); buscarCor(); buscarRaca();">
+<body onload="verificarPrivilegio(); buscarAnimalAdocaoVersaoGabriel(); buscarCor(); buscarRaca();">
   
   <nav class="navbar">
     <a href="index.html" style="text-decoration: none;"><div class="logo-container">
@@ -23,11 +28,17 @@
       <img src="img/logo.png" alt="Sistema MiauAuau" class="logo" />
     </div></a>
     <ul class="nav-links">
+      <li class="nav-item dropdown">
+        <a id="userMenu" class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Acesse sua conta</a>
+        <ul class="dropdown-menu custom-dropdown-menu">
+          <li><a class="dropdown-item" href="./TelasFundamentais/telaLogin.html">Entrar</a></li>
+          <li><a class="dropdown-item" href="./TelasFundamentais/telaCadastro.html">Cadastre-se</a></li>
+        </ul>
+      </li>
       <li><a href="#">Início</a></li>
       <li><a href="#">Sobre</a></li>
       <li><a href="#">Serviços</a></li>
       <li><a href="#">Contato</a></li>
-      <li><a href="indexAdm.html">Acesso Restrito</a></li>
     </ul>
   </nav>
   <main>

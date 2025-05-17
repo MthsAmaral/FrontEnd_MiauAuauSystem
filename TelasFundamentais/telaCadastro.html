@@ -6,7 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cadastro - Sistema MiauAuau</title>
 
-<!-- Bootstrap CSS -->
+  <!-- Meu JS -->
+  <script src="../ControllerJs/acessoController.js"></script>
+
+  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -16,56 +19,63 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
+  <!-- Alerts -->
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.min.css" rel="stylesheet">
+  </link>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.all.min.js"></script>
 </head>
 
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="../index.html">
-        Sistema MiauAuau
-        <img src="../img/logo.png" alt="Logo Sistema MiauAuau" style="max-height: 50px;">
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav ms-auto me-auto central-navbar">
-          <li class=""><a class="queroadotar" href="../TelasFundamentais/solicitarAdocao.html">Quero Adotar</a></li>
-          <li class=""><a class="queroadotar" href="../TelasFundamentais/cadAgendamentoDoacao.html">Quero Doar</a></li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Acesse sua conta</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="./telaLogin.html">Entrar</a></li>
-              <li><a class="dropdown-item" href="#">Sair</a></li>
-            </ul>
-          </li>
-        </ul>
+  <nav class="navbar">
+    <a href="../index.html" style="text-decoration: none;">
+      <div class="logo-container">
+        <span class="logo-text">Grupo MiauAuau</span>
+        <img src="../img/logo.png" alt="Sistema MiauAuau" class="logo" />
       </div>
-    </div>
+    </a>
+    <ul class="nav-links">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Acesse sua conta</a>
+        <ul class="dropdown-menu custom-dropdown-menu">
+          <li><a class="dropdown-item" href="../TelasFundamentais/telaLogin.html">Entrar</a></li>
+          <li><a class="dropdown-item" href="../TelasFundamentais/telaCadastro.html">Cadastre-se</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Início</a></li>
+      <li><a href="#">Sobre</a></li>
+      <li><a href="#">Serviços</a></li>
+      <li><a href="#">Contato</a></li>
+    </ul>
   </nav>
 
   <main class="container mt-5">
     <div class="row justify-content-center">
-      <div class="col-md-6">
+      <div class="col-md-8">
         <div class="card shadow-lg border-0 rounded-4">
           <div class="card-body p-4">
             <h3 class="card-title text-center mb-4">Cadastro de Adotante</h3>
-            <form id="cadastroForm" method="POST" action="#">
+
+            <form id="fusuario" method="post">
+  
               <div class="mb-3">
-                <label for="nome" class="form-label">Nome</label>
-                <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite seu nome" required>
+                <label for="nome" class="form-label">Nome Completo</label>
+                <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite seu nome completo" required>
               </div>
-              <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Digite seu email" required>
-              </div>
-              <div class="mb-3">
-                <label for="senha" class="form-label">Senha</label>
-                <input type="password" class="form-control" id="senha" name="senha" placeholder="Digite sua senha" required>
-              </div>
+  
+      
               <div class="row">
                 <div class="col-md-6 mb-3">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Digite seu email" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="senha" class="form-label">Senha</label>
+                  <input type="password" class="form-control" id="senha" name="senha" placeholder="Digite sua senha" required>
+                </div>
+              </div>
+  
+              <div class="row">
+                <div class="col-md-4 mb-3">
                   <label for="sexo" class="form-label">Sexo</label>
                   <select id="sexo" name="sexo" class="form-select" required>
                     <option value="">Selecione</option>
@@ -73,25 +83,24 @@
                     <option value="feminino">Feminino</option>
                   </select>
                 </div>
-                <div class="col-md-6 mb-3">
+                <div class="col-md-4 mb-3">
                   <label for="telefone" class="form-label">Telefone</label>
                   <input type="text" class="form-control" id="telefone" name="telefone" placeholder="Digite seu telefone" required>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6 mb-3">
+                <div class="col-md-4 mb-3">
                   <label for="cpf" class="form-label">CPF</label>
                   <input type="text" class="form-control" id="cpf" name="cpf" placeholder="Digite seu CPF" required>
                 </div>
-                <div class="col-md-6 mb-3">
+              </div>
+  
+              <div class="row">
+                <div class="col-md-4 mb-3">
                   <label for="cep" class="form-label">CEP</label>
                   <input type="text" class="form-control" id="cep" name="cep" placeholder="Digite seu CEP" required>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-md-8 mb-3">
+                <div class="col-md-4 mb-3">
                   <label for="estado" class="form-label">Estado</label>
-                  <select id="estado" name="estado" class="form-select" required>
+                  <select id="estado" name="estado" class="selectpicker form-select" data-size="5"  required>
                     <option value="">Selecione</option>
                     <option value="AC">Acre</option>
                     <option value="AL">Alagoas</option>
@@ -123,20 +132,38 @@
                   </select>
                 </div>
                 <div class="col-md-4 mb-3">
-                  <label for="numero" class="form-label">Número</label>
-                  <input type="text" class="form-control" id="numero" name="numero" placeholder="N°" required>
+                  <label for="cidade" class="form-label">Cidade</label>
+                  <input type="text" class="form-control" id="cidade" name="cidade" placeholder="Digite sua cidade" required>
                 </div>
               </div>
+  
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label for="rua" class="form-label">Endereço</label>
+                  <input type="text" class="form-control" id="rua" name="rua" placeholder="Digite seu endereço" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="bairro" class="form-label">Bairro</label>
+                  <input type="text" class="form-control" id="bairro" name="bairro" placeholder="Digite seu bairro" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="numero" class="form-label">Número</label>
+                  <input type="text" class="form-control" id="numero" name="numero" placeholder="Número da residência" required>
+                </div>
+              </div>
+  
               <div class="text-center">
                 <button type="submit" class="btn btn-primary">Cadastrar</button>
                 <a href="../TelasFundamentais/telaLogin.html" class="btn btn-secondary">Cancelar</a>
               </div>
+  
             </form>
           </div>
         </div>
       </div>
     </div>
   </main>
+  
 </body>
 
 </html>
