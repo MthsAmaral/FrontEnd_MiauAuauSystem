@@ -785,11 +785,11 @@ footer {
   to { opacity: 1; transform: scale(1); }
 }
 /* Dropdown geral */
-.nav-item.dropdown {
+.nav-item.dropdown-auaumiau {
   position: relative;
 }
 
-.nav-link.dropdown-toggle {
+.nav-link.dropdown-toggle-auaumiau {
   display: inline-block;
   padding: 10px 15px; /* Espaçamento interno */
   background-color: #d5a96c; /* Cor de fundo */
@@ -800,13 +800,13 @@ footer {
   text-decoration: none; /* Remove o sublinhado */
 }
 
-.nav-link.dropdown-toggle:hover {
+.nav-link.dropdown-toggle-auaumiau:hover {
   background-color: #d5a96c; /* Cor de fundo ao passar o mouse */
   color: #ffffff; /* Cor do texto ao passar o mouse */
 }
 
 /* Estilo do menu dropdown */
-.dropdown-menu {
+.dropdown-menu-auaumiau {
   list-style: none;
   display: none; /* Esconde o menu inicialmente */
   position: absolute;
@@ -823,14 +823,14 @@ footer {
 }
 
 /* Mostra o menu ao passar o mouse */
-.nav-item.dropdown:hover .dropdown-menu {
+.nav-item.dropdown-auaumiau:hover .dropdown-menu-auaumiau {
   display: block;
   opacity: 1;
   transform: translateY(0);
 }
 
 /* Itens dentro do menu */
-.dropdown-item {
+.dropdown-item-auaumiau {
   white-space: nowrap;
   color: #f5f5f5;
   padding: 0.8rem 2.1rem;
