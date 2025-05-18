@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - Sistema MiauAuau</title>
-  
+
 
   <!-- Meu JS -->
   <script src="../ControllerJs/acessoController.js"></script>
@@ -21,18 +21,23 @@
 
   <!--Alerts-->
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.min.css" rel="stylesheet"></link>
+  <link rel="stylesheet" href="../css/stylesAlerts.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.all.min.js"></script>
-
+  
   <!-- Meu CSS -->
-  <link rel="stylesheet" href="../css/indexNovo.css"/>
+  <link rel="stylesheet" href="../css/indexNovo.css" />
+  <link rel="stylesheet" href="../css/form.css">
+  
+
 </head>
 
 <body>
   <nav class="navbar" style="padding: 0.93rem 3rem;">
-    <a href="../index.html" style="text-decoration: none;"><div class="logo-container">
-      <span class="logo-text">Grupo MiauAuau</span>
-      <img src="../img/logo.png" alt="Sistema MiauAuau" class="logo" />
-    </div>
+    <a href="../index.html" style="text-decoration: none;">
+      <div class="logo-container">
+        <span class="logo-text">Grupo MiauAuau</span>
+        <img src="../img/logo.png" alt="Sistema MiauAuau" class="logo" />
+      </div>
     </a>
     <ul class="nav-links" style="margin-right: 15px; position: relative; top: 7.5px; align-items: center;">
       <li class="nav-item dropdown-auaumiau">
@@ -45,32 +50,65 @@
       <li><a href="#">Início</a></li>
       <li><a href="#">Sobre</a></li>
       <li><a href="#">Serviços</a></li>
-      <li><a href="#">Contato</a></li> 
+      <li><a href="#">Contato</a></li>
     </ul>
   </nav>
 
   <main class="container mt-5 d-flex justify-content-center align-items-center" style="min-height: 600px;">
     <div class="card shadow-lg p-4" style="max-width: 400px; border-radius: 15px; background-color: #f8f9fa;">
-      <h3 class="text-center mb-4" style="color: #343a40;">Fazer Login</h3>
-      <form method="POST" id = "fid">
-        <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
-          <input type="email" class="form-control" id="email" name="email" placeholder="Digite seu email" required>
+      <h3 class="text-center mb-4" style="color: #343a40;">Acessar Conta</h3>
+      <form method="POST" id="fid" novalidate style="width: 305px;">
+
+        <div class="form-floating mb-3">
+          <input type="email" class="form-control" id="email" name="email" placeholder="E-mail" required>
+          <label for="email">E-mail</label>
+          <div class="invalid-feedback">
+            Por favor, informe um e-mail válido
+          </div>
         </div>
-        <div class="mb-3">
-          <label for="senha" class="form-label">Senha</label>
-          <input type="password" class="form-control" id="senha" name="senha" placeholder="Digite sua senha" required>
+
+        <div class="form-floating mb-3">
+          <input type="password" class="form-control" id="senha" name="senha" placeholder="Senha" required>
+          <label for="senha">Senha</label>
+          <div class="invalid-feedback">
+            Campo obrigatório
+          </div>
         </div>
+
         <button type="submit" class="btn btn-primary w-100 mt-3">Entrar</button>
-        
-        <div class="text-center mt-3">
-          <a href="../TelasFundamentais/telaCadastro.html" style="color: #343a40;">Não possui uma conta? Cadastre-se</a>
+
+        <div class="text-center mt-4">
+          <a href="../TelasFundamentais/telaCadastro.html"
+            style="color: #343a40; font-weight: 500; text-decoration: none; transition: color 0.3s;">
+            Não possui uma conta? <span style="color: #007bff;">Cadastre-se</span>
+          </a>
         </div>
+
       </form>
     </div>
   </main>
-  
-  
+  <script>
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top',
+      iconColor: 'white',
+      customClass: {
+        popup: 'colored-toast',
+      },
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true,
+    });
+
+    if(sessionStorage.getItem('usuarioCadastrado') == 'true')
+    {
+      Toast.fire({
+        icon: 'success',
+        title: 'Cadastro Realizado Com Sucesso!',
+      });
+    }
+    sessionStorage.removeItem('usuarioCadastrado');
+  </script>
 </body>
 
 </html>

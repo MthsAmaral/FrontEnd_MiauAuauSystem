@@ -502,11 +502,7 @@ function buscarAnimalAdocaoVersaoGabriel() {
           container.innerHTML = `
               <div class="banner_adocao">
           <div class="banner_texto">
-    
             <p> No momento, não encontramos nenhum animal disponível para adoção que atenda aos filtros selecionados.</p>
-          </div>
-          <div class="banner_imagem">
-            <img src="../img/animaltriste.jpg" alt="Animal triste" />
           </div>
         </div>
           `;
@@ -605,11 +601,7 @@ function buscarAnimalAdocaoVersaoGabriel() {
           container.innerHTML = `
               <div class="banner_adocao">
           <div class="banner_texto">
-    
             <p> No momento, não encontramos nenhum animal disponível para adoção que atenda aos filtros selecionados.</p>
-          </div>
-          <div class="banner_imagem">
-            <img src="../img/animaltriste.jpg" alt="Animal triste" />
           </div>
         </div>
           `;
