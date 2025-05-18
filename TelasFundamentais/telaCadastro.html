@@ -106,7 +106,7 @@
                 </div>
                 <div class="col-md-4">
                   <div class="form-floating mb-3">
-                    <input type="tel" class="form-control" id="telefone" name="telefone" placeholder=" " required>
+                    <input onchange="validarTelefone()" type="tel" class="form-control" id="telefone" name="telefone" placeholder=" " required>
                     <label for="telefone">Telefone</label>
                     <div class="invalid-feedback">
                       Por favor, informe um fone válido
@@ -115,7 +115,7 @@
                 </div>
                 <div class="col-md-4">
                   <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="cpf" name="cpf" placeholder=" " required>
+                    <input onchange="validarInputCPF()" type="text" class="form-control" id="cpf" name="cpf" placeholder=" " required>
                     <label for="cpf">CPF</label>
                     <div class="invalid-feedback" id="cpf-feedback">
                       Por favor, informe um CPF válido
@@ -127,7 +127,7 @@
               <div class="row">
                 <div class="col-md-4">
                   <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="cep" name="cep" placeholder=" " required>
+                    <input onchange="buscarCEP()" type="text" class="form-control" id="cep" name="cep" placeholder=" " required>
                     <label for="cep">CEP</label>
                     <div id="cep-feedback" class="invalid-feedback">
                       Por favor, informe um CEP válido

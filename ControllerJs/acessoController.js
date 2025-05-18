@@ -1,12 +1,27 @@
 function verificarPrivilegio()
 {
     const token = localStorage.getItem("token");
-    if (token) {
-      
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const payload = JSON.parse(window.atob(base64)); 
-       
+    if (token)
+    {  
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const payload = JSON.parse(window.atob(base64)); 
+      const now = Math.floor(Date.now() / 1000); 
+      let flag = 1;
+      if (payload.exp && payload.exp < now)
+      {
+        Swal.fire({
+          icon: "error",
+          title: "Sessão Expirada",
+          text: "Por favor, faça login novamente.",
+          confirmButtonText: "Ok"
+        }).then(() => {
+          logout(); 
+        });
+        flag = 0;
+      }
+      if (flag == 1)
+      {
         const userMenu = document.getElementById("userMenu");
         const dropdownMenu = document.querySelector(".dropdown-menu-auaumiau");
         userMenu.innerHTML = `Olá, ${payload.usuario}`;
@@ -14,9 +29,9 @@ function verificarPrivilegio()
         <li><a class="dropdown-item-auaumiau" href="#">Minhas Adoções</a></li>
         <li><a class="dropdown-item-auaumiau" href="#">Dados Pessoais</a></li>
         <li><a class="dropdown-item-auaumiau" href="#">Alterar Senha</a></li>
-        <li><a class="dropdown-item-auaumiau" href="#" onclick="logout()">Sair</a></li>
-    `;
-       
+        <li><a class="dropdown-item-auaumiau" href="#" onclick="logout()">Sair</a></li>`;
+      }
+      
     }
 }
 function logout() 
@@ -163,7 +178,7 @@ function logar() {
         if (!response.ok) {
           Swal.fire({
             icon: "error",
-            title: "Dado(s) Incorreto(s)",
+            title: "E-mail e/ou Senha Incorreto(s)",
             timer: 1500,
             timerProgressBar: true
           })
@@ -316,7 +331,4 @@ function validarInputCPF()
   }
   });
 }
-document.addEventListener("DOMContentLoaded", validarInputCPF);
-document.addEventListener("DOMContentLoaded", validarTelefone);
-document.addEventListener("DOMContentLoaded", buscarCEP);
 document.addEventListener("DOMContentLoaded", validarSubmit);
