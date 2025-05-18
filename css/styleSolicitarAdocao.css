@@ -15,7 +15,6 @@ body {
     padding: 0;                               /* Remove preenchimentos internos padrão */
 }
 
-
 /* === CONTAINER PRINCIPAL DE CONTEÚDO === */
 .container-box {
     background-color: var(--cor-clara);           /* Fundo claro */
@@ -116,7 +115,6 @@ input[type="text"]:focus {
     text-decoration: none; /* Remove o sublinhado */
     display: inline-block; /* Permite que o link seja tratado como um bloco */
     transition: background-color 0.3s ease, transform 0.3s ease; /* Transições suaves */
-    margin-right: 10px;
 }
 
 /* Efeito ao passar o mouse sobre o link "Quero Adotar" */
@@ -124,4 +122,68 @@ input[type="text"]:focus {
     background-color: rgba(255, 165, 0, 0.8); /* Muda para uma cor amarela mais forte */
     color: white; /* Muda o texto para branco */
     transform: scale(1.05); /* Aumenta o tamanho do link suavemente */
+}
+
+.card {
+    
+    border-radius: 15px; /* Arredonda as bordas */
+    overflow: hidden; /* Garante que o conteúdo do card não exceda as bordas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adiciona uma leve sombra */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animação ao passar o mouse */
+  }
+  
+  .card:hover {
+    transform: scale(1.02); /* Aumenta levemente o tamanho ao passar o mouse */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Intensifica a sombra */
+  }
+  
+  .card img {
+    width: 100%; /* Largura fixa */
+    height: 100%; /* Altura fixa */
+    object-fit: cover; /* Preenche o espaço cortando o excesso */
+    border-radius: 10px; /* Arredonda a imagem */
+    display: block; /* Remove o espaçamento extra ao redor */
+}
+  
+  .card-body {
+    padding: 1rem; /* Adiciona espaçamento interno */
+  }
+  
+  .card .btn {
+    border-radius: 8px; /* Bordas arredondadas no botão */
+    padding: 0.5rem 1rem; /* Ajusta o tamanho do botão */
+  }
+  
+  .card-text {
+    font-size: 0.9rem; /* Ajusta o tamanho do texto */
+    color: #555; /* Define uma cor para o texto */
+  }
+  
+  .card-title {
+    font-size: 1.2rem; /* Define o tamanho da fonte para o título */
+    font-weight: bold; /* Destaca o título */
+    color: #333; /* Cor do título */
+  }
+  .empty-container {
+    display: flex;
+    flex-direction: column; /* Coloca o ícone e o texto em coluna */
+    align-items: center;    /* Centraliza horizontalmente */
+    justify-content: center; /* Centraliza verticalmente */
+    padding: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.empty-container i {
+    font-size: 3rem; /* Tamanho do ícone */
+    color: #6c757d;  /* Cor do ícone */
+    margin-bottom: 1rem; /* Espaço entre o ícone e o texto */
+}
+
+.empty-container p {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: #6c757d;
+    text-align: center;
 }

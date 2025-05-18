@@ -1,12 +1,12 @@
 //cadastrar
-function cadTipoLancamento() {
-    const URL = "http://localhost:8080/apis/tipo-lancamento/gravar";
-    const ftipolancamento = document.getElementById("ftipolancamento");
-    const formData = new FormData(ftipolancamento);
+function cadTipoPagamento() {
+    const URL = "http://localhost:8080/apis/plano-contas-gerencial/gravar";
+    const ftipopagamento = document.getElementById("ftipopagamento");
+    const formData = new FormData(ftipopagamento);
     const id = document.getElementById("cod").value;
 
     if (id) {
-        editarTipoLanc();
+        editarTipoPag();
     }
     else {
         fetch(URL, {
@@ -19,13 +19,12 @@ function cadTipoLancamento() {
             .then((json) => {
                 Swal.fire({
                     icon: "success",
-                    title: "Tipo de Lançamento Gravado com Sucesso",
+                    title: "Plano De Conta Gerencial Gravado com Sucesso",
                     timer: 1500,
                     timerProgressBar: true
                 }).then(() => {
                     console.log("Resposta do servidor: " + JSON.stringify(json));
-                    ftipolancamento.reset();
-                    window.location.reload(true);
+                    ftipopagamento.reset();
                 });
             })
             .catch((error) => {
@@ -42,9 +41,9 @@ function cadTipoLancamento() {
 }
 
 //buscar
-function buscarTipoLancamento(filtro) {
+function buscarTipoPagamento(filtro) {
     // deixar um espaço ao final da string para buscar por todos os registros já cadastrados
-    let url = "http://localhost:8080/apis/tipo-lancamento/buscar";
+    let url = "http://localhost:8080/apis/plano-contas-gerencial/buscar";
 
     if (filtro.length > 0)
         url = url + "/" + filtro; //buscar utilizando o filtro
@@ -52,7 +51,8 @@ function buscarTipoLancamento(filtro) {
         url = url + "/%20"; //buscar todos os valores
 
     fetch(url, {
-        method: 'GET', redirect: "follow"
+        method: 'GET',
+        redirect: "follow"
     })
         .then((response) => {
             return response.text();
@@ -66,11 +66,12 @@ function buscarTipoLancamento(filtro) {
                     <tr>
                         <td>${json[i].cod}</td>
                         <td>${json[i].descricao}</td>
+                        <td>${json[i].referencial.descricao}</td>
                         <td>
-                        <button type="button" class="btn btn-sm btn-warning" onclick="editarTipoLancamento(${json[i].cod})"><i class="bi bi-pencil-square"></i></button>
+                        <button type="button" class="btn btn-sm btn-warning" onclick="editarTipoPagamento(${json[i].cod})"><i class="bi bi-pencil-square"></i></button>
                         </td>
                         <td>
-                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirTipoLancamento(${json[i].cod})"><i class="bi bi-trash"></i></button>
+                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirTipoPagamento(${json[i].cod})"><i class="bi bi-trash"></i></button>
                         </td>
                     </tr>`;
             }
@@ -81,9 +82,9 @@ function buscarTipoLancamento(filtro) {
         });
 }
 
-function buscarTipoLancFiltro() {
+function buscarTipoPagFiltro() {
     let filtro = document.getElementById("filtro").value;
-    let url = "http://localhost:8080/apis/tipo-lancamento/buscar";
+    let url = "http://localhost:8080/apis/plano-contas-gerencial/buscar";
 
     if (filtro.length > 0)
         url = url + "/" + filtro; //buscar utilizando o filtro
@@ -91,7 +92,8 @@ function buscarTipoLancFiltro() {
         url = url + "/%20"; //buscar todos os valores
 
     fetch(url, {
-        method: 'GET', redirect: "follow"
+        method: 'GET',
+        redirect: "follow"
     })
         .then((response) => {
             return response.text();
@@ -105,11 +107,12 @@ function buscarTipoLancFiltro() {
                     <tr>
                         <td>${json[i].cod}</td>
                         <td>${json[i].descricao}</td>
+                        <td>${json[i].referencial.descricao}</td>
                         <td>
-                        <button type="button" class="btn btn-sm btn-warning" onclick="editarTipoLancamento(${json[i].cod})"><i class="bi bi-pencil-square"></i></button>
+                        <button type="button" class="btn btn-sm btn-warning" onclick="editarTipoPagamento(${json[i].cod})"><i class="bi bi-pencil-square"></i></button>
                         </td>
                         <td>
-                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirTipoLancamento(${json[i].cod})"><i class="bi bi-trash"></i></button>
+                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirTipoPagamento(${json[i].cod})"><i class="bi bi-trash"></i></button>
                         </td>
                     </tr>`;
             }
@@ -120,9 +123,9 @@ function buscarTipoLancFiltro() {
         });
 }
 
-function buscarTipoLancID(id) {
+function buscarTipoPagID(id) {
     // deixar um espaço ao final da string para buscar por todos os registros já cadastrados
-    let url = "http://localhost:8080/apis/tipo-lancamento/buscar-id/" + id;
+    let url = "http://localhost:8080/apis/plano-contas-gerencial/buscar-id/" + id;
 
     fetch(url, {
         method: 'GET',
@@ -134,14 +137,72 @@ function buscarTipoLancID(id) {
         .then((json) => {
             document.getElementById("cod").value = id;
             document.getElementById("descricao").value = json.descricao;
+            selectReferencial(json.referencial.cod);
         })
         .catch(function (error) {
-            console.error("Erro ao buscar o Tipo de Lançamento" + error); // Exibe erros, se houver
+            console.error("Erro ao buscar o Plano de Conta Gerencial" + error); // Exibe erros, se houver
         });
 }
 
+function verificaRef() {
+    let referencial = document.getElementById("codRef");
+    let msg = document.getElementById("referencial-msg");
+  
+    if (parseInt(referencial.value) == 0) {
+      tipoLanc.style.border = "2px solid red";
+      msg.style.display = "block";
+      msg.textContent = "Nenhum Plano de Contas Referencial Selecionado";
+    } else {
+      tipoLanc.style.border = "";
+      msg.style.display = "none";
+      msg.textContent = "";
+    }
+  }
+//buscar e fazer o select do referencial
+function selectReferencial(id) {
+    //realizar a consulta do "Plano de contas referencial"
+    let URL = "";
+    URL = "http://localhost:8080/apis/plano-contas-referencial/buscar/%20";
+    fetch(URL, {
+      method: 'GET',
+      redirect: "follow"
+    })
+      .then((response) => {
+        return response.text();
+      })
+      .then(function (text) {
+        let json = JSON.parse(text);
+        let select = "";
+        if (id) {
+          select = "<select class='form-select' name='codPcr' id='codPcr' onmousedown='verificaRef()'>";
+        }
+        else {
+          select = "<select class='form-select' name='codPcr' id='codPcr' onmousedown='verificaRef()'> <option value='0' selected disabled hidden>Selecione uma opção</option>";
+        }
+  
+        for (let i = 0; i < json.length; i++) {
+          if (id == json[i].cod) {
+            select += `
+              <option value='${json[i].cod}' selected>${json[i].descricao}</option>
+            `;
+          }
+          else {
+            select += `
+              <option value='${json[i].cod}'>${json[i].descricao}</option>
+            `;
+          }
+        }
+        select += "</select>";
+        //setar o Plano Referencial
+        document.getElementById("referencial").innerHTML = select;
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+}
+
 //exclusão
-function excluirTipoLancamento(id) {
+function excluirTipoPagamento(id) {
     Swal.fire({
         title: "Você tem certeza ?",
         text: "Você não poderá reverter isso!",
@@ -153,7 +214,7 @@ function excluirTipoLancamento(id) {
         cancelButtonText: "Cancelar"
     }).then((result) => {
         if (result.isConfirmed) {
-            const URL = "http://localhost:8080/apis/tipo-lancamento/excluir/" + id;
+            const URL = "http://localhost:8080/apis/plano-contas-gerencial/excluir/" + id;
 
             fetch(URL, { method: 'DELETE' })
                 .then((response) => {
@@ -161,23 +222,23 @@ function excluirTipoLancamento(id) {
                 })
                 .then((json) => {
                     console.log("Resposta do servidor: " + JSON.stringify(json));
-                    sessionStorage.setItem("tpLancExcluido", 'true');
+                    sessionStorage.setItem("tpPagExcluido", 'true');
                     window.location.reload();
                 })
                 .catch((error) => {
-                    sessionStorage.setItem("tpLancExcluido", 'false');
                     console.error("Erro ao EXCLUIR dados:", error);
+                    sessionStorage.setItem("tpPagExcluido", 'false');
                 });
         }
     });
 }
 
 //edição
-function editarTipoLanc() {
-    const URL = "http://localhost:8080/apis/tipo-lancamento/atualizar";
+function editarTipoPag() {
+    const URL = "http://localhost:8080/apis/plano-contas-gerencial/atualizar";
     document.getElementById("cod").disabled = false;
-    const ftipolancamento = document.getElementById("ftipolancamento");
-    const formData = new FormData(ftipolancamento);
+    const ftipopagamento = document.getElementById("ftipopagamento");
+    const formData = new FormData(ftipopagamento);
     document.getElementById("cod").disabled = true;
 
     fetch(URL, {
@@ -189,17 +250,17 @@ function editarTipoLanc() {
         })
         .then((json) => {
             console.log("Resposta do servidor: " + JSON.stringify(json));
-            ftipolancamento.reset();
-            sessionStorage.setItem("tpLancAlterado", 'true');
-            window.location.href = "../TelasGerenciar/gerenTipoLancamentos.html";
+            ftipopagamento.reset();
+            sessionStorage.setItem("tpPagAlterado", 'true');
+            window.location.href = "../TelasGerenciar/gerenTipoPagamento.html";
         })
         .catch((error) => {
-            sessionStorage.setItem("tpLancAlterado", 'false');
-            console.error("Erro ao ATUALIZAR dados: ", error);
-            window.location.href = "../TelasGerenciar/gerenTipoLancamentos.html";
+            console.error("Erro ao ATUALIZAR dados:", error);
+            sessionStorage.setItem("tpPagAlterado", 'false');
+            window.location.href = "../TelasGerenciar/gerenTipoPagamento.html";
         });
 }
 
-function editarTipoLancamento(id) {
-    window.location.href = "../TelasCadastros/cadTipoLancamento.html?cod=" + id;
+function editarTipoPagamento(id) {
+    window.location.href = "../TelasCadastros/cadTipoPagamento.html?cod=" + id;
 }

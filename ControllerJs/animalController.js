@@ -48,7 +48,7 @@ function validarData(dataString)
       return false; 
     }
   
-    return true; 
+    return true;
 }
 
 function validarCampos() {
@@ -200,13 +200,13 @@ function buscarAnimal() {
                         <td>${json[i].castrado}</td>
                         <td>${json[i].adotado}</td>
                         <td>
-                        <img src="data:image/jpeg;base64,${json[i].imagemBase64}" alt="Imagem do animal" style="width: 100px; height: 100px; object-fit: cover;">
+                            <img src="data:image/jpeg;base64,${json[i].imagemBase64}" alt="Imagem do animal" style="width: 100px; height: 100px; object-fit: cover;">
                         </td>
                         <td>
-                        <button type="button" class="btn btn-sm btn-warning" onclick="editarAnimal(${json[i].codAnimal})"><i class="bi bi-pencil-square"></i></button>
+                            <button type="button" class="btn btn-sm btn-warning" onclick="editarAnimal(${json[i].codAnimal})"><i class="bi bi-pencil-square"></i></button>
                         </td>
                         <td>
-                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirAnimal(${json[i].codAnimal})"><i class="bi bi-trash"></i></button>
+                            <button type="button" class="btn btn-sm btn-danger" onclick="excluirAnimal(${json[i].codAnimal})"><i class="bi bi-trash"></i></button>
                         </td>
                       </tr>`;
                 }

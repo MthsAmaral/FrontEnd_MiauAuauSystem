@@ -13,7 +13,7 @@ function limparFormAgendamento() {
   document.getElementById("formAgendamento").reset();
   document.getElementById("animalSelecionado").classList.add("d-none");
   document.getElementById("medicamentoSelecionado").classList.add("d-none");
-  animalSelecionado = null;
+  animaisSelecionados = null;
   medicamentoSelecionado = null;
 }
 
@@ -48,7 +48,7 @@ function validarData(dataString) {
 function validarCamposAgendamento() {
   const dataAplicacao = document.getElementById("dataAplicacao").value;
 
-  if (!animalSelecionado || !medicamentoSelecionado || !dataAplicacao) {
+  if (!animaisSelecionados || !medicamentoSelecionado || !dataAplicacao) {
     Swal.fire({
       icon: "warning",
       title: "Campo(s) Não Preenchido(s)",
@@ -120,6 +120,7 @@ function gravarAgendamento() {
           formData.append("dataAplicacao", dataAplicacao);
           formData.append("status", "false");
 
+
           return fetch("http://localhost:8080/apis/agendar-medicamento/gravar", {
             method: "POST",
             body: formData
@@ -131,6 +132,8 @@ function gravarAgendamento() {
             const todasOk = responses.every(r => r.ok);
             sessionStorage.setItem('agendamentoGravado', todasOk ? 'true' : 'false');
             window.location.reload();
+
+            
           })
           .catch(error => {
             console.error('Erro ao gravar agendamentos:', error);
@@ -273,9 +276,6 @@ function excluirAgendamento(id) {
 
 }
 
-
-
-
 //MODAL COM LISTA 
 
 //busca animais
@@ -316,7 +316,7 @@ function carregarAnimais() {
 
           col.innerHTML = `
             <div class="card card-select ${isSelecionado ? 'border-primary' : ''}" data-animal-id="${animal.codAnimal}">
-              <img src="data:image/jpeg;base64,${animal.imagemBase64}" class="card-img-top" />
+              <img src="data:image/jpeg;base64,${animal.imagemBase64}" width="200" height="210" style="object-fit: cover;" class="card-img-top" />
               <div class="card-body">
                 <h5 class="card-title">${animal.nome}</h5>
                 <p class="card-text">Raça: ${animal.raca}<br>Sexo: ${animal.sexo}</p>
@@ -362,8 +362,6 @@ function voltarSelecaoAnimais() {
   renderizarAnimaisSelecionados();  // Atualizar a lista de selecionados
 }
 
-
-
 function carregarMedicamentos() {
   const container = document.querySelector("#modalMedicamentos .modal-body");
   container.innerHTML = "";
@@ -397,9 +395,6 @@ function carregarMedicamentos() {
     });
 }
 
-
-
-
 //MOSTRAR ELEMENTOS ESCOLHIDOS NO MODAL ACIMA
 
 //medicamento
@@ -414,7 +409,7 @@ function selecionarMedicamento(med) {
 
   const div = document.getElementById("medicamentoSelecionado");
   div.innerHTML = `
-    <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex justify-content-between align-items-center p-3 mb-3 rounded shadow-sm bg-white">
       <div>
         <strong>${med.nome}</strong><br>
         Forma: ${med.forma}<br>
@@ -439,11 +434,13 @@ function selecionarAnimal(animal) {
   }
   renderizarAnimaisSelecionados();
 }
+
 function removerAnimal(codAnimal) {
   animaisSelecionados = animaisSelecionados.filter(a => a.codAnimal !== codAnimal);
   renderizarAnimaisSelecionados();
   carregarAnimais();  // Recarregar os animais para atualizar a seleção no modal
 }
+
 function renderizarAnimaisSelecionados() {
   const div = document.getElementById("animalSelecionado");
 
@@ -457,6 +454,7 @@ function renderizarAnimaisSelecionados() {
       <div class="d-flex justify-content-between align-items-center p-3 mb-3 rounded shadow-sm bg-white">
         <div class="d-flex align-items-center gap-3">
           <img src="data:image/jpeg;base64,${a.imagemBase64}" width="90" height="90" class="rounded object-fit-cover" style="object-fit: cover;">
+          
           <div style="font-size: 0.95rem;">
             <strong style="font-size: 1.05rem;">${a.nome}</strong><br>
             Raça: ${a.raca}<br>
@@ -473,15 +471,7 @@ function renderizarAnimaisSelecionados() {
   }
 }
 
-
-
-
-
-
-
-
 //SCRIPT NOTIFICAÇÕES
-
 
 // Função que carrega as notificações
 function carregarNotificacoes() {
@@ -524,7 +514,6 @@ function carregarNotificacoes() {
               medicamentoId: agendamento.medicamento.codTipoMedicamento, // <--- corrigido
               dataAplicacao: agendamento.dataAplicacao // <--- adicionado
             };
-
 
             notificacoes.push(notificacao);
           }
@@ -611,5 +600,3 @@ function atualizarStatusAgendamento(id, novoStatus) {
       console.error("Erro ao marcar como lido:", error);
     });
 }
-
-

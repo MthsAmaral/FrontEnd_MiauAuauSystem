@@ -1,0 +1,97 @@
+/* === NAVBAR (barra de navegação superior) === */
+.navbar {
+    background-color: var(--cor-petroleo);
+    padding: 0.8rem 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-bottom: 2px solid var(--cor-destaque);
+}
+
+/* === LOGO OU NOME DO SISTEMA NA NAVBAR === */
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--cor-clara);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 0.5rem 1rem;
+}
+
+.navbar-brand:hover {
+    color: var(--cor-destaque);
+    text-shadow: 2px 2px 6px rgba(211, 169, 106, 0.5);
+}
+
+/* === ANIMAÇÃO DE SUBLINHADO NA MARCA === */
+.navbar-brand::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    bottom: 0; left: 0;
+    background-color: var(--cor-destaque);
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/* === ITENS DE MENU (links) === */
+.nav-link {
+    font-weight: 500;
+    color: var(--cor-clara);
+    padding: 0.5rem 1rem;
+    margin: 0 0.2rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--cor-destaque);
+    background-color: rgba(205, 238, 234, 0.1);
+}
+
+/* === DROPDOWN (submenus) === */
+.dropdown-menu {
+    background-color: var(--cor-petroleo);
+    border: 1px solid var(--cor-destaque);
+}
+
+.dropdown-item {
+    color: var(--cor-clara);
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: var(--cor-destaque);
+    color: var(--cor-petroleo);
+}
+
+/* === BOTÃO DE MENU MOBILE === */
+.navbar-toggler {
+    border-color: var(--cor-clara);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(245, 245, 245, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* === ALINHAMENTO DO MENU À DIREITA === */
+.central-navbar {
+    display: flex;
+    justify-content: flex-end;
+    width: 80%;
+    margin-right: 20px;
+}
+
+/* === IMAGEM NA NAVBAR (se houver) === */
+.navbar-brand img {
+    max-height: 50px;
+    margin-right: 10px;
+    vertical-align: middle;
+}

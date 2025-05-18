@@ -54,11 +54,16 @@ function cadUsuario() {
                 return response.json();
             })
             .then((json) => {
-                alert("Usuario Alterado Com Sucesso");
+                console.log("Usuario Alterado Com Sucesso! " + JSON.stringify(json));
                 fusuario.reset();
+                sessionStorage.setItem("usuarioAlterado", 'true');
+                window.location.href = "../TelasGerenciar/gerenUsuarios.html";
             })
-            .catch((error) => console.error(error))
-
+            .catch((error) => {
+                console.error("Erro ao atualizar Usuário!! " + error);
+                sessionStorage.setItem("usuarioAlterado", 'false');
+                window.location.href = "../TelasGerenciar/gerenUsuarios.html";
+            });
     }
     else {
         const URL = "http://localhost:8080/apis/usuario/gravar"
@@ -69,10 +74,26 @@ function cadUsuario() {
                 return response.json();
             })
             .then((json) => {
-                alert("Usuario Cadastrado Com Sucesso");
-                fusuario.reset();
+                Swal.fire({
+                    icon: "success",
+                    title: "Usuário Gravado com Sucesso",
+                    timer: 1500,
+                    timerProgressBar: true
+                }).then(() => {
+                    console.log("Usuário Cadastrado Com Sucesso! " + JSON.stringify(json));
+                    fusuario.reset();
+                });
             })
-            .catch((error) => console.error(error))
+            .catch((error) => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Erro ao cadastrar!!",
+                    timer: 1500,
+                    timerProgressBar: true
+                }).then(() => {
+                    console.error("Erro ao cadastrar Usuário!! " + error);
+                });
+            });
     }
 }
 
@@ -172,28 +193,34 @@ function buscarUsuario() {
 }
 
 function excluirUsuario(id) {
+    Swal.fire({
+        title: "Você tem certeza ?",
+        text: "Você não poderá reverter isso!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Apagar",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const URL = "http://localhost:8080/apis/usuario/excluir/" + id;
 
-    const confirmacao = confirm("Tem certeza que deseja excluir este usuario ?");
-    if (confirmacao) {
-        const URL = "http://localhost:8080/apis/usuario/excluir/" + id;
-
-        fetch(URL, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            method: 'DELETE'
-        })
-            .then((response) => {
-                return response.json();
-            })
-            .then((json) => {
-                alert("Usuario Excluido Com Sucesso");
-                window.location.reload();
-            })
-            .catch((error) => console.error("Erro ao excluir o usuario:", error));
-    }
-
+            fetch(URL, { method: 'DELETE' })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((json) => {
+                    console.log("Usuário Excluído Com Sucesso! " + JSON.stringify(json));
+                    sessionStorage.setItem("usuarioApagado", 'true');
+                    window.location.reload();
+                })
+                .catch((error) => {
+                    console.error("Erro ao excluir o Usuário!! " + error);
+                    sessionStorage.setItem("usuarioApagado", 'false');
+                });
+        }
+    });
 }
 
 function editarUsuario(id) {

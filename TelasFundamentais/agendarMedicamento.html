@@ -6,50 +6,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Agendamento de Medicamento</title>
 
+  <!--Fonte-->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 
-  <!-- Adicione o ícone de sino (Bootstrap Icons) -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-  <script src="../ControllerJs/agendamentoController.js"> </script>
-
-  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.min.css" rel="stylesheet">
-  </link>
+  <!--Alerts-->
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.min.css" rel="stylesheet"></link>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.all.min.js"></script>
-  <link rel="stylesheet" href="../css/styles.css">
 
-  <!--css menu-->
+  <!--Imports Locais-->
+  <script src="../ControllerJs/agendamentoController.js"></script>
+  <link rel="stylesheet" href="../css/styleNavBar.css" />
+  <link rel="stylesheet" href="../css/stylesAlerts.css" />
   <link rel="stylesheet" href="../css/index.css" />
+
   <style>
     .bg-white {
       background-color: #fff !important;
     }
-
     .object-fit-cover {
       object-fit: cover;
     }
-
     .card-select.border-primary {
       border: 2px solid #0d6efd;
       box-shadow: 0 0 5px rgba(13, 110, 253, 0.5);
     }
-
     #btnBuscarAnimal {
-    
-    height: 100%; /* iguala a altura do input */
-}
-
-
+      height: 100%; /* iguala a altura do input */
+    }
   </style>
 </head>
 
 <body onload="carregarAgendamentos()">
-
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <a class="navbar-brand" href="../index.html">
+      <a class="navbar-brand" href="../indexAdm.html">
         Sistema MiauAuau
         <img src="../img/logo.png" alt="Logo Sistema MiauAuau" style="max-height: 50px;">
       </a>
@@ -58,17 +55,40 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav ms-auto me-auto central-navbar">
-          <!-- Menu Dropdowns -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Operações</a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="./agendarMedicamento.html">Agendar Medicamento</a></li>
-              <li><a class="dropdown-item" href=".realizarLancamentos.html">Realizar Lançamento</a></li>
+              <li><a class="dropdown-item" href="../TelasFundamentais/agendarMedicamento.html">Agendar Medicamento</a>
+              <li><a class="dropdown-item" href="../TelasFundamentais/realizarLancamentos.html">Realizar Lançamento</a>
+              </li>
             </ul>
           </li>
-          <!-- ... outros menus ... -->
-
-          <!-- Menu de Login -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Cadastro</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="../TelasCadastros/cadAnimal.html">Animal</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadAdocao.html">Adoção</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadTipoPagamento.html">Plano de Contas Gerencial</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadPlanoContasReferencial.html">Plano de Contas Referencial</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadTipoLancamento.html">Tipo de Lançamento</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadTipoMedicamento.html">Tipo de Medicamento</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadUsuario.html">Usuário</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Gerenciar</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenAdocao.html">Adoção</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenAnimais.html">Animal</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenciarDoacoes.html">Doação</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenLancamentos.html">Lançamentos</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Plano de Contas Gerencial</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Plano de Contas Referencial</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoLancamentos.html">Tipo de Lançamento</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenMedicamentos.html">Tipo de Medicamento</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenUsuarios.html">Usuário</a></li>
+            </ul>
+          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Login</a>
             <ul class="dropdown-menu">
@@ -76,21 +96,19 @@
               <li><a class="dropdown-item" href="#">Sair</a></li>
             </ul>
           </li>
-
         </ul>
-
-        <!-- Menu de Notificações -->
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="botaoNotificacoes" data-bs-toggle="modal"
-              data-bs-target="#modalNotificacoes">
-              <i class="bi bi-bell"></i> <!-- Ícone de sino -->
-              <span class="badge bg-danger" id="notificacoesCount">0</span> <!-- Contador de notificações -->
-            </a>
-          </li>
-        </ul>
-
       </div>
+    </div>
+      <!-- Menu de Notificações -->
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="botaoNotificacoes" data-bs-toggle="modal"
+            data-bs-target="#modalNotificacoes">
+            <i class="bi bi-bell"></i> <!-- Ícone de sino -->
+            <span class="badge bg-danger" id="notificacoesCount">0</span> <!-- Contador de notificações -->
+          </a>
+        </li>
+      </ul>
     </div>
   </nav>
 
@@ -108,7 +126,6 @@
       </div>
     </div>
   </div>
-
 
   <main class="container container-box mt-5">
     <h2 class="mb-4">Agendar Medicamento(s)</h2>

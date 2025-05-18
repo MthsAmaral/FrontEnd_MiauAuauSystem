@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>Página de Adoção</title>
+  <link rel="stylesheet" href="css/indexNovo.css"/>
+  <!-- JS CONTROLER -->
+  <script src="./ControllerJs/adocaoController.js"></script>
+  <script src="./ControllerJs/acessoController.js"></script>
+
+  <!-- FONTE -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+
+   <!--Alerts-->
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.min.css" rel="stylesheet"></link>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.all.min.js"></script>
+
+</head>
+
+<body onload="verificarPrivilegio(); buscarAnimalAdocaoVersaoGabriel(); buscarCor(); buscarRaca();">
+  
+  <nav class="navbar">
+    <a href="index.html" style="text-decoration: none;"><div class="logo-container">
+      <span class="logo-text">Grupo MiauAuau</span>
+      <img src="img/logo.png" alt="Sistema MiauAuau" class="logo" />
+    </div></a>
+    <ul class="nav-links" style="align-items: center;">
+      <li class="nav-item dropdown-auaumiau">
+        <a id="userMenu" class="nav-link dropdown-toggle-auaumiau" href="#" data-bs-toggle="dropdown-auaumiau">Acesse sua conta</a>
+        <ul class="dropdown-menu-auaumiau custom-dropdown-menu">
+          <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaLogin.html">Entrar</a></li>
+          <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaCadastro.html">Cadastre-se</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Início</a></li>
+      <li><a href="#">Sobre</a></li>
+      <li><a href="#">Serviços</a></li>
+      <li><a href="#">Contato</a></li>
+    </ul>
+  </nav>
+  <main>
+    <div class="container-flex">
+
+      <div class="sidebar">
+        <h2>Filtros</h2>
+
+        <label for="filtroSexo">Sexo</label>
+        <select id="filtroSexo">
+          <option value="">Todos</option>
+          <option value="Macho">Macho</option>
+          <option value="Fêmea">Fêmea</option>
+        </select>
+
+        <label for="filtroEspecie">Espécie</label>
+        <select id="filtroEspecie">
+          <option value="">Todas</option>
+          <option value="Cachorro">Cachorro</option>
+          <option value="Gato">Gato</option>
+        </select>
+      
+        
+        
+        <label for="filtroRaca">Raça:</label>
+        <select id="filtroRaca">
+          <option value="">Todas</option>
+        </select>
+
+        <label for="filtroCor">Cor:</label>
+        <select id="filtroCor">
+          <option value="">Todas</option>
+        </select>
+        
+        
+        <button class="btn_search" onclick="buscarAnimalAdocaoVersaoGabriel()">Procurar</button>
+      </div>
+
+      <div class="cont_adopt">
+        <div class="banner_adocao">
+          <div class="banner_texto">
+            <h1>Confira nossos pets disponíveis!</h1>
+            <p>Encontre seu novo melhor amigo entre dezenas de animais esperando por um lar cheio de amor.</p>
+          </div>
+          <div class="banner_imagem">
+            <img src="img/animais.png" alt="Animal para adoção" />
+          </div>
+        </div>
+        <div id="resultado" class="animals">
+          
+      </div>
+
+      </div>
+    </div>
+    </div>
+  </main>
+  <div class="cta-section">
+    <h2>Ajude a salvar vidas agora</h2>
+    <p>Com apenas <strong>R$10</strong>, você contribui para o cuidado de animais resgatados</p>
+    <button class="cta-button" onclick="abrirModal()">Faça uma doação</button>
+  </div>
+
+  <!-- Modal de agendamento -->
+  <div id="modalDoacao" class="modal-overlay" onclick="fecharModalFora(event)">
+    <div class="modal-conteudo">
+      <span class="fechar" onclick="fecharModal()">&times;</span>
+
+      <div class="modal-banner">
+        <img src="img/banner_doe.png" alt="">
+      </div>
+      <h2>Agende Sua Doação aqui!</h2>
+      <form action="" method="">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nome</label>
+            <input type="text" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Telefone</label>
+            <input type="tel" required>
+          </div>
+          <div class="form-group">
+            <label>Valor (R$)</label>
+            <input type="number" min="1" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Tipo de Pagamento</label>
+            <select required>
+              <option value="">Selecione</option>
+              <option>Pix</option>
+              <option>Cartão de Crédito</option>
+              <option>Boleto</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <button type="submit">Agendar Doação</button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+  <footer>
+    <div class="footer-container">
+      <div class="footer-column">
+        <h4>Sobre a ONG</h4>
+        <p>Somos uma associação sem fins lucrativos com intuito de ajudar animais abandonados e em situações de
+          vulnerabilidade. Realizamos ações, bingos e rifas para arrecadar fundos a fim de custear as despesas.</p>
+        <br>
+        <h4>Nossa Missão</h4>
+        <p>Transformando vidas com amor e cuidado aos animais resgatados.</p>
+      </div>
+      <div class="footer-column">
+        <h4>Redes Sociais</h4>
+        <ul>
+          <li><a href="https://www.instagram.com/miauauau_rf/?igsh=bHBhbG94ZG54NWtr#" target="_blank"><i
+                class="fa-brands fa-instagram"></i> miauauau_rf</a></li>
+          <li><a href="https://api.whatsapp.com/send/?phone=5518997605428&text&type=phone_number&app_absent=0"
+              target="_blank"><i class="fa-brands fa-whatsapp"></i> +55 18 99760-5428</a></li>
+          <li><a href="mailto:grupomiauauau.rf@gmail.com" target="_blank"><i class="fa-regular fa-envelope"></i>
+              grupomiauauau.rf@gmail.com</a></li>
+          <br>
+          <li>
+            <h4>Endereço</h4>
+          </li>
+          <li><a href="https://maps.app.goo.gl/dRZkx7aPabJpoVXA6" target="_blank"><i
+                class="fa-solid fa-location-dot"></i> Teófilo Otoni, 515, Centro, Regente Feijó/SP</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Contato</h4>
+        <form class="form">
+          <input type="text" placeholder="Email" class="input">
+          <textarea placeholder="Digite sua mensagem"></textarea>
+
+          <button>Submit</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 Grupo Miau Au Au.
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.btn-group').forEach(group => {
+      group.querySelectorAll('.btn-option').forEach(btn => {
+        btn.addEventListener('click', () => {
+          group.querySelectorAll('.btn-option').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        });
+      });
+    });
+
+    const checkbox = document.getElementById("autoFiltro");
+    const aplicarBtn = document.getElementById("aplicarBtn");
+
+    checkbox.addEventListener("change", () => {
+      aplicarBtn.style.display = checkbox.checked ? "none" : "block";
+    });
+
+    function abrirModal() {
+      document.getElementById("modalDoacao").style.display = "flex";
+    }
+
+    function fecharModal() {
+      document.getElementById("modalDoacao").style.display = "none";
+    }
+
+    function fecharModalFora(event) {
+      if (event.target.id === "modalDoacao") {
+        fecharModal();
+      }
+    }
+  </script>
+</body>
+
+</html>
