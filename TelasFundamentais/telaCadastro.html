@@ -14,7 +14,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../css/indexNovo.css" />
-
+  <link rel="stylesheet" href="../css/form.css">
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
@@ -23,6 +23,10 @@
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.min.css" rel="stylesheet">
   </link>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.all.min.js"></script>
+  <!-- Mascaras -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
 </head>
 
 <body>
@@ -55,115 +59,154 @@
           <div class="card-body p-4">
             <h3 class="card-title text-center mb-4">Cadastro de Adotante</h3>
 
-            <form id="fusuario" method="post">
-  
-              <div class="mb-3">
-                <label for="nome" class="form-label">Nome Completo</label>
-                <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite seu nome completo" required>
+            <form id="fusuario" method="post" novalidate>
+
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="nome" name="nome" placeholder=" " required>
+                <label for="nome">Nome Completo</label>
+                <div class="invalid-feedback">
+                  Campo obrigatório
+                </div>
               </div>
-  
-      
+
               <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label for="email" class="form-label">Email</label>
-                  <input type="email" class="form-control" id="email" name="email" placeholder="Digite seu email" required>
+                <div class="col-md-6">
+                  <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="email" name="email" placeholder=" " required>
+                    <label for="email">Email</label>
+                    <div class="invalid-feedback">
+                      Por favor, informe um e-mail válido
+                    </div>
+                  </div>
                 </div>
-                <div class="col-md-6 mb-3">
-                  <label for="senha" class="form-label">Senha</label>
-                  <input type="password" class="form-control" id="senha" name="senha" placeholder="Digite sua senha" required>
+                <div class="col-md-6">
+                  <div class="form-floating mb-3">
+                    <input type="password" class="form-control" id="senha" name="senha" placeholder=" " required>
+                    <label for="senha">Senha</label>
+                    <div class="invalid-feedback">
+                      Campo obrigatório
+                    </div>
+                  </div>
                 </div>
               </div>
-  
+
               <div class="row">
-                <div class="col-md-4 mb-3">
-                  <label for="sexo" class="form-label">Sexo</label>
-                  <select id="sexo" name="sexo" class="form-select" required>
-                    <option value="">Selecione</option>
-                    <option value="masculino">Masculino</option>
-                    <option value="feminino">Feminino</option>
-                  </select>
+                <div class="col-md-4">
+                  <div class="form-floating mb-3">
+                    <select id="sexo" name="sexo" class="form-select" required>
+                      <option value="" selected>Selecione</option>
+                      <option value="Masculino">Masculino</option>
+                      <option value="Feminino">Feminino</option>
+                    </select>
+                    <label for="sexo">Sexo</label>
+                    <div class="invalid-feedback">
+                      Campo obrigatório
+                    </div>
+                  </div>
                 </div>
-                <div class="col-md-4 mb-3">
-                  <label for="telefone" class="form-label">Telefone</label>
-                  <input type="text" class="form-control" id="telefone" name="telefone" placeholder="Digite seu telefone" required>
+                <div class="col-md-4">
+                  <div class="form-floating mb-3">
+                    <input onchange="validarTelefone()" type="tel" class="form-control" id="telefone" name="telefone" placeholder=" " required>
+                    <label for="telefone">Telefone</label>
+                    <div class="invalid-feedback">
+                      Por favor, informe um fone válido
+                    </div>
+                  </div>
                 </div>
-                <div class="col-md-4 mb-3">
-                  <label for="cpf" class="form-label">CPF</label>
-                  <input type="text" class="form-control" id="cpf" name="cpf" placeholder="Digite seu CPF" required>
+                <div class="col-md-4">
+                  <div class="form-floating mb-3">
+                    <input onchange="validarInputCPF()" type="text" class="form-control" id="cpf" name="cpf" placeholder=" " required>
+                    <label for="cpf">CPF</label>
+                    <div class="invalid-feedback" id="cpf-feedback">
+                      Por favor, informe um CPF válido
+                    </div>
+                  </div>
                 </div>
               </div>
-  
+
               <div class="row">
-                <div class="col-md-4 mb-3">
-                  <label for="cep" class="form-label">CEP</label>
-                  <input type="text" class="form-control" id="cep" name="cep" placeholder="Digite seu CEP" required>
+                <div class="col-md-4">
+                  <div class="form-floating mb-3">
+                    <input onchange="buscarCEP()" type="text" class="form-control" id="cep" name="cep" placeholder=" " required>
+                    <label for="cep">CEP</label>
+                    <div id="cep-feedback" class="invalid-feedback">
+                      Por favor, informe um CEP válido
+                    </div>
+                  </div>
                 </div>
-                <div class="col-md-4 mb-3">
-                  <label for="estado" class="form-label">Estado</label>
-                  <select id="estado" name="estado" class="selectpicker form-select" data-size="5"  required>
-                    <option value="">Selecione</option>
-                    <option value="AC">Acre</option>
-                    <option value="AL">Alagoas</option>
-                    <option value="AP">Amapá</option>
-                    <option value="AM">Amazonas</option>
-                    <option value="BA">Bahia</option>
-                    <option value="CE">Ceará</option>
-                    <option value="DF">Distrito Federal</option>
-                    <option value="ES">Espírito Santo</option>
-                    <option value="GO">Goiás</option>
-                    <option value="MA">Maranhão</option>
-                    <option value="MT">Mato Grosso</option>
-                    <option value="MS">Mato Grosso do Sul</option>
-                    <option value="MG">Minas Gerais</option>
-                    <option value="PA">Pará</option>
-                    <option value="PB">Paraíba</option>
-                    <option value="PR">Paraná</option>
-                    <option value="PE">Pernambuco</option>
-                    <option value="PI">Piauí</option>
-                    <option value="RJ">Rio de Janeiro</option>
-                    <option value="RN">Rio Grande do Norte</option>
-                    <option value="RS">Rio Grande do Sul</option>
-                    <option value="RO">Rondônia</option>
-                    <option value="RR">Roraima</option>
-                    <option value="SC">Santa Catarina</option>
-                    <option value="SP">São Paulo</option>
-                    <option value="SE">Sergipe</option>
-                    <option value="TO">Tocantins</option>
-                  </select>
+                <div class="col-md-4">
+                  <div class="form-floating mb-3">
+                    <select id="estado" name="estado" class="form-select" required>
+                      <option value="" selected>Selecione</option>
+                      <option value="SP">São Paulo</option>
+                      <option value="RJ">Rio de Janeiro</option>
+                      <!-- Adicione os outros estados aqui -->
+                    </select>
+                    <label for="estado">Estado</label>
+                    <div class="invalid-feedback">
+                      Campo obrigatório
+                    </div>
+                  </div>
                 </div>
-                <div class="col-md-4 mb-3">
-                  <label for="cidade" class="form-label">Cidade</label>
-                  <input type="text" class="form-control" id="cidade" name="cidade" placeholder="Digite sua cidade" required>
+                <div class="col-md-4">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="cidade" name="cidade" placeholder=" " required>
+                    <label for="cidade">Cidade</label>
+                    <div class="invalid-feedback">
+                      Campo obrigatório
+                    </div>
+                  </div>
                 </div>
               </div>
-  
+
               <div class="row">
-                <div class="col-md-4 mb-3">
-                  <label for="rua" class="form-label">Endereço</label>
-                  <input type="text" class="form-control" id="rua" name="rua" placeholder="Digite seu endereço" required>
+                <div class="col-md-4">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="rua" name="rua" placeholder=" " required>
+                    <label for="rua">Endereço</label>
+                    <div class="invalid-feedback">
+                      Campo obrigatório
+                    </div>
+                  </div>
                 </div>
-                <div class="col-md-4 mb-3">
-                  <label for="bairro" class="form-label">Bairro</label>
-                  <input type="text" class="form-control" id="bairro" name="bairro" placeholder="Digite seu bairro" required>
+                <div class="col-md-4">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="bairro" name="bairro" placeholder=" " required>
+                    <label for="bairro">Bairro</label>
+                    <div class="invalid-feedback">
+                      Campo obrigatório
+                    </div>
+                  </div>
                 </div>
-                <div class="col-md-4 mb-3">
-                  <label for="numero" class="form-label">Número</label>
-                  <input type="text" class="form-control" id="numero" name="numero" placeholder="Número da residência" required>
+                <div class="col-md-4">
+                  <div class="form-floating mb-3">
+                    <input type="number" class="form-control" id="numero" name="numero" placeholder=" " required>
+                    <label for="numero">Número</label>
+                    <div class="invalid-feedback">
+                      Campo obrigatório
+                    </div>
+                  </div>
                 </div>
               </div>
-  
+
               <div class="text-center">
                 <button type="submit" class="btn btn-primary">Cadastrar</button>
                 <a href="../TelasFundamentais/telaLogin.html" class="btn btn-secondary">Cancelar</a>
               </div>
-  
             </form>
+
           </div>
         </div>
       </div>
     </div>
   </main>
-  
+  <script>
+    $(document).ready(function () {
+      $('#telefone').mask('(00) 00000-0000');
+      $('#cpf').mask('000.000.000-00');
+      $('#cep').mask('00000-000');
+    });
+  </script>
 </body>
 
 </html>

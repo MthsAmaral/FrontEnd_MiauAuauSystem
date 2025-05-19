@@ -491,7 +491,7 @@ function buscarAnimalAdocaoVersaoGabriel() {
                 <p><i class="fas fa-palette"></i> <strong>Cor:</strong> ${json[i].cor}</p>
               </div>
         
-              <button class="adopt-btn2">Quero Adotar</button>
+              <button class="adopt-btn2" onclick="solicitarAdocao(${json[i].codAnimal})">Quero Adotar</button>
             </div>
           </div>
             `
@@ -502,11 +502,7 @@ function buscarAnimalAdocaoVersaoGabriel() {
           container.innerHTML = `
               <div class="banner_adocao">
           <div class="banner_texto">
-    
             <p> No momento, não encontramos nenhum animal disponível para adoção que atenda aos filtros selecionados.</p>
-          </div>
-          <div class="banner_imagem">
-            <img src="../img/animaltriste.jpg" alt="Animal triste" />
           </div>
         </div>
           `;
@@ -595,7 +591,7 @@ function buscarAnimalAdocaoVersaoGabriel() {
                 <p><i class="fas fa-palette"></i> <strong>Cor:</strong> ${json[i].cor}</p>
               </div>
         
-              <button class="adopt-btn2">Quero Adotar</button>
+              <button class="adopt-btn2" onclick="solicitarAdocao(${json[i].codAnimal})">Quero Adotar</button>
             </div>
           </div>`
           }
@@ -605,11 +601,7 @@ function buscarAnimalAdocaoVersaoGabriel() {
           container.innerHTML = `
               <div class="banner_adocao">
           <div class="banner_texto">
-    
             <p> No momento, não encontramos nenhum animal disponível para adoção que atenda aos filtros selecionados.</p>
-          </div>
-          <div class="banner_imagem">
-            <img src="../img/animaltriste.jpg" alt="Animal triste" />
           </div>
         </div>
           `;
@@ -774,53 +766,92 @@ function buscarAnos() {
 
 }
 
-function solicitarAdocao(id) {
-
+function solicitarAdocao(id)
+{
   const token = localStorage.getItem("token");
-  if (token) {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const payload = JSON.parse(window.atob(base64)); // recupera todas as informaçoes no token
-    const formData = new FormData();
-    const dataAtual = new Date();
-    const dataFormatada = dataAtual.toISOString().slice(0, 10);
-    formData.append("cod_animal", id);
-    formData.append("cod_usuario", payload.cod_usuario);
-    formData.append("status", "Pendente");
-    formData.append("data", dataFormatada);
-
-    const URL = "http://localhost:8080/apis/adocao/solicitar"
-    fetch(URL, {
-      method: 'POST', body: formData,
-      headers: { 'Authorization': token }
-    })
-      .then((response) => {
-        if (response.ok) {
-          sessionStorage.setItem("adocaoSolicitada", 'true');
-          window.location.reload();
-        }
-        else {
+  if (token) 
+  {
+    Swal.fire({
+      title: 'Confirmar Solicitação',
+      text: 'Você deseja enviar uma solicitação de adoção para este animal?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Confirmar',
+      cancelButtonText: 'Cancelar'
+    }).then((result)=>{
+      if(result.isConfirmed)
+      {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const payload = JSON.parse(window.atob(base64)); // recupera todas as informaçoes no token
+        const now = Math.floor(Date.now() / 1000); 
+        let flag = 1;
+        if (payload.exp && payload.exp < now)
+        {
           Swal.fire({
             icon: "error",
-            title: "Erro ao Enviar Solicitação de Adoção!",
-            timer: 1500,
-            timerProgressBar: true
-          })
+            title: "Sessão Expirada",
+            text: "Por favor, faça login novamente.",
+            confirmButtonText: "Ok"
+          }).then(() => {
+            logout(); 
+          });
+          flag = 0;
         }
-        return response.json();
-      })
-      .then((json) => {
+        if(flag == 1)
+        {
+          const formData = new FormData();
+          const dataAtual = new Date();
+          const dataFormatada = dataAtual.toISOString().slice(0, 10);
+          formData.append("cod_animal", id);
+          formData.append("cod_usuario", payload.cod_usuario);
+          formData.append("status", "Pendente");
+          formData.append("data", dataFormatada);
 
-      })
-      .catch((error) => console.error(error))
-  }
-  else {
-    Swal.fire({
-      icon: "error",
-      title: "Acesso Não Autorizado!",
-      timer: 1500,
-      timerProgressBar: true
+          const URL = "http://localhost:8080/apis/adocao/solicitar"
+          fetch(URL, {
+            method: 'POST', body: formData,
+            headers: { 'Authorization': token }
+          })
+          .then((response) => {
+            if (response.ok)
+            {
+              Swal.fire({
+              title: 'Enviando Solicitação de Adoção...',
+              allowOutsideClick: false,
+              didOpen: () => {
+                Swal.showLoading();
+              }
+            });
+              sessionStorage.setItem("adocaoSolicitada", 'true');
+              setTimeout(() => {
+                window.location.reload();
+              }, 3000); 
+
+            }
+            else
+            {
+              Swal.fire({
+                icon: "error",
+                title: "Você já possui uma solicitação de adoção pendente.",
+                timer: 1500,
+                timerProgressBar: true
+              })
+            }
+            return response.json();
+          })
+          .then((json) => {
+
+          })
+          .catch((error) => console.error(error))
+        }
+      }
+      
     })
+  }
+  else
+  {
+    window.location.href = "./TelasFundamentais/telaLogin.html";
   }
 
 }
