@@ -107,7 +107,16 @@
         title: 'Cadastro Realizado Com Sucesso!',
       });
     }
+    else
+    if(sessionStorage.getItem('usuarioNaoAutenticado') == 'true')
+    {
+      Toast.fire({
+        icon: 'error',
+        title: 'Ops! Você não está logado',
+      });
+    }
     sessionStorage.removeItem('usuarioCadastrado');
+    sessionStorage.removeItem('usuarioNaoAutenticado');
   </script>
 </body>
 
