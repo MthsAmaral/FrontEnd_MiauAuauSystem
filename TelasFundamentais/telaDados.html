@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil - Sistema MiauAuau</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/indexNovo.css" />
+  <link rel="stylesheet" href="../css/form.css">
+  <link rel="stylesheet" href="../css/menu.css">
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+  <!-- Alerts -->
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.all.min.js"></script>
+  <!-- Mascaras -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
+  <!-- Meu JS -->
+  <script src="../ControllerJs/acessoController.js"></script>
+
+</head>
+
+<body onload="buscarUsuarioPeloId()">
+  <nav class="navbar" style="justify-content: center;">
+    <a href="../index.html" style="text-decoration: none;">
+      <div class="logo-container">
+        <span class="logo-text">Grupo MiauAuau</span>
+        <img src="../img/logo.png" alt="Sistema MiauAuau" class="logo" />
+      </div>
+    </a>
+  </nav>
+
+  <main class="container mt-5">
+    <aside class="menu-lateral">
+      <a href="../TelasFundamentais/telaMinhasAdocoes.html"><i class="fas fa-paw"></i> Minhas Adoções</a>
+      <a href="../TelasFundamentais/telaDados.html"><i class="fas fa-user"></i> Dados Pessoais</a>
+      <a href="../TelasFundamentais/telaAlterarSenha.html"> <i class="fas fa-lock"></i> Alterar Senha</a>
+      <a onclick="logout()" href="../index.html"><i class="fas fa-sign-out-alt"></i> Sair</a>
+    </aside>
+    <div class="row justify-content-center w-100">
+      <div class="col-md-8">
+        <div class="card shadow-lg border-0 rounded-4">
+          <div class="card-body p-4">
+            <h3 class="card-title text-center mb-4">Dados Pessoais</h3>
+
+            <form id="fusuario" method="post" novalidate>
+
+              <input type="hidden" id="cod" name="cod">
+              <input type="hidden" id="senha" name="senha">
+              <input type="hidden" id="privilegio" name="privilegio">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="cpf" name="cpf" placeholder=" " disabled>
+                <label for="cpf">CPF</label>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="nome" name="nome" placeholder=" " required>
+                    <label for="nome">Nome Completo</label>
+                    <div class="invalid-feedback">
+                      Campo obrigatório
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-floating mb-3">
+                    <select id="sexo" name="sexo" class="form-select" required>
+                      <option value="" selected>Selecione</option>
+                      <option value="Masculino">Masculino</option>
+                      <option value="Feminino">Feminino</option>
+                    </select>
+                    <label for="sexo">Sexo</label>
+                    <div class="invalid-feedback">
+                      Campo obrigatório
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="email" name="email" placeholder=" " required>
+                <label for="email">Email</label>
+                <div class="invalid-feedback">Por favor, informe um email válido</div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-floating mb-3">
+                    <input onchange="validarTelefone()" type="tel" class="form-control" id="telefone" name="telefone"
+                      placeholder=" " required>
+                    <label for="telefone">Telefone</label>
+                    <div class="invalid-feedback">
+                      Por favor, informe um fone válido
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-floating mb-3">
+                    <input onchange="buscarCEP()" type="text" class="form-control" id="cep" name="cep" placeholder=" "
+                      required>
+                    <label for="cep">CEP</label>
+                    <div id="cep-feedback" class="invalid-feedback">
+                      Por favor, informe um CEP válido
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="rua" name="rua" placeholder=" " required>
+                    <label for="rua">Endereço</label>
+                    <div class="invalid-feedback">
+                      Campo obrigatório
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="cidade" name="cidade" placeholder=" " required>
+                    <label for="cidade">Cidade</label>
+                    <div class="invalid-feedback">
+                      Campo obrigatório
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-floating mb-3">
+                    <select class="form-select" id="estado" name="estado" required>
+                      <option value="" selected>Selecione</option>
+                      <option value="AC">Acre</option>
+                      <option value="AL">Alagoas</option>
+                      <option value="AP">Amapá</option>
+                      <option value="AM">Amazonas</option>
+                      <option value="BA">Bahia</option>
+                      <option value="CE">Ceará</option>
+                      <option value="DF">Distrito Federal</option>
+                      <option value="ES">Espírito Santo</option>
+                      <option value="GO">Goiás</option>
+                      <option value="MA">Maranhão</option>
+                      <option value="MT">Mato Grosso</option>
+                      <option value="MS">Mato Grosso do Sul</option>
+                      <option value="MG">Minas Gerais</option>
+                      <option value="PA">Pará</option>
+                      <option value="PB">Paraíba</option>
+                      <option value="PR">Paraná</option>
+                      <option value="PE">Pernambuco</option>
+                      <option value="PI">Piauí</option>
+                      <option value="RJ">Rio de Janeiro</option>
+                      <option value="RN">Rio Grande do Norte</option>
+                      <option value="RS">Rio Grande do Sul</option>
+                      <option value="RO">Rondônia</option>
+                      <option value="RR">Roraima</option>
+                      <option value="SC">Santa Catarina</option>
+                      <option value="SP">São Paulo</option>
+                      <option value="SE">Sergipe</option>
+                      <option value="TO">Tocantins</option>
+                    </select>
+                    <label for="estado">Estado</label>
+                    <div class="invalid-feedback">
+                      Campo obrigatório
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-md-6">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="bairro" name="bairro" placeholder=" " required>
+                    <label for="bairro">Bairro</label>
+                    <div class="invalid-feedback">
+                      Campo obrigatório
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-floating mb-4">
+                <input type="number" class="form-control" id="numero" name="numero" placeholder=" " required>
+                <label for="numero">Número</label>
+                <div class="invalid-feedback">
+                  Campo obrigatório
+                </div>
+              </div>
+
+
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                <a href="../index.html" class="btn btn-secondary">Cancelar</a>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    $(document).ready(function () {
+      $('#telefone').mask('(00) 00000-0000');
+      $('#cpf').mask('000.000.000-00');
+      $('#cep').mask('00000-000');
+    });
+
+  </script>
+</body>
+
+</html>

@@ -11,6 +11,11 @@
   <!-- FONTE  -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
   
+   <!--Alerts-->
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.min.css" rel="stylesheet"></link>
+  <link rel="stylesheet" href="./css/stylesAlerts.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.all.min.js"></script>
+
   <script src="./ControllerJs/acessoController.js"></script>
 </head>
 
@@ -284,8 +289,26 @@
       }
     }
 
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top',
+      iconColor: 'white',
+      customClass: {
+        popup: 'colored-toast',
+      },
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true,
+    });
     
-  
+    if(sessionStorage.getItem('usuarioNaoAutenticado') == 'true')
+    {
+      Toast.fire({
+        icon: 'error',
+        title: 'Ops! Você não está logado',
+      });
+    }
+    sessionStorage.removeItem('usuarioNaoAutenticado');
   </script>
 </body>
 
