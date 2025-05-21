@@ -30,9 +30,59 @@ function verificarPrivilegio()
         <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaDados.html">Dados Pessoais</a></li>
         <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaAlterarSenha.html">Alterar Senha</a></li>
         <li><a class="dropdown-item-auaumiau" href="#" onclick="logout()">Sair</a></li>`;
+        if (payload.privilegio == 'A')
+        {
+           const menu = document.getElementById('nav');
+           if (menu)
+           {
+              const li = document.createElement('li');
+              li.classList.add('acesso-restrito');
+              li.innerHTML = `<a href="indexAdm.html">Acesso Restrito</a>`;
+              menu.appendChild(li);
+           }
+           
+        }
       }
       
     }
+}
+function verificarPrivilegioIndexAdm()
+{
+  const token = localStorage.getItem("token");
+  if (token)
+  {  
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const payload = JSON.parse(window.atob(base64)); 
+    const now = Math.floor(Date.now() / 1000); 
+    let flag = 1;
+    if (payload.exp && payload.exp < now)
+    {
+      Swal.fire({
+        icon: "error",
+        title: "Sessão Expirada",
+        text: "Por favor, faça login novamente.",
+        confirmButtonText: "Ok"
+      }).then(() => {
+        logout(); 
+      });
+      flag = 0;
+    }
+    if (flag == 1)
+    {
+      if (payload.privilegio != 'A')
+      {
+        window.location.href = "./index.html";
+        sessionStorage.setItem('acessoNegado', 'true');
+      }
+    }
+      
+  }
+  else
+  {
+    window.location.href = "./index.html";
+    sessionStorage.setItem('usuarioNaoAutenticado', 'true');
+  }
 }
 function logout() 
 {
@@ -113,19 +163,19 @@ async function validarCPF(cpf)
   }
 }
 function validarSubmit()
- {
+{
   const formid = document.getElementById("fid");
   const formcad = document.getElementById("fusuario");
   const formsenha = document.getElementById("fsenha");
   if (formcad != null)
   {
-      const cod_usuario = document.getElementById("cod");
-      if (cod_usuario) // alteracao
+      formcad.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      const form = event.target;
+      const cod_usuario = document.getElementById("cod").value;
+      let flag = 1;
+      if(cod_usuario)
       {
-        formcad.addEventListener("submit", async function (event) {
-        event.preventDefault();
-        const form = event.target;
-        let flag = 1;
         if (form.querySelector(".is-invalid"))
         {
           flag = 0;
@@ -158,14 +208,10 @@ function validarSubmit()
             form.classList.add('was-validated')
           }
         }
-      });  
       }
       else
       {
-        formcad.addEventListener("submit", async function (event) {
-        event.preventDefault();
-        const form = event.target;
-        let flag = 1;
+        
         if (form.querySelector(".is-invalid"))
         {
           flag = 0;
@@ -213,9 +259,8 @@ function validarSubmit()
             form.classList.add('was-validated')
           }
         }
-      });  
-    }
-      
+      }
+    });  
   }
   else
   if(formid != null)
@@ -272,7 +317,7 @@ function validarSubmit()
           form.classList.add('was-validated');
         }
       }
-  });
+    });
   } 
 }
 
@@ -669,6 +714,224 @@ function buscarUsuarioPeloId()
       sessionStorage.setItem('usuarioNaoAutenticado', 'true');
     }
     
+}
+function buscarAdocaoPeloUsuId()
+{
+  const token = localStorage.getItem("token");
+  if (token)
+  {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const payload = JSON.parse(window.atob(base64)); 
+    const now = Math.floor(Date.now() / 1000); 
+    let flag = 1;
+    if (payload.exp && payload.exp < now)
+    {
+      Swal.fire({
+        icon: "error",
+        title: "Sessão Expirada",
+        text: "Por favor, faça login novamente.",
+        confirmButtonText: "Ok"
+      }).then(() => {
+        logout(); 
+      });
+      flag = 0;
+    }
+    if (flag == 1)
+    {
+    let filtro = document.getElementById("filtro").value;
+    const resultado = document.getElementById("resultado");
+    if (filtro.length > 0) // busca com filtro
+    {
+      console.log(filtro)
+      const url = `http://localhost:8080/apis/adocao/buscarAdocaoPeloUsuId/${payload.cod_usuario}/`+filtro;
+      fetch(url, {
+        method: 'GET', redirect: "follow"
+      })
+        .then((response) => {
+          return response.text();
+        })
+        .then(function (text) {
+          var json = JSON.parse(text);
+
+          var table = "<table border='1'>";
+
+
+          for (let i = 0; i < json.length; i++) {
+            const dataOriginal = json[i].data; // exemplo: "2025-05-20"
+            const [ano, mes, dia] = dataOriginal.split("-");
+            const dataFormatada = `${dia}/${mes}/${ano.slice(-2)}`;
+
+            const dataNascimento = json[i].animal.dataNascimento;
+            const [anoNasc, mesNasc, diaNasc] = dataNascimento.split("-");
+            const nascimentoFormatado = `${diaNasc}/${mesNasc}/${anoNasc.slice(-2)}`;
+            table += `<tr>
+                          <td>${json[i].codAdocao}</td>
+                          <td>${dataFormatada}</td>
+                          <td>
+                          <img src="data:image/jpeg;base64,${json[i].animal.imagemBase64}" alt="Imagem do animal" style="width: 100px; height: 100px; object-fit: cover;">
+                          </td>
+                          <td>${json[i].animal.nome}</td>
+                          <td>${json[i].animal.raca}</td>
+                          <td>${nascimentoFormatado}</td>
+                          <td>
+                          <span class="badge 
+                            ${json[i].status === 'Aprovada' ? 'bg-success' : json[i].status === 'Cancelada' ? 'bg-danger' : 'bg-warning text-dark'} fs-6 p-2"> ${json[i].status}
+                          </span>
+                          </td>
+                          <td>
+                          ${
+                            json[i].status !== 'Aprovada' && json[i].status !== 'Cancelada'
+                              ? `<button type="button" class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1" onclick="cancelarAdocao(${json[i].codAdocao}, '${json[i].status}')">
+                                  Cancelar
+                                </button>`
+                              : ''
+                          }
+                          </td>
+                      </tr>`;
+          }
+          table += "</table>";
+          resultado.innerHTML = table;
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    }
+    else {
+      const url = `http://localhost:8080/apis/adocao/buscarAdocaoPeloUsuId/${payload.cod_usuario}/%20`;
+      fetch(url, {
+        method: 'GET', redirect: "follow"
+      })
+        .then((response) => {
+          return response.text();
+        })
+        .then(function (text) {
+          var json = JSON.parse(text);
+
+          var table = "<table border='1'>";
+
+          for (let i = 0; i < json.length; i++) {
+
+            const dataOriginal = json[i].data; // exemplo: "2025-05-20"
+            const [ano, mes, dia] = dataOriginal.split("-");
+            const dataFormatada = `${dia}/${mes}/${ano.slice(-2)}`;
+
+            const dataNascimento = json[i].animal.dataNascimento;
+            const [anoNasc, mesNasc, diaNasc] = dataNascimento.split("-");
+            const nascimentoFormatado = `${diaNasc}/${mesNasc}/${anoNasc.slice(-2)}`;
+
+            table += `<tr>
+                          <td>${json[i].codAdocao}</td>
+                          <td>${dataFormatada}</td>
+                          <td>
+                          <img src="data:image/jpeg;base64,${json[i].animal.imagemBase64}" alt="Imagem do animal" style="width: 100px; height: 100px; object-fit: cover;">
+                          </td>
+                          <td>${json[i].animal.nome}</td>
+                          <td>${json[i].animal.raca}</td>
+                          <td>${nascimentoFormatado}</td>
+                          <td>
+                          <span class="badge 
+                            ${json[i].status === 'Aprovada' ? 'bg-success' : json[i].status === 'Cancelada' ? 'bg-danger' : 'bg-warning text-dark'} fs-6 p-2"> ${json[i].status}
+                          </span>
+                          </td>
+                          <td>
+                            ${
+                              json[i].status !== 'Aprovada' && json[i].status !== 'Cancelada'
+                                ? `<button type="button" class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1" onclick="cancelarAdocao(${json[i].codAdocao}, '${json[i].status}')">
+                                    Cancelar
+                                  </button>`
+                                : ''
+                            }
+                          </td>
+                      </tr>`;
+          }
+          table += "</table>";
+          resultado.innerHTML = table;
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+      }
+    }
+  }  
+  else
+  {
+    window.location.href = "../index.html";
+    sessionStorage.setItem('usuarioNaoAutenticado', 'true');
+  }
+}
+
+function cancelarAdocao(id)
+{
+  let URL = "http://localhost:8080/apis/adocao/buscar-id/"+id;
+  var formData = new FormData();
+
+  Swal.fire({
+    title: "Deseja cancelar está solicitação de adoção ?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Confirmar",
+    cancelButtonText: "Cancelar"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch(URL, {
+        headers: {
+          Accept: 'application/json',
+        },
+        method: 'GET',
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Erro ao buscar dados da adoção.");
+          }
+          return response.json();
+        })
+        .then((json) => {
+          formData.append("codAdocao", id);
+          formData.append("cod_animal", json.animal.codAnimal);
+          formData.append("cod_usuario", json.usuario.codUsuario);
+          formData.append("data", json.data);
+          formData.append("status", "Cancelada");
+
+          URL = "http://localhost:8080/apis/adocao/atualizar";
+          return fetch(URL, {
+            method: 'PUT',
+            body: formData,
+          });
+        })
+        .then((response) => {
+          if (!response.ok) {
+            Toast.fire({
+              icon: 'error',
+              title: 'Erro ao Cancelar Adoção!',
+            });
+          }
+          else
+          {
+            Swal.fire({
+            icon: "success",
+            title: "Adoção Cancelada Com Sucesso!",
+            timer: 1500,
+            timerProgressBar: true,
+            showConfirmButton: false
+            }).then(() => {
+              location.reload();
+            });
+          }
+
+          return response.json();
+        })
+        .then(() => {
+
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  });
 
 }
+
 document.addEventListener("DOMContentLoaded", validarSubmit);
