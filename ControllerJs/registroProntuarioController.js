@@ -95,63 +95,112 @@ function cadRegistroProntuario() {
             timer: 1500,
             timerProgressBar: true
         });
-    }
-    else{
+    } else {
         const animalSelecionado = JSON.parse(animalSelecionadoJson);
-
         const codAnimal = animalSelecionado.codAnimal;
-        const arquivoInput = document.getElementById("imagemBase64");
+
+        const arquivoInput = document.getElementById("pdf");
         const arquivo = arquivoInput.files[0];
 
         const formData = new FormData();
         formData.append("data", data);
         formData.append("tipoRegistro", tipoRegistro);
-        formData.append("observacao", observacao); 
-        formData.append("codAnimal", codAnimal); 
-
+        formData.append("observacao", observacao);
+        formData.append("animalId", codAnimal);
         if (arquivo) {
-            formData.append("pdf", arquivo); // campo esperado pelo backend
+            formData.append("pdf", arquivo);
         }
 
-        fetch("http://localhost:8080/apis/prontuario/gravar", {
+        fetch("http://localhost:8080/registroProntuario", {
             method: "POST",
             body: formData
-        }).then(response => {
+        })
+        .then(response => {
             if (response.ok) {
                 Swal.fire({
                     icon: "success",
-                    title: "Registro cadastrado com sucesso",
-                    timer: 1500,
+                    title: "Registro cadastrado com sucesso!",
+                    timer: 2000,
                     timerProgressBar: true
                 });
-                limparCampos();
-                fecharModal();
+                limparForm();
+                //remove do localStorage
+                localStorage.removeItem("animalSelecionado");
+                document.getElementById("animalSelecionado").classList.add("d-none");
             } else {
-                response.text().then(text => {
-                    console.error("Erro do backend:", text);
-                    Swal.fire({
-                        icon: "error",
-                        title: "Erro ao cadastrar registro",
-                        text: text,
-                        timer: 2500,
-                        timerProgressBar: true
-                    });
+                return response.text().then(texto => {
+                    throw new Error(texto);
                 });
             }
-        }).catch(() => {
+        })
+        .catch(error => {
+            console.error("Erro ao cadastrar:", error);
             Swal.fire({
                 icon: "error",
-                title: "Erro de conexão",
-                timer: 1500,
-                timerProgressBar: true
+                title: "Erro ao cadastrar",
+                text: error.message
             });
         });
     }
-    
 }
 
 
 
+function buscarRegistroPeloId(id) {
+    const URL = "http://localhost:8080/apis/prontuario/buscar-id/" + id;
+
+    fetch(URL, {
+        headers: {
+            'Accept': 'application/json'
+        },
+        method: 'GET'
+    })
+        .then((response) => {
+            if (!response.ok) {
+
+                window.location.href = "../TelasFundamentais/prontuario.html";
+                throw new Error("Erro ao buscar o registro do prontuario: " + response.status);
+                
+            }
+            return response.json();
+        })
+        .then((json) => {
+            document.getElementById('cod').value = json.cod;
+
+
+            //document.getElementById('animalId').value = json.codAnimal;
+            selecionarAnimalJSON(json.animal);
+
+            let partes = json.data.split("-");
+            let dataFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`;
+            document.getElementById("data").value = dataFormatada;
+
+            document.getElementById('tipoRegistro').value = json.tipoRegistro;
+            document.getElementById('observacao').value = json.observacao;
+
+
+            // Supondo que você já tenha o objeto `json` do lançamento que está sendo editado
+            let pdfAtualDiv = document.getElementById("pdfAtual");
+            // Limpa qualquer conteúdo anterior antes de adicionar algo novo
+            pdfAtualDiv.innerHTML = "";
+            // Verifica se há um arquivo existente
+            if (json.arquivo) {
+                let link = document.createElement('a');
+                link.href = `http://localhost:8080/apis/prontuario/arquivo/${json.cod}`;
+                link.target = '_blank';
+                link.textContent = 'PDF Atual';
+
+                pdfAtualDiv.appendChild(link);
+                pdfAtualDiv.hidden = false;
+            } else {
+                // Se não houver arquivo, mantemos a div escondida
+                pdfAtualDiv.hidden = true;
+            }
+        })
+        .catch((error) => {
+            console.error("Erro ao buscar o registro do prontuario:", error);
+        });
+}
 
 
 //modal 

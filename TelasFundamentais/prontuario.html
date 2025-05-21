@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gerenciar Animais</title>
+    <title>Prontuario Animal</title>
 
     <!--Fonte-->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
@@ -104,31 +104,39 @@
         <h2>Prontuário do Animal</h2>
 
         <!-- Select para escolher animal -->
-        <div class="container-box">
-            
-                <div>
-                    <div class="row mb-3 align-items-end">
-                        <div class="col-md-4">
-                            <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
-                                data-bs-target="#modalAnimais">
-                                Selecionar Animal
-                            </button>
-                            <div id="animalSelecionado" class="mt-2 preview-box d-none"></div>
-                            <input type="hidden" id="animalId" name="animalId">
-                        </div>
-                    </div>
-                    
-                </div>
-                <div class="mb-2">
-                    <button class="btn btn-primary" onclick="visualizarProntuario()">Visualizar Prontuário</button>
-                </div>
         
+            
+        <div>
+            <div class="row mb-3 align-items-end">
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#modalAnimais">
+                        Selecionar Animal
+                    </button>
+                    <div id="animalSelecionado" class="mt-2 preview-box d-none"></div>
+                    <input type="hidden" id="animalId" name="animalId">
+                </div>
+            </div>
+            
+        </div>
+        <div class="mb-2">
+            <button class="btn btn-primary" onclick="visualizarProntuario()">Visualizar Prontuário</button>
         </div>
 
 
+        <div id="resultadoAnimal">
+            <!-- aqui os dados do animal vão aparecer -->
+        </div>
 
-        <!-- Área para mostrar os dados do prontuário -->
-        <div id="prontuarioContainer">
+        <div id="resultadoAgendamento">
+            <!-- aqui os dados vão aparecer -->
+        </div>
+
+        <div id="resultadoLancamento">
+            <!-- aqui os dados vão aparecer -->
+        </div>
+
+        <div id="resultadoProntuario">
             <!-- aqui os dados vão aparecer -->
         </div>
     </main>
@@ -164,6 +172,58 @@
         document.getElementById("btnBuscarAnimal").addEventListener("click", () => {
         carregarAnimais();
         });
+
+
+
+        const Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        iconColor: 'white',
+        customClass: {
+            popup: 'colored-toast',
+        },
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+        });
+
+        if (sessionStorage.getItem('registroGravado') == 'true') {
+        Toast.fire({
+            icon: 'success',
+            title: 'registro Gravado no prontuário Com Sucesso!',
+        });
+        }
+        else
+        if (sessionStorage.getItem('registroGravado') == 'false') {
+            Toast.fire({
+            icon: 'error',
+            title: 'Erro ao Gravar registro no prontuário!',
+            });
+        }
+        if (sessionStorage.getItem('registroAlterado') == 'true') {
+        Toast.fire({
+            icon: 'success',
+            title: 'registro Alterado no prontuário Com Sucesso!',
+        });
+        }
+        else
+        if (sessionStorage.getItem('registroAlterado') == 'false') {
+            Toast.fire({
+            icon: 'error',
+            title: 'Erro ao Alterar registro no prontuário!',
+            });
+        }
+        if (sessionStorage.getItem('registroApagado') == 'true') {
+        Toast.fire({
+            icon: 'success',
+            title: 'registro Excluído do prontuário Com Sucesso!',
+        });
+        }
+
+        sessionStorage.removeItem('registroApagado');
+        sessionStorage.removeItem('registroAlterado');
+        sessionStorage.removeItem('registroGravado');
+
 
     </script>
 </body>

@@ -139,23 +139,12 @@
                     placeholder="Digite sua observação aqui..."></textarea>
             </div>
 
-            <div class="mb-3">
-                <label for="imagemBase64" class="form-label">Anexar Documento (opcional):</label>
-                <div class="file-upload-wrapper">
-                    <input type="file" id="imagemBase64" name="imagemBase64" class="form-control">
-                    <label for="imagemBase64" class="file-upload-label d-flex align-items-center gap-2 mt-2"
-                        style="cursor: pointer;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                            class="upload-icon" viewBox="0 0 16 16">
-                            <path
-                                d="M.5 9.5A.5.5 0 0 1 1 9h14a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-.5.5H1a.5.5 0 0 1-.5-.5v-5zm3-6a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2H15V3a2 2 0 0 0-2-2H3a2 2 0 0 0-2 2v2h1V3z" />
-                            <path
-                                d="M5.5 5.5V14a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5V5.5h1.793a.5.5 0 0 0 .354-.854l-3.146-3a.5.5 0 0 0-.708 0l-3.146 3a.5.5 0 0 0 .354.854H5.5z" />
-                        </svg>
-                        <span id="file-name" class="file-name">Selecionar</span>
-                    </label>
+            <!--PDF-->
+                <div class="col-md-6">
+                    <label for="pdf" class="form-label">Anexo (opcional)</label>
+                    <input type="file" class="form-control" id="pdf" name="pdf" />
+                    <div id="pdfAtual" hidden></div>
                 </div>
-            </div>
 
             <div class="d-flex gap-3 mt-3">
                 <button type="button" class="btn btn-primary" onclick="validarCampos()">Confirmar</button>
@@ -194,6 +183,15 @@
     </div>
 
     <script>
+        //se for editar buscar e carregar no form
+        window.addEventListener("DOMContentLoaded", function () {
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('codAnimal');
+        if (id) {
+            buscarRegistroPeloId(id);
+        }
+        });
+
         
         const modalEl = document.getElementById('modalAnimais');
         modalEl.addEventListener('show.bs.modal', () => {
@@ -202,18 +200,6 @@
 
         document.getElementById("btnBuscarAnimal").addEventListener("click", carregarAnimais);
 
-
-
-        const fileInput = document.getElementById('imagemBase64');
-        const fileName = document.getElementById('file-name');
-
-        fileInput.addEventListener('change', (event) => {
-            if (event.target.files.length > 0 && fileInput !== "") {
-                fileName.textContent = event.target.files[0].name;
-            } else {
-                fileName.textContent = 'Selecionar Foto';
-            }
-        });
     </script>
 
 </body>
