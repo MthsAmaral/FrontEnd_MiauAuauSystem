@@ -272,7 +272,7 @@ function carregarRegistroProntuario() {
               const dataFormatada = `${day}/${month}/${year.slice(-2)}`;
 
               const linkPDF = reg.arquivo
-                  ? `<a href="http://localhost:8080/apis/lancamento/arquivo/${reg.cod}" target="_blank">PDF</a>`
+                  ? `<a href="http://localhost:8080/apis/prontuario/arquivo/${reg.cod}" target="_blank">PDF</a>`
                   : '<span>-</span>';
 
               table += `
@@ -378,7 +378,7 @@ function carregarAnimais() {
             if (!response.ok) 
               throw new Error("Erro ao carregar animais.");
             else
-             response.text();
+              return response.text();
         })
         .then(text => {
             const lista = JSON.parse(text);
@@ -418,6 +418,7 @@ function carregarAnimais() {
 
 function selecionarAnimal(codAnimal, nome, imagemBase64) {
     const previewDiv = document.getElementById("animalSelecionado");
+    
 
     const imagemSrc = imagemBase64 
         ? `data:image/jpeg;base64,${imagemBase64}` 
@@ -442,7 +443,7 @@ function selecionarAnimal(codAnimal, nome, imagemBase64) {
     document.getElementById("animalSelecionado").classList.remove("d-none");
 
     //guarda cod formulario
-    //document.getElementById("animalId").value = codAnimal;
+    document.getElementById("animalId").value = codAnimal;
 
 
     // Fecha o modal automaticamente
@@ -457,7 +458,7 @@ function removerAnimalSelecionado() {
     previewDiv.classList.add("d-none");
 
     // Limpa o input que salva codAnimal no formulario
-    //document.getElementById("animalId").value = "";
+    document.getElementById("animalId").value = "";
 
     // "Fecha" o formulário ocultando as seções exibidas
     document.getElementById("resultadoAnimal").innerHTML = "";
@@ -469,5 +470,6 @@ function removerAnimalSelecionado() {
 
 
 function redirecionarTelaCad(){
+  
   window.location.href = "../TelasFundamentais/cadRegistroProntuario.html?";
 }

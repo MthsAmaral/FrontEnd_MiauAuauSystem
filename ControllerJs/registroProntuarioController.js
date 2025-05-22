@@ -64,6 +64,9 @@ function validarCampos() {
                 });
             } else {
                 let cod = document.getElementById("cod").value;
+
+                console.log(cod);
+                
                 if(cod)
                     editarRegistroProntuario();
                 else
@@ -105,7 +108,7 @@ function cadRegistroProntuario() {
             formData.append("pdf", arquivo);
         }
 
-        fetch("http://localhost:8080/registroProntuario", {
+        fetch("http://localhost:8080/apis/prontuario/gravar", {
             method: "POST",
             body: formData
         })
@@ -118,8 +121,10 @@ function cadRegistroProntuario() {
                     timerProgressBar: true
                 });
                 limparForm();
+
                 //remove do localStorage
                 localStorage.removeItem("animalSelecionado");
+
                 document.getElementById("animalSelecionado").classList.add("d-none");
             } else {
                 return response.text().then(texto => {
@@ -247,8 +252,6 @@ function carregarAnimais() {
     const container = document.querySelector("#modalAnimais .modal-body");
     container.innerHTML = "";
 
-    // Limpa seleção temporária ao abrir
-    animaisSelecionadosTemp = [];
 
     // Define URL com base no filtro
     const url = "http://localhost:8080/apis/animal/buscar/" + (filtro.length > 0 ? filtro : "%20");
@@ -276,6 +279,10 @@ function carregarAnimais() {
 
                     //pega json do animal pra deixar selecionado no outro modal quando selecionado
                     const animalJson = encodeURIComponent(JSON.stringify(animal));
+
+
+                    //console.log(animalJson);
+
 
                     //se n tiver foto coloca generica
                     const imagemSrc = animal.imagemBase64 
