@@ -88,8 +88,9 @@ function balancete() {
             <td>${registro.referencial}</td>
             <td>${(+registro.debito ).toFixed(2)}</td>
             <td>${(+registro.credito).toFixed(2)}</td>
-            <td style="font-weight:bold;">${(+registro.debito - +registro.credito).toFixed(2)}</td>`;
+            `;
             corpoPlano.appendChild(linhaPlano);
+            //<td style="font-weight:bold;">${(+registro.debito - +registro.credito).toFixed(2)}</td>
 
             // acumula somas
             somaCredGrupo += +registro.credito;
@@ -113,8 +114,9 @@ function balancete() {
             <td colspan="2"></td>
             <td style="font-weight:bold;">${totalDebitos.toFixed(2)}</td>
             <td style="font-weight:bold;">${totalCreditos.toFixed(2)}</td>
-            <td style="font-weight:bold; background:${cor};">${dif.toFixed(2)}</td>
+            
         `;
+        //<td style="font-weight:bold; background:${cor};">${dif.toFixed(2)}</td>
         corpoPlano.appendChild(totalRow);  
       }
     })
