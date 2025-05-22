@@ -121,24 +121,22 @@
         </div>
         <div class="mb-2">
             <button class="btn btn-primary" onclick="visualizarProntuario()">Visualizar Prontuário</button>
+            <button class="btn btn-success" onclick="redirecionarTelaCad()">Cadastrar Registro</button>
         </div>
 
 
-        <div id="resultadoAnimal">
-            <!-- aqui os dados do animal vão aparecer -->
+        <!-- Animal sempre em linha separada -->
+        <div id="resultadoAnimal" class="mb-4"></div>
+
+        <!-- Agendamento e Lançamento lado a lado -->
+        <div class="row mb-4">
+            <div id="resultadoAgendamento" class="col-md-5"></div>
+            <div id="resultadoLancamento" class="col-md-7"></div>
         </div>
 
-        <div id="resultadoAgendamento">
-            <!-- aqui os dados vão aparecer -->
-        </div>
+        <!-- Prontuário em linha separada -->
+        <div id="resultadoProntuario"></div>
 
-        <div id="resultadoLancamento">
-            <!-- aqui os dados vão aparecer -->
-        </div>
-
-        <div id="resultadoProntuario">
-            <!-- aqui os dados vão aparecer -->
-        </div>
     </main>
 
     <!-- Modal Animais -->
@@ -168,13 +166,26 @@
     </div>
 
     <script>
+        window.onload = function() {
+            const animalSelecionadoJson = localStorage.getItem("animalSelecionado");
+            if (animalSelecionadoJson) {
+                const animal = JSON.parse(animalSelecionadoJson);
+                // Chama a função que renderiza o preview do animal selecionado
+                // Passando os dados que você armazenou (codAnimal, nome, imagemBase64)
+                selecionarAnimal(animal.codAnimal, animal.nome, animal.imagemBase64);
+            }
+        };
+
+
+
+
         //quando clicar botao de busca chama a função
         document.getElementById("btnBuscarAnimal").addEventListener("click", () => {
         carregarAnimais();
         });
 
 
-
+        //Notificação
         const Toast = Swal.mixin({
         toast: true,
         position: 'top',
@@ -220,10 +231,10 @@
         });
         }
 
-        sessionStorage.removeItem('registroApagado');
+        
         sessionStorage.removeItem('registroAlterado');
         sessionStorage.removeItem('registroGravado');
-
+        sessionStorage.removeItem('registroApagado');
 
     </script>
 </body>

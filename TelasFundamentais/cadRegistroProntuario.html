@@ -104,11 +104,11 @@
         <h2 class="mb-4">Cadastro de Registro Prontuario</h2>
 
         <form method="post" id="fprontuario" enctype="multipart/form-data">
-            <input type="hidden" id="cod" name="cod">
+            <!--salva codigo no formulario-->
+            <input type="hidden" id="cod" name="cod" readonly>
 
             <div class="row mb-3 align-items-end">
                 <div class="col-md-4">
-                    <label class="form-label">Animal:</label><br />
                     <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
                         data-bs-target="#modalAnimais">
                         Selecionar Animal
@@ -186,9 +186,9 @@
         //se for editar buscar e carregar no form
         window.addEventListener("DOMContentLoaded", function () {
         const params = new URLSearchParams(window.location.search);
-        const id = params.get('codAnimal');
-        if (id) {
-            buscarRegistroPeloId(id);
+        const cod = params.get('cod');
+        if (cod) {
+            buscarRegistroPeloId(cod);
         }
         });
 

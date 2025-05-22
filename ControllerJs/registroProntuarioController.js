@@ -6,14 +6,6 @@ function limparForm() {
 }
 
 
-function validarImagem(imagem) {
-
-    let flag = 0;
-    if (imagem.endsWith(".jpeg") || imagem.endsWith(".jpg"))
-        flag = 1;
-    return flag;
-}
-
 function validarData(dataString) {
     const regexData = /^\d{4}-\d{2}-\d{2}$/;
     if (!regexData.test(dataString)) {
@@ -35,16 +27,16 @@ function validarData(dataString) {
     hoje.setHours(0, 0, 0, 0);
     data.setHours(0, 0, 0, 0);
 
-    /*if (data > hoje) {
+    if (data > hoje) {//nao aceitar datas futuras 
         return false;
-    }*/
+    }
     return true;
 }
 
 function validarCampos() {
     const data = document.getElementById("data").value;
     const tipoRegistro = document.getElementById("tipoRegistro").value;
-    const arquivoInput = document.getElementById("imagemBase64");
+    const arquivoInput = document.getElementById("pdf"); 
     const arquivo = arquivoInput.files[0];
 
     if (data === "" || tipoRegistro === "") {
@@ -54,8 +46,7 @@ function validarCampos() {
             timer: 1500,
             timerProgressBar: true
         });
-    }
-    else {
+    } else {
         if (!validarData(data)) {
             Swal.fire({
                 icon: "warning",
@@ -63,22 +54,25 @@ function validarCampos() {
                 timer: 1500,
                 timerProgressBar: true
             });
-        }
-        else {
-            // Validar tamanho do arquivo (se anexado)
-            if (arquivo && arquivo.size > 5 * 1024 * 1024) { // 5 MB
+        } else {
+            if (arquivo && arquivo.size > 5 * 1024 * 1024) {
                 Swal.fire({
                     icon: "warning",
                     title: "Arquivo muito grande. Máximo 5 MB permitido.",
                     timer: 2000,
                     timerProgressBar: true
                 });
+            } else {
+                let cod = document.getElementById("cod").value;
+                if(cod)
+                    editarRegistroProntuario();
+                else
+                    cadRegistroProntuario();
             }
-            else
-                cadRegistroProntuario();
         }
     }
 }
+
 
 
 function cadRegistroProntuario() {
@@ -106,7 +100,7 @@ function cadRegistroProntuario() {
         formData.append("data", data);
         formData.append("tipoRegistro", tipoRegistro);
         formData.append("observacao", observacao);
-        formData.append("animalId", codAnimal);
+        formData.append("codAnimal", codAnimal);
         if (arquivo) {
             formData.append("pdf", arquivo);
         }
@@ -144,7 +138,53 @@ function cadRegistroProntuario() {
     }
 }
 
+async function editarRegistroProntuario(){
+ const URL = "http://localhost:8080/apis/prontuario/atualizar";
+  
+  const fprontuario = document.getElementById("fprontuario");
+  let formData = new FormData(fprontuario);
+  
 
+  //tratar PDF
+  let pdfAtualDiv = document.getElementById("pdfAtual");
+  let pdfInput = document.getElementById("pdf");
+
+  // Verifica se há um PDF novo (upload do usuário)
+  if (pdfAtualDiv.hidden === false) {
+    if (pdfInput.files.length > 0) {
+      // Há um novo arquivo enviado pelo usuário — usa esse
+      formData.set("pdf", pdfInput.files[0]);
+    }
+    else {
+      // Nenhum novo arquivo — busca o atual com fetch e adiciona no formData
+      let linkPDF = pdfAtualDiv.querySelector("a");
+      if (linkPDF) {
+        await fetch(linkPDF.href)
+          .then(res => res.blob())
+          .then(blob => {
+            let nomeArquivo = linkPDF.href.split("/").pop(); // ou um nome padrão
+            formData.set("pdf", new File([blob], nomeArquivo, { type: blob.type }));
+          });
+      }
+    }
+  }
+
+  try {
+    const response = await fetch(URL, {
+      method: 'PUT',
+      body: formData,
+    });
+    const json = await response.json();
+    console.log("Resposta do servidor: " + JSON.stringify(json));
+    sessionStorage.setItem("registroAlterado", 'true');
+  } 
+  catch (error) {
+    sessionStorage.setItem("registroAlterado", 'false');
+    console.error("Erro ao ATUALIZAR dados:", error);
+  }
+  //para retornar a página do prontuario
+  window.location.href = "../TelasFundamentais/prontuario.html";
+}
 
 function buscarRegistroPeloId(id) {
     const URL = "http://localhost:8080/apis/prontuario/buscar-id/" + id;
@@ -168,12 +208,9 @@ function buscarRegistroPeloId(id) {
             document.getElementById('cod').value = json.cod;
 
 
-            //document.getElementById('animalId').value = json.codAnimal;
-            selecionarAnimalJSON(json.animal);
+            selecionarAnimalJSON(encodeURIComponent(JSON.stringify(json.animal)));
 
-            let partes = json.data.split("-");
-            let dataFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`;
-            document.getElementById("data").value = dataFormatada;
+            document.getElementById("data").value = json.data;
 
             document.getElementById('tipoRegistro').value = json.tipoRegistro;
             document.getElementById('observacao').value = json.observacao;
@@ -237,11 +274,17 @@ function carregarAnimais() {
                     const col = document.createElement("div");
                     col.className = "col-md-4 mb-3";
 
+                    //pega json do animal pra deixar selecionado no outro modal quando selecionado
                     const animalJson = encodeURIComponent(JSON.stringify(animal));
+
+                    //se n tiver foto coloca generica
+                    const imagemSrc = animal.imagemBase64 
+                        ? `data:image/jpeg;base64,${animal.imagemBase64}` 
+                         : '../img/semFoto.png';
 
                     col.innerHTML = `
                         <div class="card card-select" style="cursor: pointer;" onclick="selecionarAnimalJSON('${animalJson}')">
-                            <img src="data:image/jpeg;base64,${animal.imagemBase64}" width="200" height="210" style="object-fit: cover;" class="card-img-top" />
+                            <img src="${imagemSrc}" width="200" height="210" style="object-fit: cover;" class="card-img-top" />
                             <div class="card-body">
                                 <h5 class="card-title">${animal.nome}</h5>
                                 <p class="card-text">Raça: ${animal.raca}<br>Sexo: ${animal.sexo}</p>
