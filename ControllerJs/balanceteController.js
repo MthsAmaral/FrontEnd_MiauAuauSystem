@@ -8,12 +8,43 @@ function balancete() {
         })
         .then((json) => {
             console.log("Resposta do servidor: ", json);
+
+            //irá ordenar a lista json...
+            //  utilizando o campo 'Classificacao' e depois o 'Referencial'
+            json.sort((a, b) => {
+                const cmpClass = a.classificacao.localeCompare(b.classificacao);
+                if (cmpClass !== 0) return cmpClass;
+                return a.referencial.localeCompare(b.referencial);
+            });
+
             let somaCredito = 0;
             let somaDebito = 0;
 
+            let classif = json[0].classificacao;
             //montar a tabela com o Plano Referencial para o balancete
             let table = "";
+            let tableBalancete = "";
             for (let i = 0; i < json.length; i++) {
+                if (classif != json[i].classificacao) {
+                    tableBalancete += `
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    `
+                }
                 somaCredito += parseFloat(json[i].credito);
                 somaDebito += parseFloat(json[i].debito);
                 table += `
@@ -43,7 +74,10 @@ function balancete() {
                     <td style="font-weight: bolder; background-color: ${cor};">${parseFloat(somaDebito - somaCredito).toFixed(2)}</td>
                 </tr>
             `;
+
+            //colocar as tabelas geradas dinamicamente no
             document.getElementById("resultado").innerHTML = table;
+            document.getElementById("resultadoBalancete").innerHTML = tableBalancete;
         })
         .catch((error) => {
             console.error("Erro ao recuperar Balancete: ", error);

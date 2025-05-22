@@ -93,13 +93,13 @@
 
     <!-- Conteúdo principal -->
     <main class="container container-box mt-5">
-        <h2>Balancete Contábil</h2>
+        <h2>Somatório Plano de Contas</h2>
 
         <!-- Campo de filtro -->
         <input type="text" id="filtro" placeholder="Filtrar pelo ANO" onkeyup="funcaoAqui"
             class="form-control mb-3" />
 
-        <!-- Tabela com rolagem -->
+        <!-- Tabela com rolagem -> somatório plano de contas -->
         <div>
             <table class="table table-bordered">
                 <thead>
@@ -112,6 +112,28 @@
                     </tr>
                 </thead>
                 <tbody id="resultado">
+                    <!-- Os dados serão preenchidos dinamicamente -->
+                </tbody>
+            </table>
+        </div>
+
+        <br><br><br>
+
+        <!--Tabela com rolagem balancete final-->
+        <h2>Balancete Contábil</h2>
+        <div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Conta Contábil</th>
+                        <th>Saldo Anterior</th>
+                        <th>Débitos</th>
+                        <th>Créditos</th>
+                        <th>Movimento Período</th>
+                        <th>Saldo Atual</th>
+                    </tr>
+                </thead>
+                <tbody id="resultadoBalancete">
                     <!-- Os dados serão preenchidos dinamicamente -->
                 </tbody>
             </table>
