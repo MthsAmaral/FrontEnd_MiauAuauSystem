@@ -65,10 +65,10 @@ function validarCampos() {
             } else {
                 let cod = document.getElementById("cod").value;
 
-                console.log(cod);
                 
-                if(cod)
+                if(cod){
                     editarRegistroProntuario();
+                }
                 else
                     cadRegistroProntuario();
             }
@@ -113,32 +113,26 @@ function cadRegistroProntuario() {
             body: formData
         })
         .then(response => {
-            if (response.ok) {
-                Swal.fire({
-                    icon: "success",
-                    title: "Registro cadastrado com sucesso!",
-                    timer: 2000,
-                    timerProgressBar: true
-                });
-                limparForm();
-
-                //remove do localStorage
-                localStorage.removeItem("animalSelecionado");
-
-                document.getElementById("animalSelecionado").classList.add("d-none");
-            } else {
-                return response.text().then(texto => {
-                    throw new Error(texto);
-                });
+            if (!response.ok) 
+                {
+                sessionStorage.setItem('registroGravado', 'false');
+            } 
+            else 
+            {
+                sessionStorage.setItem('registroGravado', 'true');
             }
+
+            //remove do localStorage
+            localStorage.removeItem("animalSelecionado");
+
+            document.getElementById("animalSelecionado").classList.add("d-none");
+
+            document.getElementById("fprontuario").reset();
+            window.location.href = "../TelasFundamentais/prontuario.html";
+            return response.json();
         })
         .catch(error => {
             console.error("Erro ao cadastrar:", error);
-            Swal.fire({
-                icon: "error",
-                title: "Erro ao cadastrar",
-                text: error.message
-            });
         });
     }
 }
@@ -180,7 +174,7 @@ async function editarRegistroProntuario(){
       body: formData,
     });
     const json = await response.json();
-    console.log("Resposta do servidor: " + JSON.stringify(json));
+    //console.log("Resposta do servidor: " + JSON.stringify(json));
     sessionStorage.setItem("registroAlterado", 'true');
   } 
   catch (error) {
@@ -202,8 +196,8 @@ function buscarRegistroPeloId(id) {
     })
         .then((response) => {
             if (!response.ok) {
-
-                window.location.href = "../TelasFundamentais/prontuario.html";
+                console.log("erro buscaregistro, id",id);
+                //window.location.href = "../TelasFundamentais/prontuario.html";
                 throw new Error("Erro ao buscar o registro do prontuario: " + response.status);
                 
             }
@@ -245,7 +239,7 @@ function buscarRegistroPeloId(id) {
 }
 
 
-//modal 
+//MODAL 
 
 function carregarAnimais() {
     let filtro = document.getElementById("filtro").value.trim();
@@ -331,7 +325,7 @@ function selecionarAnimalJSON(json) {
     previewDiv.classList.remove("d-none");
 
     // Atualiza input hidden com o ID
-    document.getElementById("animalId").value = animal.codAnimal;
+    document.getElementById("codAnimal").value = animal.codAnimal;
 
     // Fecha o modal
     const modalAnimaisEl = document.getElementById("modalAnimais");
@@ -349,7 +343,7 @@ function removerAnimalSelecionado() {
     previewDiv.innerHTML = "";
     previewDiv.classList.add("d-none");
 
-    document.getElementById("animalId").value = "";
+    document.getElementById("codAnimal").value = "";
 
     // Remove do localStorage também
     localStorage.removeItem("animalSelecionado");

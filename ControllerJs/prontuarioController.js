@@ -7,8 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 function visualizarProntuario(){
-    const animalId = document.getElementById("animalId").value;
-    if (!animalId) {
+    const codAnimal = document.getElementById("codAnimal").value;
+    if (!codAnimal) {
         Swal.fire({
             icon: 'warning',
             title: 'Selecione um animal antes de visualizar o prontuário.'
@@ -25,10 +25,10 @@ function visualizarProntuario(){
 
 function carregarAnimal(){
 
-  let animalId = document.getElementById("animalId").value;
+  let codAnimal = document.getElementById("codAnimal").value;
   const resultado = document.getElementById("resultadoAnimal");
 
-  const url = "http://localhost:8080/apis/animal/buscar-id/"+animalId;
+  const url = "http://localhost:8080/apis/animal/buscar-id/"+codAnimal;
         fetch(url, {
             method: 'GET', redirect: "follow"
         })
@@ -120,11 +120,11 @@ function carregarAnimal(){
 }
 
 function carregarAgendamentos(){
-    let animalId = document.getElementById("animalId").value;
+    let codAnimal = document.getElementById("codAnimal").value;
     const resultado = document.getElementById("resultadoAgendamento");
   
 
-    const url = "http://localhost:8080/apis/agendar-medicamento/buscar_animal/" + animalId;
+    const url = "http://localhost:8080/apis/agendar-medicamento/buscar_animal/" + codAnimal;
   
     fetch(url, {
       method: 'GET',
@@ -176,11 +176,11 @@ function carregarAgendamentos(){
 }
 
 function carregarLancamentos(){
-  let animalId = document.getElementById("animalId").value;
+  let codAnimal = document.getElementById("codAnimal").value;
   const resultado = document.getElementById("resultadoLancamento");
 
 
-  const url = "http://localhost:8080/apis/lancamento/buscar_animal/" + animalId;
+  const url = "http://localhost:8080/apis/lancamento/buscar_animal/" + codAnimal;
 
   fetch(url, {
     method: 'GET',
@@ -237,10 +237,10 @@ function carregarLancamentos(){
 }
 
 function carregarRegistroProntuario() {
-  let animalId = document.getElementById("animalId").value;
+  let codAnimal = document.getElementById("codAnimal").value;
   const resultado = document.getElementById("resultadoProntuario");
 
-  const url = "http://localhost:8080/apis/prontuario/buscar_animal/" + animalId;
+  const url = "http://localhost:8080/apis/prontuario/buscar_animal/" + codAnimal;
 
   fetch(url, {
       method: 'GET',
@@ -358,6 +358,7 @@ function excluirProntuario(cod) {
 
 }
 
+var lista =   [];
 
 //modal animal
 
@@ -381,7 +382,7 @@ function carregarAnimais() {
               return response.text();
         })
         .then(text => {
-            const lista = JSON.parse(text);
+            lista = JSON.parse(text);
 
             // Verifica se a lista está vazia
             if (lista.length === 0) {
@@ -390,7 +391,12 @@ function carregarAnimais() {
                 mensagem.textContent = "Nenhum animal encontrado com esse filtro.";
                 container.appendChild(mensagem);
             } else {
-                lista.forEach(animal => {
+              
+                /*for(let i =0; lista.length();i++)
+                {
+                  
+                }*/
+                lista.forEach((animal, indice) => {
                   const col = document.createElement("div");
                   col.className = "col-md-4 mb-3";
 
@@ -400,7 +406,7 @@ function carregarAnimais() {
                       : '../img/semFoto.png';
 
                   col.innerHTML = `
-                      <div class="card card-select" style="cursor: pointer;" onclick="selecionarAnimal(${animal.codAnimal}, '${animal.nome}', '${animal.imagemBase64 ?? ""}')">
+                      <div class="card card-select" style="cursor: pointer;" onclick="selecionarAnimal(${indice})">
                         <img src="${imagemSrc}" class="card-img-top" alt="${animal.nome}" style="height: 180px; width: 100%; object-fit: contain; background-color: #f8f9fa;">
                         <div class="card-body">
                             <h5 class="card-title text-center" style="background-color: #d3a96a; padding: 5px; margin: 0;">${animal.nome}</h5>
@@ -416,21 +422,22 @@ function carregarAnimais() {
         .catch(error => console.error(error.message));
 }
 
-function selecionarAnimal(codAnimal, nome, imagemBase64) {
+function selecionarAnimal(indice) {
+    const animal = lista[indice];
     const previewDiv = document.getElementById("animalSelecionado");
     
 
-    const imagemSrc = imagemBase64 
-        ? `data:image/jpeg;base64,${imagemBase64}` 
+    const imagemSrc = animal.imagemBase64 
+        ? `data:image/jpeg;base64,${animal.imagemBase64}` 
         : '../img/semFoto.png';
 
     previewDiv.innerHTML = `
         <div class="row">
             <div class="col-md-8">
                 <div class="card card-select p-0 position-relative h-100">
-                    <img src="${imagemSrc}" class="card-img-top" alt="${nome}" style="height: 180px; object-fit: contain; background-color: #f8f9fa;">
+                    <img src="${imagemSrc}" class="card-img-top" alt="${animal.nome}" style="height: 180px; object-fit: contain; background-color: #f8f9fa;">
                     <div class="card-body">
-                        <h5 class="card-title text-center" style="background-color: #d3a96a; padding: 5px; margin: 0;">${nome}</h5>
+                        <h5 class="card-title text-center" style="background-color: #d3a96a; padding: 5px; margin: 0;">${animal.nome}</h5>
                     </div>
                     <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1" onclick="removerAnimalSelecionado()">
                         <i class="bi bi-x"></i>
@@ -443,7 +450,7 @@ function selecionarAnimal(codAnimal, nome, imagemBase64) {
     document.getElementById("animalSelecionado").classList.remove("d-none");
 
     //guarda cod formulario
-    document.getElementById("animalId").value = codAnimal;
+    document.getElementById("codAnimal").value = animal.codAnimal;
 
 
     // Fecha o modal automaticamente
@@ -458,7 +465,7 @@ function removerAnimalSelecionado() {
     previewDiv.classList.add("d-none");
 
     // Limpa o input que salva codAnimal no formulario
-    document.getElementById("animalId").value = "";
+    document.getElementById("codAnimal").value = "";
 
     // "Fecha" o formulário ocultando as seções exibidas
     document.getElementById("resultadoAnimal").innerHTML = "";
