@@ -120,6 +120,7 @@ function gravarAgendamento() {
           formData.append("dataAplicacao", dataAplicacao);
           formData.append("status", "false");
 
+
           return fetch("http://localhost:8080/apis/agendar-medicamento/gravar", {
             method: "POST",
             body: formData
@@ -131,6 +132,8 @@ function gravarAgendamento() {
             const todasOk = responses.every(r => r.ok);
             sessionStorage.setItem('agendamentoGravado', todasOk ? 'true' : 'false');
             window.location.reload();
+
+            
           })
           .catch(error => {
             console.error('Erro ao gravar agendamentos:', error);

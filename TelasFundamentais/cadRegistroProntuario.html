@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Registro Prontuário</title>
+
+    <!--Fonte-->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+
+    <!-- Bootstrap -->
+     
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!--Alerts-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.min.css" rel="stylesheet">
+    </link>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.all.min.js"></script>
+
+    <!--Imports Locais-->
+    <script src="../ControllerJs/registroProntuarioController.js"></script>
+    <link rel="stylesheet" href="../css/styleNavBar.css" />
+    <link rel="stylesheet" href="../css/telasCad.css" />
+    <link rel="stylesheet" href="../css/stylesAlerts.css" />
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../indexAdm.html">
+                Sistema MiauAuau
+                <img src="../img/logo.png" alt="Logo Sistema MiauAuau" style="max-height: 50px;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ms-auto me-auto central-navbar">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Operações</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="../TelasFundamentais/agendarMedicamento.html">Agendar
+                                    Medicamento</a>
+                            <li><a class="dropdown-item" href="../TelasFundamentais/realizarLancamentos.html">Realizar
+                                    Lançamento</a>
+                            <li><a class="dropdown-item" href="../TelasFundamentais/prontuario.html">Prontuário</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Cadastro</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="../TelasCadastros/cadAnimal.html">Animal</a></li>
+                            <li><a class="dropdown-item" href="../TelasCadastros/cadAdocao.html">Adoção</a></li>
+                            <li><a class="dropdown-item" href="../TelasCadastros/cadTipoPagamento.html">Plano de Contas
+                                    Gerencial</a></li>
+                            <li><a class="dropdown-item" href="../TelasCadastros/cadPlanoContasReferencial.html">Plano
+                                    de Contas Referencial</a></li>
+                            <li><a class="dropdown-item" href="../TelasCadastros/cadTipoLancamento.html">Tipo de
+                                    Lançamento</a></li>
+                            <li><a class="dropdown-item" href="../TelasCadastros/cadTipoMedicamento.html">Tipo de
+                                    Medicamento</a></li>
+                            <li><a class="dropdown-item" href="../TelasCadastros/cadUsuario.html">Usuário</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Gerenciar</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="../TelasGerenciar/gerenAdocao.html">Adoção</a></li>
+                            <li><a class="dropdown-item" href="../TelasGerenciar/gerenAnimais.html">Animal</a></li>
+                            <li><a class="dropdown-item" href="../TelasGerenciar/gerenciarDoacoes.html">Doação</a></li>
+                            <li><a class="dropdown-item" href="../TelasGerenciar/gerenLancamentos.html">Lançamentos</a>
+                            </li>
+                            <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Plano de
+                                    Contas Gerencial</a></li>
+                            <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Plano de
+                                    Contas Referencial</a></li>
+                            <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoLancamentos.html">Tipo de
+                                    Lançamento</a></li>
+                            <li><a class="dropdown-item" href="../TelasGerenciar/gerenMedicamentos.html">Tipo de
+                                    Medicamento</a></li>
+                            <li><a class="dropdown-item" href="../TelasGerenciar/gerenUsuarios.html">Usuário</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Login</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Entrar</a></li>
+                            <li><a class="dropdown-item" href="#">Sair</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container container-box mt-5">
+        <h2 class="mb-4">Cadastro de Registro Prontuario</h2>
+
+        <form method="post" id="fprontuario" enctype="multipart/form-data">
+            <!--salva codigo no formulario-->
+            <input type="hidden" id="cod" name="cod" readonly>
+
+            <div class="row mb-3 align-items-end">
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#modalAnimais">
+                        Selecionar Animal
+                    </button>
+                    <div id="animalSelecionado" class="mt-2 preview-box d-none"></div>
+                    <input type="hidden" id="codAnimal" name="codAnimal">
+                </div>
+            </div>
+
+
+            <div class="row mb-3">
+                <div class="col-md-2">
+                    <label for="data" class="form-label">Data:</label>
+                    <input type="date" class="form-control" id="data" name="data" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="tipoRegistro" class="form-label">Tipo Registro:</label>
+                    <input type="text" class="form-control" id="tipoRegistro" name="tipoRegistro"
+                        placeholder="Digite o tipo do registro..." required>
+                </div>
+            </div>
+
+
+            <div class="mb-3">
+                <label for="observacao" class="form-label">Observação (opcional):</label>
+                <textarea class="form-control" id="observacao" name="observacao" rows="2"
+                    placeholder="Digite sua observação aqui..."></textarea>
+            </div>
+
+            <!--PDF-->
+                <div class="col-md-6">
+                    <label for="pdf" class="form-label">Anexo (opcional)</label>
+                    <input type="file" class="form-control" id="pdf" name="pdf" />
+                    <div id="pdfAtual" hidden></div>
+                </div>
+
+            <div class="d-flex gap-3 mt-3">
+                <button type="button" class="btn btn-primary" onclick="validarCampos()">Confirmar</button>
+                <button type="button" class="btn btn-secondary" onclick="history.back()">
+                    <i class="bi bi-arrow-left"></i> Voltar
+                </button>
+            </div>
+        </form>
+
+    </main>
+
+    <!-- Modal Animais -->
+    <div class="modal fade" id="modalAnimais" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Selecionar Animal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- barra pesquisa -->
+                <div class="input-group mb-3 mx-auto" style="max-width: 400px;">
+                    <input type="text" class="form-control" id="filtro" placeholder="Filtrar por nome do animal">
+                    <button class="btn btn-outline-primary" style="height: 100%;" type="button" id="btnBuscarAnimal">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+
+                <!-- Corpo com os cartões dos animais -->
+                <div class="modal-body row" id="listaAnimais">
+                    <!-- Os cards dos animais são inseridos via JS -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        //se for editar buscar e carregar no form
+        window.addEventListener("DOMContentLoaded", function () {
+        const params = new URLSearchParams(window.location.search);
+        const cod = params.get('cod');
+        if (cod) {
+            buscarRegistroPeloId(cod);
+        }
+        });
+
+        
+        const modalEl = document.getElementById('modalAnimais');
+        modalEl.addEventListener('show.bs.modal', () => {
+            carregarAnimais(); // carrega os animais ao abrir o modal
+        });
+
+        document.getElementById("btnBuscarAnimal").addEventListener("click", carregarAnimais);
+
+    </script>
+
+</body>
+
+</html>
