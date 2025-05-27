@@ -43,27 +43,29 @@
 
   <!-- Tela Pix -->
   <main class="container container-box text-center mt-5">
-    <h2 class="mb-4">Pagamento via Pix</h2>
+  <h2 class="mb-4">Pagamento via Pix</h2>
 
-    <div class="d-flex flex-column align-items-center gap-4">
-      <div>
-        <h5>Chave Pix (CNPJ)</h5>
-        <p>51670642000139</p>
-        <p onclick="copiarPix()" class="fs-5 fw-bold text-primary" style="cursor: pointer;">
-            Copiar pix
-        </p>
-      </div>
+  <div class="d-flex flex-column align-items-center gap-4">
+    <div>
+      <h5>Chave Pix (CNPJ)</h5>
+      <p>51670642000139</p>
+      <button onclick="copiarPix()" class="btn btn-outline-primary btn-sm">Copiar Pix</button>
+    </div>
 
-      <div>
-        <h5>QR Code para pagamento</h5>
-        <img src="../img/QRCode.png" alt="QR Code Pix" class="rounded border border-secondary" style="width: 250px; height: 250px;">
-      </div>
-
-      <div>
-        <button class="btn btn-secondary mt-4" onclick="history.back()">Voltar</button>
+    <div>
+      <h5 class="mb-3">QR Code para pagamento</h5>
+      <div class="d-flex justify-content-center">
+        <img src="../img/QRCode.png" alt="QR Code Pix" class="rounded border border-2 border-secondary"
+             style="width: 280px; max-width: 100%; height: auto;">
       </div>
     </div>
-  </main>
+
+    <div>
+      <button class="btn btn-secondary mt-4" onclick="history.back()">Voltar</button>
+    </div>
+  </div>
+</main>
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
