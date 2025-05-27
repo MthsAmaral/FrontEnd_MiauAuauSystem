@@ -37,19 +37,21 @@ function validarData(dataString)
 }
 
 function validarCampos() {
-  const cod = document.getElementById("cod_usuario").value;
+
+  //const cod = document.getElementById("cod_usuario").value;
   const status = document.getElementById("status").value;
   const data = document.getElementById("data").value;
   const valor = document.getElementById("valor").value;
-  console.log(cod)
+  //console.log(cod)
   console.log(status)
   console.log(data)
   console.log(valor)
-  if (cod > 0 && status != "" && data != "" && valor > 0) 
+  if (status != "" && data != "" && valor > 0) 
   {
       if(validarData(data))
       {
         cadDoacao();
+        window.location.href = "../TelasFundamentais/telaPagamento.html";
       }
       else
       {
