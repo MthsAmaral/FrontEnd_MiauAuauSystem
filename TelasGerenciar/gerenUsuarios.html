@@ -156,12 +156,7 @@
         icon: 'success',
         title: 'Usuário Excluído Com Sucesso!',
       });
-    } else if(sessionStorage.getItem('usuarioApagado') == 'false'){
-        Toast.fire({
-          icon: 'error',
-          title: 'Erro ao Excluir Usuário!',
-        });
-    }
+    } 
     
     sessionStorage.removeItem('usuarioApagado')
     sessionStorage.removeItem('usuarioAlterado');

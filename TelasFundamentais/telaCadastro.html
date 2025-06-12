@@ -81,9 +81,9 @@
                 </div>
                 <div class="col-md-6">
                   <div class="form-floating mb-3">
-                    <input type="password" class="form-control" id="senha" name="senha" placeholder=" " required>
+                    <input onchange="validarCadSenha()" type="password" class="form-control" id="senha" name="senha"  minlength="8" placeholder=" " required>
                     <label for="senha">Senha</label>
-                    <div class="invalid-feedback">
+                    <div class="invalid-feedback" id="senha-feedback">
                       Campo obrigatório
                     </div>
                   </div>

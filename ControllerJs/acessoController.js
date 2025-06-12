@@ -647,6 +647,33 @@ function validarSenha()
     senhaFeedback.textContent = "Campo obrigatório"
   }
 }
+function validarCadSenha()
+ {
+    const inputSenha = document.getElementById("senha");
+    const senhaFeedback = document.getElementById("senha-feedback");
+
+    inputSenha.addEventListener("blur", () => {
+    const senha = inputSenha.value;
+
+    if (senha === "")
+    {
+      inputSenha.classList.add("is-invalid");
+      senhaFeedback.style.display = "block";
+      senhaFeedback.textContent = "Campo obrigatório";
+    } 
+    else if (senha.length < 8)
+    {
+      inputSenha.classList.add("is-invalid");
+      senhaFeedback.style.display = "block";
+      senhaFeedback.textContent = "A senha deve ter no mínimo 8 caracteres";
+    } 
+    else
+   {
+      inputSenha.classList.remove("is-invalid");
+      senhaFeedback.style.display = "none";
+    }
+  });
+}
 function buscarUsuarioPeloId()
 {
     const token = localStorage.getItem("token");
