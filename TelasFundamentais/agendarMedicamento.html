@@ -17,7 +17,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
   <!--Alerts-->
-  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.min.css" rel="stylesheet"></link>
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.min.css" rel="stylesheet">
+  </link>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.all.min.js"></script>
 
   <!--Imports Locais-->
@@ -30,15 +31,19 @@
     .bg-white {
       background-color: #fff !important;
     }
+
     .object-fit-cover {
       object-fit: cover;
     }
+
     .card-select.border-primary {
       border: 2px solid #0d6efd;
       box-shadow: 0 0 5px rgba(13, 110, 253, 0.5);
     }
+
     #btnBuscarAnimal {
-      height: 100%; /* iguala a altura do input */
+      height: 100%;
+      /* iguala a altura do input */
     }
   </style>
 </head>
@@ -69,8 +74,10 @@
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="../TelasCadastros/cadAnimal.html">Animal</a></li>
               <li><a class="dropdown-item" href="../TelasCadastros/cadAdocao.html">Adoção</a></li>
-              <li><a class="dropdown-item" href="../TelasCadastros/cadTipoPagamento.html">Plano de Contas Gerencial</a></li>
-              <li><a class="dropdown-item" href="../TelasCadastros/cadPlanoContasReferencial.html">Plano de Contas Referencial</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadTipoPagamento.html">Plano de Contas Gerencial</a>
+              </li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadPlanoContasReferencial.html">Plano de Contas
+                  Referencial</a></li>
               <li><a class="dropdown-item" href="../TelasCadastros/cadTipoLancamento.html">Tipo de Lançamento</a></li>
               <li><a class="dropdown-item" href="../TelasCadastros/cadTipoMedicamento.html">Tipo de Medicamento</a></li>
               <li><a class="dropdown-item" href="../TelasCadastros/cadUsuario.html">Usuário</a></li>
@@ -83,9 +90,12 @@
               <li><a class="dropdown-item" href="../TelasGerenciar/gerenAnimais.html">Animal</a></li>
               <li><a class="dropdown-item" href="../TelasGerenciar/gerenciarDoacoes.html">Doação</a></li>
               <li><a class="dropdown-item" href="../TelasGerenciar/gerenLancamentos.html">Lançamentos</a></li>
-              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Plano de Contas Gerencial</a></li>
-              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Plano de Contas Referencial</a></li>
-              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoLancamentos.html">Tipo de Lançamento</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Plano de Contas
+                  Gerencial</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Plano de Contas
+                  Referencial</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoLancamentos.html">Tipo de Lançamento</a>
+              </li>
               <li><a class="dropdown-item" href="../TelasGerenciar/gerenMedicamentos.html">Tipo de Medicamento</a></li>
               <li><a class="dropdown-item" href="../TelasGerenciar/gerenUsuarios.html">Usuário</a></li>
             </ul>
@@ -100,33 +110,9 @@
         </ul>
       </div>
     </div>
-      <!-- Menu de Notificações -->
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="botaoNotificacoes" data-bs-toggle="modal"
-            data-bs-target="#modalNotificacoes">
-            <i class="bi bi-bell"></i> <!-- Ícone de sino -->
-            <span class="badge bg-danger" id="notificacoesCount">0</span> <!-- Contador de notificações -->
-          </a>
-        </li>
-      </ul>
     </div>
   </nav>
 
-  <!-- Modal Notificações -->
-  <div class="modal fade" id="modalNotificacoes" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Notificações de Medicamentos</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body" id="listaNotificacoes">
-          <!-- Aqui serão listadas as notificações -->
-        </div>
-      </div>
-    </div>
-  </div>
 
   <main class="container container-box mt-5">
     <h2 class="mb-4">Agendar Medicamento(s)</h2>
