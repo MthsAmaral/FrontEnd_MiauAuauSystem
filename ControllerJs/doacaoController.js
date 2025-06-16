@@ -1,78 +1,114 @@
+
 function limparForm() {
-  var fdados = document.getElementById("fdoacao");
+  const fdados = document.getElementById("fdoacao");
   fdados.cod_usuario.value = "";
   fdados.data.value = "";
-  fdados.valor.value = 0;
+  fdados.valor.value = "";
+  fdados.status.value = "Pendente";
 }
 
-function validarData(dataString) 
-{
-    const regexData = /^\d{4}-\d{2}-\d{2}$/;
-    if (!regexData.test(dataString)) {
-      return false;
-    }
+function validarData(dataString) {
+  const regexData = /^\d{4}-\d{2}-\d{2}$/;
+  if (!regexData.test(dataString)) {
+    return false;
+  }
 
-    const [ano, mes, dia] = dataString.split("-").map(Number);
-    const data = new Date(ano, mes - 1, dia);
+  const [ano, mes, dia] = dataString.split("-").map(Number);
+  const data = new Date(ano, mes - 1, dia);
 
-    if (
-      data.getFullYear() !== ano ||
-      data.getMonth() !== mes - 1 ||
-      data.getDate() !== dia
-    ) 
-    {
-      return false; 
-    }
-  
-    const hoje = new Date();
-    hoje.setHours(0, 0, 0, 0);
-    data.setHours(0, 0, 0, 0);
-  
-    if (data > hoje)
-    {
-      return false; 
-    }
-  
-    return true; 
+  if (
+    data.getFullYear() !== ano ||
+    data.getMonth() !== mes - 1 ||
+    data.getDate() !== dia
+  ) {
+    return false;
+  }
+
+  const hoje = new Date();
+  hoje.setHours(0, 0, 0, 0);
+  data.setHours(0, 0, 0, 0);
+
+  return data <= hoje;
 }
 
 function validarCampos() {
-
-  //const cod = document.getElementById("cod_usuario").value;
   const status = document.getElementById("status").value;
   const data = document.getElementById("data").value;
   const valor = document.getElementById("valor").value;
-  //console.log(cod)
-  console.log(status)
-  console.log(data)
-  console.log(valor)
-  if (status != "" && data != "" && valor > 0) 
-  {
-      if(validarData(data))
-      {
-        cadDoacao();
-        window.location.href = "../TelasFundamentais/telaPagamento.html";
-      }
-      else
-      {
-        Swal.fire({
-          icon: "warning",
-          title: "Data Inválida",
-          timer: 1500,
-          timerProgressBar: true
-        })
-      }
-  }
-  else
-  {
+
+  if (status && data && valor > 0) {
+    if (validarData(data)) {
+      cadDoacao();
+    } else {
+      Swal.fire({
+        icon: "warning",
+        title: "Data Inválida",
+        timer: 1500,
+        timerProgressBar: true
+      });
+    }
+  } else {
     Swal.fire({
       icon: "warning",
-      title: "Campo(s) Não Preenchido(s)",
+      title: "Preencha todos os campos corretamente!",
       timer: 1500,
       timerProgressBar: true
-    })
+    });
   }
-  limparForm();
+}
+
+function cadDoacao() {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    Swal.fire({
+      icon: "error",
+      title: "Você precisa estar logado para doar!"
+    });
+    return;
+  }
+
+  const cod = document.getElementById("codDoacao").value;
+  const url = cod
+    ? "http://localhost:8080/apis/doacao/atualizar"
+    : "http://localhost:8080/apis/doacao/gravar";
+
+  const formData = new URLSearchParams();
+  formData.append("codDoacao", cod);
+  formData.append("cod_usuario", document.getElementById("cod_usuario").value);
+  formData.append("status", document.getElementById("status").value);
+  formData.append("data", document.getElementById("data").value);
+  formData.append("valor", document.getElementById("valor").value);
+
+  fetch(url, {
+    method: cod ? "PUT" : "POST",
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: formData
+  })
+    .then(response => {
+      if (!response.ok) throw new Error("Erro na operação!");
+      return response.json();
+    })
+    .then(() => {
+      Swal.fire({
+        icon: "success",
+        title: cod ? "Doação atualizada!" : "Doação cadastrada!",
+        timer: 1500,
+        showConfirmButton: false
+      });
+      limparForm();
+      fecharModal();
+    })
+    .catch(error => {
+      console.error("Erro:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Erro na operação!",
+        text: error.message
+      });
+    });
 }
 
 function buscarDoacao() {
@@ -173,106 +209,6 @@ function buscarDoacao() {
       });
   }
 }
-
-
-function selecionarUsuario(id, doador)
-{
-  const codUsuario = document.getElementById("cod_usuario");
-  const botaoUsuario = document.getElementById("botaoSelecionarUsuario")
-  codUsuario.value = id;
-  botaoUsuario.textContent =  `Adotante: ${doador}`;
-}
-
-function carregarUsuariosModal() {
-  const container = document.getElementById("resultadoUsuario");
-  container.innerHTML = "";
-  const url = "http://localhost:8080/apis/usuario/buscar/%20";
-
-  fetch(url, {
-    method: "GET",
-    redirect: "follow",
-  })
-    .then((response) => response.text())
-    .then(function (text) {
-      const json = JSON.parse(text);
-
-      for (let i = 0; i < json.length; i++) {
-        container.innerHTML += `
-          <div class="col-md-4 mb-4">
-            <div class="card card-select" style="width: 260px; height: 170px;"
-              onclick="selecionarUsuario(${json[i].cod}, '${json[i].nome}')"
-              data-bs-dismiss="modal">
-              <div class="card-body">
-                <h5 class="card-title">${json[i].nome}</h5>
-                <p class="card-text">
-                  <strong>CPF:</strong> ${json[i].cpf}<br>
-                  <strong>Email:</strong> ${json[i].email}<br>
-                  <strong>Telefone:</strong> ${json[i].telefone}
-                </p>
-              </div>
-            </div>
-          </div>
-        `;
-      }
-
-      if (container.innerHTML === "") {
-        container.innerHTML = `<p class="text-center text-muted">Nenhum usuário disponível no momento.</p>`;
-      }
-    })
-    .catch(function (error) {
-      console.error("Erro ao carregar usuários:", error);
-      container.innerHTML = `<p class="text-center text-danger">Erro ao carregar usuários. Tente novamente.</p>`;
-    });
-}
-
-function cadDoacao() {
-
-  var fdoacao = document.getElementById("fdoacao");
-  var formData = new FormData(fdoacao);
-  var cod = document.getElementById("codDoacao").value;
-  if (cod) 
-  {
-      
-      const URL = "http://localhost:8080/apis/doacao/atualizar"
-      fetch(URL, {
-          method: 'PUT', body: formData
-      })
-          .then((response) => {
-            sessionStorage.setItem('doacaoAlterada', 'true');
-            fdoacao.reset();
-            window.location.href = "../TelasGerenciar/gerenciarDoacoes.html";
-            return response.json();
-          })
-          .then((json) => {
-            console.log(json);
-          })
-          .catch((error) => {
-            sessionStorage.setItem('doacaoAlterada', 'false');
-            console.error(error);
-          })
-      
-  }
-  else 
-  {
-      const URL = "http://localhost:8080/apis/doacao/gravar"
-      fetch(URL, {
-          method: 'POST', body: formData
-      })
-          .then((response) => {
-            return response.json();
-          })
-          .then((json) => {
-            console.log(json);
-            sessionStorage.setItem('doacaoGravada', 'true');
-            fdoacao.reset();
-            window.location.href = "../TelasGerenciar/gerenciarDoacoes.html";
-          })
-          .catch((error) => {
-            sessionStorage.setItem('doacaoGravada', 'false');
-            console.error(error);
-          })
-  }
-}
 function excluirDoacao(id) {
 
   Swal.fire({
@@ -323,9 +259,45 @@ function excluirDoacao(id) {
   
 }
 
-function editarDoacao(id) {
+function confirmarDoacao(id) {
+  const token = localStorage.getItem("token");
 
-  window.location.href = "../TelasCadastros/cadDoacao.html?codDoacao=" + id;
+  fetch(`http://localhost:8080/apis/doacao/buscar-id/${id}`, {
+    method: "GET",
+    headers: { Authorization: "Bearer " + token }
+  })
+    .then(response => response.json())
+    .then(doacao => {
+      const formData = new URLSearchParams();
+      formData.append("codDoacao", doacao.codDoacao);
+      formData.append("cod_usuario", doacao.usuario.cod);
+      formData.append("status", "Aprovada");
+      formData.append("data", doacao.data);
+      formData.append("valor", doacao.valor);
+
+      return fetch("http://localhost:8080/apis/doacao/atualizar", {
+        method: "PUT",
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: formData
+      });
+    })
+    .then(response => {
+      if (!response.ok) throw new Error("Erro ao confirmar doação!");
+      Swal.fire({
+        icon: "success",
+        title: "Doação confirmada com sucesso!",
+        timer: 1500,
+        showConfirmButton: false
+      });
+      window.location.reload();
+    })
+    .catch(error => {
+      console.error("Erro:", error);
+      Swal.fire("Erro!", error.message, "error");
+    });
 }
 
 function buscarDoacaoPeloId(id) {

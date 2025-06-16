@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -34,54 +35,6 @@
         Sistema MiauAuau
         <img src="../img/logo.png" alt="Logo Sistema MiauAuau" style="max-height: 50px;">
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav ms-auto me-auto central-navbar">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Operações</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="../TelasFundamentais/agendarMedicamento.html">Agendar Medicamento</a>
-              <li><a class="dropdown-item" href="../TelasFundamentais/realizarLancamentos.html">Realizar Lançamento</a>
-              <li><a class="dropdown-item" href="../TelasFundamentais/prontuario.html">Prontuário</a></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Cadastro</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="../TelasCadastros/cadAnimal.html">Animal</a></li>
-              <li><a class="dropdown-item" href="../TelasCadastros/cadAdocao.html">Adoção</a></li>
-              <li><a class="dropdown-item" href="../TelasCadastros/cadTipoPagamento.html">Plano de Contas Gerencial</a></li>
-              <li><a class="dropdown-item" href="../TelasCadastros/cadPlanoContasReferencial.html">Plano de Contas Referencial</a></li>
-              <li><a class="dropdown-item" href="../TelasCadastros/cadTipoLancamento.html">Tipo de Lançamento</a></li>
-              <li><a class="dropdown-item" href="../TelasCadastros/cadTipoMedicamento.html">Tipo de Medicamento</a></li>
-              <li><a class="dropdown-item" href="../TelasCadastros/cadUsuario.html">Usuário</a></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Gerenciar</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="../TelasGerenciar/gerenAdocao.html">Adoção</a></li>
-              <li><a class="dropdown-item" href="../TelasGerenciar/gerenAnimais.html">Animal</a></li>
-              <li><a class="dropdown-item" href="../TelasGerenciar/gerenciarDoacoes.html">Doação</a></li>
-              <li><a class="dropdown-item" href="../TelasGerenciar/gerenLancamentos.html">Lançamentos</a></li>
-              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Plano de Contas Gerencial</a></li>
-              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Plano de Contas Referencial</a></li>
-              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoLancamentos.html">Tipo de Lançamento</a></li>
-              <li><a class="dropdown-item" href="../TelasGerenciar/gerenMedicamentos.html">Tipo de Medicamento</a></li>
-              <li><a class="dropdown-item" href="../TelasGerenciar/gerenUsuarios.html">Usuário</a></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Login</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Entrar</a></li>
-              <li><a class="dropdown-item" href="#">Sair</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
     </div>
   </nav>
 
@@ -103,8 +56,7 @@
             <th>Ações</th>
           </tr>
         </thead>
-        <tbody id="resultado">
-        </tbody>
+        <tbody id="resultado"></tbody>
       </table>
 
       <div class="d-flex gap-3 mt-3">
@@ -117,6 +69,51 @@
       </div>
     </div>
   </div>
+
+  <script>
+    function buscarDoacao() {
+      const filtro = document.getElementById("filtro").value.trim();
+      const resultado = document.getElementById("resultado");
+      const URL = filtro.length > 0
+        ? "http://localhost:8080/apis/doacao/buscar/" + filtro
+        : "http://localhost:8080/apis/doacao/buscar/%20";
+
+      fetch(URL, { method: 'GET' })
+        .then(response => response.json())
+        .then(json => {
+          let table = "";
+          json.filter(doa => doa.status === "Pendente").forEach(doacao => {
+            const dataOriginal = doacao.data;
+            const [year, month, day] = dataOriginal.split('-');
+            const dataFormatada = `${day}/${month}/${year.slice(-2)}`;
+
+            table += `
+              <tr>
+                <td>${doacao.codDoacao}</td>
+                <td>${dataFormatada}</td>
+                <td>${doacao.usuario.nome}</td>
+                <td>${doacao.usuario.email}</td>
+                <td>${doacao.usuario.telefone}</td>
+                <td>R$ ${doacao.valor}</td>
+                <td>
+                  <button type="button" class="btn btn-sm btn-success" onclick="confirmarDoacao(${doacao.codDoacao})">
+                    <i class="bi bi-check-circle"></i> Confirmar
+                  </button>
+                  <button type="button" class="btn btn-sm btn-danger" onclick="excluirDoacao(${doacao.codDoacao})">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>`;
+          });
+          resultado.innerHTML = table;
+        })
+        .catch(error => {
+          console.error("Erro ao buscar doações:", error);
+        });
+    }
+  </script>
+</body>
+</html>
 
   <script>
 
