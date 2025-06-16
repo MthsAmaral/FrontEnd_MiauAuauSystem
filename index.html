@@ -22,7 +22,7 @@
 </head>
 
 <body onload="verificarPrivilegio()">
-  <nav class="navbar">
+  <nav id="inicio" class="navbar">
     <a href="index.html" style="text-decoration: none;">
       <div class="logo-container">
         <span class="logo-text">Grupo MiauAuau</span>
@@ -38,11 +38,13 @@
           <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaCadastro.html">Cadastre-se</a></li>
         </ul>
       </li>
-      <li><a href="#">Início</a></li>
-      <li><a href="#">Sobre</a></li>
-      <li><a href="#">Serviços</a></li>
-      <li><a href="#">Contato</a></li>
-      <!--<li class="acesso-restrito"><a href="indexAdm.html">Acesso Restrito</a></li>-->
+       <li>
+      <a href="adocao.html" class="adopt2-button2">Quero Adotar</a>
+      </li>
+      <li><a href="#inicio">Início</a></li>
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#sobre">Contato</a></li>
+      
     </ul>
   </nav>
   <main>
@@ -128,7 +130,7 @@
         </div>
       </section>
   </main>
-  <div class="cta-section">
+  <div id="doacao" class="cta-section">
     <h2>Ajude a salvar vidas agora</h2>
     <p>Com apenas <strong>R$10</strong>, você contribui para o cuidado de animais resgatados</p>
     <button class="cta-button" onclick="abrirModal()">Faça uma doação</button>
@@ -164,7 +166,7 @@
     </div>
   </div>
 
-  <footer>
+  <footer id="sobre">
     <div class="footer-container">
       <div class="footer-column">
         <h4>Sobre a ONG</h4>
@@ -192,13 +194,13 @@
         </ul>
       </div>
       <div class="footer-column">
-        <h4>Contato</h4>
-        <form class="form">
-          <input type="text" placeholder="Email" class="input">
-          <textarea placeholder="Digite sua mensagem"></textarea>
-
-          <button>Submit</button>
-        </form>
+        <h4>Como Ajudar</h4>
+        <ul>
+          <li><a href="adocao.html#adocao" ><i
+                class="fa-solid fa-paw"></i> Quero Adotar</a></li>
+          <li><a href="#doacao"
+              ><i class="fa-solid fa-donate"></i> Quero Doar </a></li>
+        </ul>
       </div>
     </div>
     <div class="footer-bottom">

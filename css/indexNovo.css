@@ -4,6 +4,9 @@
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
+html{
+  scroll-behavior: smooth;
+}
 body{
   background-color: #f8f0e5;
 
@@ -277,6 +280,21 @@ svg{
 .adopt-btn:hover {
   background-color: #ff8c33;
 }
+.adopt2-button2 {
+  display: inline-block;
+  padding: 10px 15px; /* Espaçamento interno */
+  background-color: #d5a96c; /* Cor de fundo */
+  color:ffffff; /* Cor do texto */
+  border: 2px solid #d5a96c; /* Borda */
+  border-radius: 8px; /* Bordas arredondadas */
+  text-align: center;
+  text-decoration: none; /* Remove o sublinhado */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Transição suave */
+}
+.adopt2-button2:hover {
+  color: #ffffff !important;
+}
+
 @media (max-width: 768px) {
   .banner-card {
     flex-direction: column;
