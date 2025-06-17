@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Minhas Adoções - Sistema MiauAuau</title>
+  <title>Minhas Doações - Sistema MiauAuau</title>
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -28,10 +28,11 @@
 
   <!-- Meu JS -->
   <script src="../ControllerJs/acessoController.js"></script>
+  <script src="../ControllerJs/doacaoController.js"></script>
 
 </head>
 
-<body onload="buscarAdocaoPeloUsuId()">
+<body onload="buscarDoacoesPeloUsuId()">
   <nav class="navbar justify-content-center">
     <a href="../index.html" style="text-decoration: none;">
       <div class="logo-container">
@@ -52,23 +53,20 @@
     <div class="d-flex justify-content-center">
       <div class="row w-auto justify-content-center">
         <div class="container-minhasAdocoes">
-          <h2>Minhas Adoções</h2>
-          <input type="text" onkeyup="buscarAdocaoPeloUsuId()" placeholder="Buscar por nome do animal" id="filtro">
+          <h2>Minhas Doações</h2>
+          <input type="text" onkeyup="buscarDoacoesPeloUsuId()" placeholder="Buscar por data ou valor" id="filtro">
           <div class="table-responsive">
             <table>
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Data de Adoção</th>
-                  <th>Foto</th>
-                  <th>Nome</th>
-                  <th>Raça</th>
-                  <th>Data de Nascimento</th>
+                  <th>Data de Doação</th>
+                  <th>Valor</th>
                   <th>Status</th>
                   <th>Ação</th>
                 </tr>
               </thead>
-              <tbody id="resultado">
+              <tbody id="resultadoDoacao">
 
               </tbody>
             </table>

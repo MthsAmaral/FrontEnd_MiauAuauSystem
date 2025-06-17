@@ -27,6 +27,7 @@ function verificarPrivilegio()
         userMenu.innerHTML = `<i class="fa-solid fa-user"></i> Olá, ${payload.usuario}`;
         dropdownMenu.innerHTML = `
         <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaMinhasAdocoes.html">Minhas Adoções</a></li>
+        <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaMinhasDoacoes.html">Minhas Doações</a></li>
         <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaDados.html">Dados Pessoais</a></li>
         <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaAlterarSenha.html">Alterar Senha</a></li>
         <li><a class="dropdown-item-auaumiau" href="#" onclick="logout()">Sair</a></li>`;
@@ -444,7 +445,7 @@ function cadusuario()
           formData.append("cpf", cpf); 
           const URL = "http://localhost:8080/apis/usuario/atualizar"
           fetch(URL, {
-              method: 'PUT', body: formData
+              method: 'PUT', body: formData, headers: { 'Authorization': token }
           })
           .then((response) => {
               if(!response.ok)
@@ -540,7 +541,7 @@ function cadusuario()
         {
           const URL = "http://localhost:8080/apis/usuario/atualizar"
           fetch(URL, {
-              method: 'PUT', body: formData
+              method: 'PUT', body: formData, headers: { 'Authorization': token }
           })
           .then((response) => {
               if(!response.ok)
@@ -756,7 +757,8 @@ function buscarUsuarioPeloId()
         const URL = "http://localhost:8080/apis/usuario/buscar-id/"+payload.cod_usuario;
         fetch(URL, {
             headers: {
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'Authorization': token
             },
             method: 'GET'
         })
@@ -828,7 +830,7 @@ function buscarAdocaoPeloUsuId()
       console.log(filtro)
       const url = `http://localhost:8080/apis/adocao/buscarAdocaoPeloUsuId/${payload.cod_usuario}/`+filtro;
       fetch(url, {
-        method: 'GET', redirect: "follow"
+        method: 'GET', redirect: "follow", headers: { 'Authorization': token }
       })
         .then((response) => {
           return response.text();
@@ -882,7 +884,7 @@ function buscarAdocaoPeloUsuId()
     else {
       const url = `http://localhost:8080/apis/adocao/buscarAdocaoPeloUsuId/${payload.cod_usuario}/%20`;
       fetch(url, {
-        method: 'GET', redirect: "follow"
+        method: 'GET', redirect: "follow", headers: { 'Authorization': token }
       })
         .then((response) => {
           return response.text();
@@ -947,6 +949,7 @@ function cancelarAdocao(id)
 {
   let URL = "http://localhost:8080/apis/adocao/buscar-id/"+id;
   var formData = new FormData();
+  const token = localStorage.getItem("token");
 
   Swal.fire({
     title: "Deseja cancelar está solicitação de adoção ?",
@@ -961,6 +964,7 @@ function cancelarAdocao(id)
       fetch(URL, {
         headers: {
           Accept: 'application/json',
+          'Authorization': token 
         },
         method: 'GET',
       })
@@ -981,6 +985,7 @@ function cancelarAdocao(id)
           return fetch(URL, {
             method: 'PUT',
             body: formData,
+            headers: { 'Authorization': token }
           });
         })
         .then((response) => {

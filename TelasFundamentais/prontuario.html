@@ -122,14 +122,23 @@
                     </button>
                     <div id="animalSelecionado" class="mt-2 preview-box d-none"></div>
                     <input type="hidden" id="codAnimal" name="codAnimal">
+                    <input type="hidden" id="nomeAnimal" name="nomeAnimal">
                 </div>
             </div>
 
         </div>
+
+
         <div class="mb-2">
-            <button class="btn btn-primary" onclick="visualizarProntuario()">Visualizar Prontuário</button>
-            <button class="btn btn-success" onclick="redirecionarTelaCad()">Cadastrar Registro</button>
+            <button id="btnVisualizarProntuario" class="btn btn-primary me-2"
+                onclick="visualizarProntuario()">Visualizar Prontuário</button>
+
+            <button class="btn btn-success me-2" onclick="redirecionarTelaCad()">Cadastrar Registro</button>
+
+            <button id="botaoBaixarProntuario" class="btn btn-outline-secondary invisible"
+                onclick="baixarProntuario()">Baixar Prontuário</button>
         </div>
+
 
 
         <!-- Animal sempre em linha separada -->

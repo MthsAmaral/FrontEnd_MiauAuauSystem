@@ -109,6 +109,7 @@ function validarCampos() {
 
 function cadAnimal() {
 
+    const token = localStorage.getItem("token");
     var fanimal = document.getElementById("fanimal");
     var formData = new FormData(fanimal);
     var cod = document.getElementById("codAnimal").value;
@@ -116,7 +117,7 @@ function cadAnimal() {
     {
         const URL = "http://localhost:8080/apis/animal/atualizar"
         fetch(URL, {
-            method: 'PUT', body: formData
+            method: 'PUT', body: formData, headers: { 'Authorization': token }
         })
             .then((response) => {
                 if(!response.ok)
@@ -142,7 +143,7 @@ function cadAnimal() {
     else {
         const URL = "http://localhost:8080/apis/animal/gravar"
         fetch(URL, {
-            method: 'POST', body: formData
+            method: 'POST', body: formData, headers: { 'Authorization': token }
         })
             .then((response) => {
                 
@@ -170,11 +171,12 @@ function cadAnimal() {
 function buscarAnimal() {
     let filtro = document.getElementById("filtro").value
     const resultado = document.getElementById("resultado");
+    const token = localStorage.getItem("token");
     if (filtro.length > 0) // busca com filtro
     {
         const url = "http://localhost:8080/apis/animal/buscar/" + filtro;
         fetch(url, {
-            method: 'GET', redirect: "follow"
+            method: 'GET', redirect: "follow", headers: { 'Authorization': token }
         })
             .then((response) => {
                 return response.text();
@@ -220,7 +222,7 @@ function buscarAnimal() {
     else {
         const url = "http://localhost:8080/apis/animal/buscar/%20";
         fetch(url, {
-            method: 'GET', redirect: "follow"
+            method: 'GET', redirect: "follow", headers: { 'Authorization': token }
         })
             .then((response) => {
                 return response.text();
@@ -265,7 +267,7 @@ function buscarAnimal() {
 }
 
 function excluirAnimal(id) {
-
+    const token = localStorage.getItem("token");
     Swal.fire({
         title: "Você tem certeza ?",
         text: "Você não poderá reverter isso!",
@@ -284,7 +286,8 @@ function excluirAnimal(id) {
         fetch(URL, {
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': token 
             },
             method: 'DELETE'
         })
@@ -321,10 +324,11 @@ function editarAnimal(id) {
 
 function buscarAnimalPeloId(id) {
     const URL = "http://localhost:8080/apis/animal/buscar-id/" + id;
-
+    const token = localStorage.getItem("token");
     fetch(URL, {
         headers: {
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Authorization': token 
         },
         method: 'GET'
     })

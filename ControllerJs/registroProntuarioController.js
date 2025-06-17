@@ -79,6 +79,7 @@ function validarCampos() {
 
 
 function cadRegistroProntuario() {
+    const token = localStorage.getItem("token");
     const data = document.getElementById("data").value;
     const tipoRegistro = document.getElementById("tipoRegistro").value;
     const observacao = document.getElementById("observacao").value;
@@ -110,7 +111,8 @@ function cadRegistroProntuario() {
 
         fetch("http://localhost:8080/apis/prontuario/gravar", {
             method: "POST",
-            body: formData
+            body: formData,
+            headers: { 'Authorization': token }
         })
         .then(response => {
             if (!response.ok) 
@@ -138,6 +140,7 @@ function cadRegistroProntuario() {
 }
 
 async function editarRegistroProntuario(){
+    const token = localStorage.getItem("token");
  const URL = "http://localhost:8080/apis/prontuario/atualizar";
   
   const fprontuario = document.getElementById("fprontuario");
@@ -158,7 +161,9 @@ async function editarRegistroProntuario(){
       // Nenhum novo arquivo — busca o atual com fetch e adiciona no formData
       let linkPDF = pdfAtualDiv.querySelector("a");
       if (linkPDF) {
-        await fetch(linkPDF.href)
+        await fetch(linkPDF.href,{
+            headers: { 'Authorization': token }
+        })
           .then(res => res.blob())
           .then(blob => {
             let nomeArquivo = linkPDF.href.split("/").pop(); // ou um nome padrão
@@ -172,6 +177,7 @@ async function editarRegistroProntuario(){
     const response = await fetch(URL, {
       method: 'PUT',
       body: formData,
+      headers: { 'Authorization': token }
     });
     const json = await response.json();
     //console.log("Resposta do servidor: " + JSON.stringify(json));
@@ -186,11 +192,13 @@ async function editarRegistroProntuario(){
 }
 
 function buscarRegistroPeloId(id) {
+    const token = localStorage.getItem("token");
     const URL = "http://localhost:8080/apis/prontuario/buscar-id/" + id;
 
     fetch(URL, {
         headers: {
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Authorization': token
         },
         method: 'GET'
     })
@@ -242,6 +250,7 @@ function buscarRegistroPeloId(id) {
 //MODAL 
 
 function carregarAnimais() {
+    const token = localStorage.getItem("token");
     let filtro = document.getElementById("filtro").value.trim();
     const container = document.querySelector("#modalAnimais .modal-body");
     container.innerHTML = "";
@@ -252,7 +261,8 @@ function carregarAnimais() {
 
     fetch(url, {
         method: 'GET',
-        redirect: 'follow'
+        redirect: 'follow',
+        headers: { 'Authorization': token }
     })
         .then(response => {
             if (!response.ok) throw new Error("Erro ao carregar animais.");

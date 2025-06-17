@@ -2,6 +2,7 @@ const API_BASE_URL = "http://localhost:8080/apis/plano-contas-referencial";
 
 // Cadastrar ou editar
 function cadPlanoContasReferencial() {
+  const token = localStorage.getItem("token");
   const form = document.getElementById("fPlanoContasReferencial");
   const formData = new FormData(form);
   const id = document.getElementById("cod").value;
@@ -14,6 +15,7 @@ function cadPlanoContasReferencial() {
       body: new URLSearchParams(formData),
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
+        'Authorization': token 
       },
     })
       .then((response) => {
@@ -45,11 +47,14 @@ function cadPlanoContasReferencial() {
 
 // Buscar lista (com filtro opcional)
 function buscarPlanoContasReferencial(filtro) {
+  const token = localStorage.getItem("token");
   let url = `${API_BASE_URL}/buscar`;
   if (filtro && filtro.length > 0) url += `/${encodeURIComponent(filtro)}`;
   else url += "/%20";
 
-  fetch(url, { method: "GET" })
+  fetch(url, { method: "GET",
+              headers: { 'Authorization': token }
+  })
     .then((response) => {
       if (!response.ok) throw new Error("Erro ao buscar lista");
       return response.json();
@@ -90,7 +95,10 @@ function buscarPlanoContasReferencialFiltro() {
 
 // Buscar por ID para edição
 function buscarPlanoContasReferencialID(id) {
-  fetch(`${API_BASE_URL}/buscar-id/${id}`, { method: "GET" })
+  const token = localStorage.getItem("token");
+  fetch(`${API_BASE_URL}/buscar-id/${id}`, { method: "GET",
+                                            headers: { 'Authorization': token }
+  })
     .then((response) => {
       if (!response.ok) throw new Error("Erro ao buscar por ID");
       return response.json();
@@ -108,6 +116,7 @@ function buscarPlanoContasReferencialID(id) {
 
 // Exclusão com confirmação
 function excluirPlanoContasReferencial(id) {
+  const token = localStorage.getItem("token");
   Swal.fire({
     title: "Você tem certeza?",
     text: "Você não poderá reverter isso!",
@@ -119,7 +128,9 @@ function excluirPlanoContasReferencial(id) {
     cancelButtonText: "Cancelar",
   }).then((result) => {
     if (result.isConfirmed) {
-      fetch(`${API_BASE_URL}/excluir/${id}`, { method: "DELETE" })
+      fetch(`${API_BASE_URL}/excluir/${id}`, { method: "DELETE",
+                                              headers: { 'Authorization': token }
+      })
         .then((response) => {
           if (!response.ok) throw new Error("Erro ao excluir");
           return response.json();
@@ -139,6 +150,7 @@ function excluirPlanoContasReferencial(id) {
 
 // Editar registro
 function editarPlanoContasReferencial() {
+  const token = localStorage.getItem("token");
   const form = document.getElementById("fPlanoContasReferencial");
   const formData = new FormData(form);
 
@@ -147,6 +159,7 @@ function editarPlanoContasReferencial() {
     body: new URLSearchParams(formData),
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
+      'Authorization': token
     },
   })
     .then((response) => {

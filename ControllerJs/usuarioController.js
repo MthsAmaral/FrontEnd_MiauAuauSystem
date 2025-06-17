@@ -40,7 +40,7 @@ function validarCampos() {
 }
 
 function cadUsuario() {
-
+    const token = localStorage.getItem("token");
     var fusuario = document.getElementById("fusuario");
     var formData = new FormData(fusuario);
     var cod = document.getElementById("cod").value;
@@ -48,7 +48,8 @@ function cadUsuario() {
     {
         const URL = "http://localhost:8080/apis/usuario/atualizar"
         fetch(URL, {
-            method: 'PUT', body: formData
+            method: 'PUT', body: formData,
+            headers: { 'Authorization': token }
         })
             .then((response) => {
                 return response.json();
@@ -68,7 +69,8 @@ function cadUsuario() {
     else {
         const URL = "http://localhost:8080/apis/usuario/gravar"
         fetch(URL, {
-            method: 'POST', body: formData
+            method: 'POST', body: formData,
+            headers: { 'Authorization': token }
         })
             .then((response) => {
                 return response.json();
@@ -98,13 +100,15 @@ function cadUsuario() {
 }
 
 function buscarUsuario() {
+    const token = localStorage.getItem("token");
     let filtro = document.getElementById("filtro").value
     const resultado = document.getElementById("resultado");
     if (filtro.length > 0) // busca com filtro
     {
         const url = "http://localhost:8080/apis/usuario/buscar/" + filtro;
         fetch(url, {
-            method: 'GET', redirect: "follow"
+            method: 'GET', redirect: "follow",
+            headers: { 'Authorization': token }
         })
             .then((response) => {
                 return response.text();
@@ -149,7 +153,8 @@ function buscarUsuario() {
     else {
         const url = "http://localhost:8080/apis/usuario/buscar/%20";
         fetch(url, {
-            method: 'GET', redirect: "follow"
+            method: 'GET', redirect: "follow",
+            headers: { 'Authorization': token }
         })
             .then((response) => {
                 return response.text();
@@ -193,6 +198,7 @@ function buscarUsuario() {
 }
 
 function excluirUsuario(id) {
+    const token = localStorage.getItem("token");
     Swal.fire({
         title: "Você tem certeza ?",
         text: "Você não poderá reverter isso!",
@@ -206,7 +212,9 @@ function excluirUsuario(id) {
         if (result.isConfirmed) {
             const URL = "http://localhost:8080/apis/usuario/excluir/" + id;
 
-            fetch(URL, { method: 'DELETE' })
+            fetch(URL, { method: 'DELETE',
+                        headers: { 'Authorization': token }
+            })
                 .then((response) => {
                     if(!response.ok)
                     {
@@ -240,13 +248,14 @@ function editarUsuario(id) {
 }
 
 function buscarUsuarioPeloId(id) {
-
+    const token = localStorage.getItem("token");
     const URL = "http://localhost:8080/apis/usuario/buscar-id/" + id;
     var fusuario = document.getElementById("fusuario");
 
     fetch(URL, {
         headers: {
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Authorization': token 
         },
         method: 'GET'
     })
