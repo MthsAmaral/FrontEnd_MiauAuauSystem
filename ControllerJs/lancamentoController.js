@@ -294,13 +294,58 @@ function cadLancamento() {
     });
 }
 
-function buscarLancamentosFiltro(filtro) {
-  let URL = "http://localhost:8080/apis/lancamento/buscar/" + filtro;
+function limparFiltros() {
+  // Limpa o campo de busca livre
+  const filtro = document.getElementById("filtro");
+  filtro.value = "";
 
-  if (filtro.trim() === '') {
-    buscarLancamentos();
+  // Limpa os campos de data
+  const dataInicio = document.getElementById("dataInicio");
+  const dataFim    = document.getElementById("dataFim");
+  dataInicio.value = "";
+  dataFim.value    = "";
+
+  // Se você estiver usando instâncias do Flatpickr:
+  if (dataInicio._flatpickr) dataInicio._flatpickr.clear();
+  if (dataFim._flatpickr)    dataFim._flatpickr.clear();
+}
+
+
+function buscarLancamentosFiltro() {
+  let URL = "http://localhost:8080/apis/lancamento/buscar-filtro";
+  let tudo = false;
+  let fezFiltro = false;
+
+  //agora verificar os valores nos inputs
+  let filtro = document.getElementById("filtro").value;
+  let dataIni = document.getElementById("dataInicio").value;
+  let dataFim = document.getElementById("dataFim").value;
+
+  if (dataIni === "" && dataFim === "") {
+    if (filtro === "") {
+      buscarLancamentos(); //sem nenhum filtro ou data
+      tudo = true; //com isso so o buscarLancamentos sera executado
+    }
+    else {
+      URL += "?filtro=" + filtro;
+      fezFiltro = true;
+    }
   }
-  else {
+  else if(dataIni !== "" && dataFim !== ""){
+    URL += "?dataIni=" + dataIni + "&dataFim=" + dataFim;
+  }
+  else if (dataIni === "") { //quero tudo ate a data final
+    URL += "?dataFim=" + dataFim;
+  }
+  else{ //quero tudo depois da data inicial
+    URL += "?dataIni=" + dataIni;
+  }
+
+  if(filtro !== "" && !fezFiltro){
+    URL += "&filtro=" + filtro;
+  }
+
+  if (!tudo) {
     fetch(URL, {
       method: 'GET',
       redirect: "follow"
@@ -480,7 +525,7 @@ async function editarLancamento() {
     console.log("Resposta do servidor: " + JSON.stringify(json));
     sessionStorage.setItem("lancamentoAlterado", 'true');
     // window.location.href = "../TelasGerenciar/gerenLancamentos.html";
-  } 
+  }
   catch (error) {
     sessionStorage.setItem("lancamentoAlterado", 'false');
     console.error("Erro ao ATUALIZAR dados:", error);

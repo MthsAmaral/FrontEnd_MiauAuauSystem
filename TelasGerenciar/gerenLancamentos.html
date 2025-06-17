@@ -17,8 +17,13 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
   <!--Alerts-->
-  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.min.css" rel="stylesheet"></link>
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.all.min.js"></script>
+
+  <!--Datas-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
 
   <!--Imports Locais-->
   <script src="../ControllerJs/acessoController.js"></script>
@@ -65,8 +70,10 @@
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="../TelasCadastros/cadAnimal.html">Animal</a></li>
               <li><a class="dropdown-item" href="../TelasCadastros/cadAdocao.html">Adoção</a></li>
-              <li><a class="dropdown-item" href="../TelasCadastros/cadTipoPagamento.html">Plano de Contas Gerencial</a></li>
-              <li><a class="dropdown-item" href="../TelasCadastros/cadPlanoContasReferencial.html">Plano de Contas Referencial</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadTipoPagamento.html">Plano de Contas Gerencial</a>
+              </li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadPlanoContasReferencial.html">Plano de Contas
+                  Referencial</a></li>
               <li><a class="dropdown-item" href="../TelasCadastros/cadTipoLancamento.html">Tipo de Lançamento</a></li>
               <li><a class="dropdown-item" href="../TelasCadastros/cadTipoMedicamento.html">Tipo de Medicamento</a></li>
               <li><a class="dropdown-item" href="../TelasCadastros/cadUsuario.html">Usuário</a></li>
@@ -79,9 +86,12 @@
               <li><a class="dropdown-item" href="../TelasGerenciar/gerenAnimais.html">Animal</a></li>
               <li><a class="dropdown-item" href="../TelasGerenciar/gerenciarDoacoes.html">Doação</a></li>
               <li><a class="dropdown-item" href="../TelasGerenciar/gerenLancamentos.html">Lançamentos</a></li>
-              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Plano de Contas Gerencial</a></li>
-              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Plano de Contas Referencial</a></li>
-              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoLancamentos.html">Tipo de Lançamento</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Plano de Contas
+                  Gerencial</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Plano de Contas
+                  Referencial</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoLancamentos.html">Tipo de Lançamento</a>
+              </li>
               <li><a class="dropdown-item" href="../TelasGerenciar/gerenMedicamentos.html">Tipo de Medicamento</a></li>
               <li><a class="dropdown-item" href="../TelasGerenciar/gerenUsuarios.html">Usuário</a></li>
             </ul>
@@ -96,7 +106,36 @@
     <h2>Gerenciar Lançamentos</h2>
 
     <!-- Campo de filtro -->
-    <input type="text" id="filtro" placeholder="Filtrar descrição do Lançamento" oninput="buscarLancamentosFiltro(this.value)">
+    <div class="col-md-4">
+      <input type="text" id="filtro" placeholder="Filtrar descrição do Lançamento">
+    </div>
+
+    <div class="row">
+      <!-- Data Inicial -->
+      <div class="col-md-2">
+        <label for="dataInicio" class="form-label">Data Inicial</label>
+        <input type="text" class="form-control" id="dataInicio" name="dataInicio" required />
+        <small id="dataInicio-msg" class="form-text text-danger" style="display: none;"></small>
+      </div>
+
+      <!-- Data Final -->
+      <div class="col-md-2">
+        <label for="dataFim" class="form-label">Data Final</label>
+        <input type="text" class="form-control" id="dataFim" name="dataFim" required />
+        <small id="dataFim-msg" class="form-text text-danger" style="display: none;"></small>
+      </div>
+    </div>
+
+    <!-- Botão de Aplicar Filtros -->
+    <div class="col-md-4 d-flex align-items-end" onclick="buscarLancamentosFiltro()">
+      <button id="btnAplicarFiltros" class="btn btn-primary">
+        <i class="fas fa-filter"></i> Aplicar Filtros
+      </button>
+      <button id="btnLimparFiltros" class="btn btn-secondary" onclick="limparFiltros()">
+        <i class="fas fa-eraser"></i> Limpar Filtros
+      </button>
+    </div>
+    <br><br>
 
     <!-- Tabela com rolagem -->
     <div style="overflow: auto; max-height: 400px;">
@@ -131,6 +170,75 @@
   </main>
 
   <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Resetar os valores dos campos
+      document.getElementById("filtro").value = "";
+      document.getElementById("dataInicio").value = "";
+      document.getElementById("dataFim").value = "";
+
+      // Opcional: esconder mensagens de erro, se quiser resetar isso também
+      document.getElementById("dataInicio-msg").style.display = "none";
+      document.getElementById("dataFim-msg").style.display = "none";
+
+      // Inicializa os campos com Flatpickr
+      const hoje = new Date();
+
+      flatpickr("#dataInicio", {
+        dateFormat: "d/m/Y",
+        maxDate: hoje,
+        locale: "pt"
+      });
+
+      flatpickr("#dataFim", {
+        dateFormat: "d/m/Y",
+        maxDate: hoje,
+        locale: "pt"
+      });
+
+      const btn = document.getElementById("btnAplicarFiltros");
+      const msgInicio = document.getElementById("dataInicio-msg");
+      const msgFim = document.getElementById("dataFim-msg");
+
+      btn.addEventListener("click", function () {
+        const dataInicioStr = document.getElementById("dataInicio").value;
+        const dataFimStr = document.getElementById("dataFim").value;
+
+        const [d1, m1, y1] = dataInicioStr.split('/');
+        const [d2, m2, y2] = dataFimStr.split('/');
+
+        const dataInicio = new Date(`${y1}-${m1}-${d1}`);
+        const dataFim = new Date(`${y2}-${m2}-${d2}`);
+        hoje.setHours(0, 0, 0, 0);
+
+        let valido = true;
+
+        if (dataInicio > hoje) {
+          msgInicio.style.display = "block";
+          msgInicio.textContent = "Data inicial não pode ser no futuro.";
+          valido = false;
+        } else {
+          msgInicio.style.display = "none";
+        }
+
+        if (dataFim > hoje) {
+          msgFim.style.display = "block";
+          msgFim.textContent = "Data final não pode ser no futuro.";
+          valido = false;
+        } else {
+          msgFim.style.display = "none";
+        }
+
+        if (valido) {
+          console.log("Aplicar filtros com intervalo:");
+          console.log("Data Inicial:", dataInicioStr);
+          console.log("Data Final:", dataFimStr);
+
+          // Aqui você pode fazer seu fetch ou outro processamento
+          // fetch(`/relatorio?inicio=${dataInicioStr}&fim=${dataFimStr}`).then(...)
+        }
+      });
+    });
+
     const Toast = Swal.mixin({
       toast: true,
       position: 'top',
@@ -143,29 +251,26 @@
       timerProgressBar: true,
     });
 
-    if(sessionStorage.getItem('lancamentoAlterado') == 'true')
-    {
+    if (sessionStorage.getItem('lancamentoAlterado') == 'true') {
       Toast.fire({
         icon: 'success',
         title: 'Lançamento Alterado Com Sucesso!',
       });
     }
     else
-      if(sessionStorage.getItem('lancamentoAlterado') == 'false')
-      {
+      if (sessionStorage.getItem('lancamentoAlterado') == 'false') {
         Toast.fire({
           icon: 'error',
           title: 'Erro ao Alterar Lançamento!',
         });
       }
-    if(sessionStorage.getItem('lancamentoApagado') == 'true')
-    {
+    if (sessionStorage.getItem('lancamentoApagado') == 'true') {
       Toast.fire({
         icon: 'success',
         title: 'Lançamento Excluído Com Sucesso!',
       });
     }
-    
+
     sessionStorage.removeItem('lancamentoApagado')
     sessionStorage.removeItem('lancamentoAlterado');
   </script>

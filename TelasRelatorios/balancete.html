@@ -102,8 +102,79 @@
     <main class="container container-box mt-5">
         <h2>Balancete de Verificação</h2>
 
-        <!-- Campo de filtro -->
-        <input type="text" id="filtro" placeholder="Filtrar pelo ANO" onkeyup="funcaoAqui" class="form-control mb-3" />
+
+
+        <!--Testar os campos de filtro-->
+        <!-- Campo para selecionar o ANO -->
+        <select id="filtroAno" class="form-control mb-3">
+            <option value="">Selecione o Ano</option>
+        </select>
+
+        <!-- Campo para selecionar o MÊS -->
+        <select id="filtroMes" class="form-control mb-3" disabled>
+            <option value="">Todos os meses</option>
+            <option value="1">Janeiro</option>
+            <option value="2">Fevereiro</option>
+            <option value="3">Março</option>
+            <option value="4">Abril</option>
+            <option value="5">Maio</option>
+            <option value="6">Junho</option>
+            <option value="7">Julho</option>
+            <option value="8">Agosto</option>
+            <option value="9">Setembro</option>
+            <option value="10">Outubro</option>
+            <option value="11">Novembro</option>
+            <option value="12">Dezembro</option>
+        </select>
+
+        <button id="btnAplicarFiltros" class="btn btn-primary" onclick="balancete()">
+            <i class="fas fa-filter"></i> Aplicar Filtros
+        </button>
+        <br><br>
+
+        <script>
+            // 1) Função para carregar anos via fetch
+            async function carregarAnos() {
+                try {
+                    const res = await fetch('http://localhost:8080/apis/lancamento/anos'); // ajuste aqui
+                    if (!res.ok) throw new Error('Erro ao buscar anos');
+                    const dados = await res.json(); // [{ ano: 2016 }, { ano: 2024 }, …]
+
+                    const selectAno = document.getElementById('filtroAno');
+                    dados.forEach(item => {
+                        const opt = document.createElement('option');
+                        opt.value = item.ano;
+                        opt.textContent = item.ano;
+                        selectAno.appendChild(opt);
+                    });
+                } catch (err) {
+                    console.error('Erro ao carregar anos:', err);
+                }
+            }
+
+            // 2) Controle de habilitação/limpeza do filtro de mês
+            const selectAno = document.getElementById('filtroAno');
+            const selectMes = document.getElementById('filtroMes');
+
+            selectAno.addEventListener('change', () => {
+                if (selectAno.value === '') {
+                    // se voltou ao placeholder, desabilita e limpa o mês
+                    selectMes.value = '';
+                    selectMes.disabled = true;
+                } else {
+                    selectMes.disabled = false;
+                }
+            });
+
+            // 3) Inicia carregamento assim que a página estiver pronta
+            document.addEventListener('DOMContentLoaded', carregarAnos);
+        </script>
+
+
+
+
+        <!-- Campo de filtro
+        <input type="text" id="filtro" placeholder="Filtrar pelo ANO" onkeyup="funcaoAqui" class="form-control mb-3" /> -->
 
         <!-- Tabela com rolagem -> somatório plano de contas -->
         <div>
