@@ -71,6 +71,7 @@ function validarCamposAgendamento() {
 }
 
 function gravarAgendamento() {
+  const token = localStorage.getItem("token");
   const form = document.getElementById("formAgendamento");
   const codAgendamento = form.dataset.id;
   const dataAplicacao = document.getElementById("dataAplicacao").value;
@@ -96,6 +97,7 @@ function gravarAgendamento() {
 
         fetch("http://localhost:8080/apis/agendar-medicamento/atualizar", {
           method: "PUT",
+          headers: { 'Authorization': token },
           body: formData
         })
           .then(response => {
@@ -133,7 +135,7 @@ function gravarAgendamento() {
             sessionStorage.setItem('agendamentoGravado', todasOk ? 'true' : 'false');
             window.location.reload();
 
-            
+
           })
           .catch(error => {
             console.error('Erro ao gravar agendamentos:', error);
@@ -144,6 +146,7 @@ function gravarAgendamento() {
 }
 
 function carregarAgendamentos() {
+  const token = localStorage.getItem("token");
   let filtro = document.getElementById("filtroAgendamento").value.trim();
   const resultado = document.getElementById("resultado");
 
@@ -152,7 +155,8 @@ function carregarAgendamentos() {
 
   fetch(url, {
     method: 'GET',
-    redirect: "follow"
+    redirect: "follow",
+    headers: { 'Authorization': token }
   })
     .then((response) => {
       return response.text();
@@ -198,7 +202,10 @@ function carregarAgendamentos() {
 
 
 function editarAgendamento(codAgendarMedicamento) {
-  fetch(`http://localhost:8080/apis/agendar-medicamento/buscar-id/${codAgendarMedicamento}`)
+  const token = localStorage.getItem("token");
+  fetch(`http://localhost:8080/apis/agendar-medicamento/buscar-id/${codAgendarMedicamento}`,{
+    headers: { 'Authorization': token }
+  })
     .then(response => {
       if (!response.ok) {
         sessionStorage.setItem('agendamentoAlterado', 'false');
@@ -233,7 +240,7 @@ function editarAgendamento(codAgendarMedicamento) {
 
 
 function excluirAgendamento(id) {
-
+  const token = localStorage.getItem("token");
   Swal.fire({
     title: "Você tem certeza ?",
     text: "Você não poderá reverter isso!",
@@ -250,7 +257,8 @@ function excluirAgendamento(id) {
       fetch(URL, {
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': token
         },
         method: 'DELETE'
       })
@@ -280,6 +288,7 @@ function excluirAgendamento(id) {
 
 //busca animais
 function carregarAnimais() {
+  const token = localStorage.getItem("token");
   let filtro = document.getElementById("filtro").value.trim();
   const container = document.querySelector("#modalAnimais .modal-body");
   container.innerHTML = "";
@@ -292,7 +301,8 @@ function carregarAnimais() {
 
   fetch(url, {
     method: 'GET',
-    redirect: 'follow'
+    redirect: 'follow',
+    headers: { 'Authorization': token }
   })
     .then(response => {
       if (!response.ok) throw new Error("Erro ao carregar animais.");
@@ -363,10 +373,13 @@ function voltarSelecaoAnimais() {
 }
 
 function carregarMedicamentos() {
+  const token = localStorage.getItem("token");
   const container = document.querySelector("#modalMedicamentos .modal-body");
   container.innerHTML = "";
 
-  fetch("http://localhost:8080/apis/tipo-medicamento/buscar/%20")
+  fetch("http://localhost:8080/apis/tipo-medicamento/buscar/%20",{
+    headers: { 'Authorization': token }
+  })
     .then(response => {
       if (!response.ok) {
         throw new Error("Erro ao carregar medicamentos.");
@@ -475,6 +488,7 @@ function renderizarAnimaisSelecionados() {
 
 // Função que carrega as notificações
 function carregarNotificacoes() {
+  const token = localStorage.getItem("token");
   const listaNotificacoes = document.getElementById("listaNotificacoes");
   const notificacoesCount = document.getElementById("notificacoesCount"); // Contador de notificações no ícone
 
@@ -482,7 +496,8 @@ function carregarNotificacoes() {
 
   fetch(url, {
     method: 'GET',
-    redirect: "follow"
+    redirect: "follow",
+    headers: { 'Authorization': token }
   })
     .then((response) => {
       return response.text(); // Recebe como texto
@@ -568,7 +583,10 @@ function marcarComoLido(id, botao) {
 }
 
 function atualizarStatusAgendamento(id, novoStatus) {
-  fetch(`http://localhost:8080/apis/agendar-medicamento/buscar-id/${id}`)
+  const token = localStorage.getItem("token");
+  fetch(`http://localhost:8080/apis/agendar-medicamento/buscar-id/${id}`,{
+    headers: { 'Authorization': token }
+  })
     .then(response => response.json())
     .then(agendamento => {
       const formData = new FormData();

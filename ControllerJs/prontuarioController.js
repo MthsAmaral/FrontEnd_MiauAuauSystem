@@ -24,13 +24,13 @@ function visualizarProntuario(){
 
 
 function carregarAnimal(){
-
+  const token = localStorage.getItem("token");
   let codAnimal = document.getElementById("codAnimal").value;
   const resultado = document.getElementById("resultadoAnimal");
 
   const url = "http://localhost:8080/apis/animal/buscar-id/"+codAnimal;
         fetch(url, {
-            method: 'GET', redirect: "follow"
+            method: 'GET', redirect: "follow", headers: { 'Authorization': token }
         })
             .then((response) => {
                 return response.text();
@@ -120,6 +120,7 @@ function carregarAnimal(){
 }
 
 function carregarAgendamentos(){
+  const token = localStorage.getItem("token");
     let codAnimal = document.getElementById("codAnimal").value;
     const resultado = document.getElementById("resultadoAgendamento");
   
@@ -128,7 +129,8 @@ function carregarAgendamentos(){
   
     fetch(url, {
       method: 'GET',
-      redirect: "follow"
+      redirect: "follow",
+      headers: { 'Authorization': token }
     })
       .then((response) => {
         return response.text();
@@ -176,6 +178,7 @@ function carregarAgendamentos(){
 }
 
 function carregarLancamentos(){
+  const token = localStorage.getItem("token");
   let codAnimal = document.getElementById("codAnimal").value;
   const resultado = document.getElementById("resultadoLancamento");
 
@@ -184,7 +187,8 @@ function carregarLancamentos(){
 
   fetch(url, {
     method: 'GET',
-    redirect: "follow"
+    redirect: "follow",
+    headers: { 'Authorization': token }
   })
   .then((response) => {
   return response.text();
@@ -237,6 +241,7 @@ function carregarLancamentos(){
 }
 
 function carregarRegistroProntuario() {
+  const token = localStorage.getItem("token");
   let codAnimal = document.getElementById("codAnimal").value;
   const resultado = document.getElementById("resultadoProntuario");
 
@@ -244,7 +249,8 @@ function carregarRegistroProntuario() {
 
   fetch(url, {
       method: 'GET',
-      redirect: "follow"
+      redirect: "follow",
+      headers: { 'Authorization': token }
   })
   .then((response) => response.json())
   .then((json) => {
@@ -315,7 +321,7 @@ function editarProntuario(cod) {
 }
 
 function excluirProntuario(cod) {
-
+  const token = localStorage.getItem("token");
   Swal.fire({
     title: "Você tem certeza ?",
     text: "Você não poderá reverter isso!",
@@ -332,7 +338,8 @@ function excluirProntuario(cod) {
       fetch(URL, {
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': token
         },
         method: 'DELETE'
       })
@@ -363,6 +370,7 @@ var lista =   [];
 //modal animal
 
 function carregarAnimais() {
+  const token = localStorage.getItem("token");
     let filtro = document.getElementById("filtro").value.trim();
     const container = document.querySelector("#modalAnimais .modal-body");
     container.innerHTML = "";
@@ -373,7 +381,8 @@ function carregarAnimais() {
 
     fetch(url, {
         method: 'GET',
-        redirect: 'follow'
+        redirect: 'follow',
+        headers: { 'Authorization': token }
     })
         .then(response => {
             if (!response.ok) 
