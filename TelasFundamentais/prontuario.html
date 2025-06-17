@@ -104,8 +104,8 @@
         <h2>Prontuário do Animal</h2>
 
         <!-- Select para escolher animal -->
-        
-            
+
+
         <div>
             <div class="row mb-3 align-items-end">
                 <div class="col-md-4">
@@ -115,14 +115,23 @@
                     </button>
                     <div id="animalSelecionado" class="mt-2 preview-box d-none"></div>
                     <input type="hidden" id="codAnimal" name="codAnimal">
+                    <input type="hidden" id="nomeAnimal" name="nomeAnimal">
                 </div>
             </div>
-            
+
         </div>
+
+
         <div class="mb-2">
-            <button class="btn btn-primary" onclick="visualizarProntuario()">Visualizar Prontuário</button>
-            <button class="btn btn-success" onclick="redirecionarTelaCad()">Cadastrar Registro</button>
+            <button id="btnVisualizarProntuario" class="btn btn-primary me-2"
+                onclick="visualizarProntuario()">Visualizar Prontuário</button>
+
+            <button class="btn btn-success me-2" onclick="redirecionarTelaCad()">Cadastrar Registro</button>
+
+            <button id="botaoBaixarProntuario" class="btn btn-outline-secondary invisible"
+                onclick="baixarProntuario()">Baixar Prontuário</button>
         </div>
+
 
 
         <!-- Animal sempre em linha separada -->
@@ -166,7 +175,7 @@
     </div>
 
     <script>
-        window.onload = function() {
+        window.onload = function () {
             const animalSelecionadoJson = localStorage.getItem("animalSelecionado");
             if (animalSelecionadoJson) {
                 const animal = JSON.parse(animalSelecionadoJson);
@@ -181,57 +190,57 @@
 
         //quando clicar botao de busca chama a função
         document.getElementById("btnBuscarAnimal").addEventListener("click", () => {
-        carregarAnimais();
+            carregarAnimais();
         });
 
 
         //Notificação
         const Toast = Swal.mixin({
-        toast: true,
-        position: 'top',
-        iconColor: 'white',
-        customClass: {
-            popup: 'colored-toast',
-        },
-        showConfirmButton: false,
-        timer: 1500,
-        timerProgressBar: true,
+            toast: true,
+            position: 'top',
+            iconColor: 'white',
+            customClass: {
+                popup: 'colored-toast',
+            },
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
         });
 
         if (sessionStorage.getItem('registroGravado') == 'true') {
-        Toast.fire({
-            icon: 'success',
-            title: 'registro Gravado no prontuário Com Sucesso!',
-        });
-        }
-        else
-        if (sessionStorage.getItem('registroGravado') == 'false') {
             Toast.fire({
-            icon: 'error',
-            title: 'Erro ao Gravar registro no prontuário!',
+                icon: 'success',
+                title: 'registro Gravado no prontuário Com Sucesso!',
             });
         }
+        else
+            if (sessionStorage.getItem('registroGravado') == 'false') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Erro ao Gravar registro no prontuário!',
+                });
+            }
         if (sessionStorage.getItem('registroAlterado') == 'true') {
-        Toast.fire({
-            icon: 'success',
-            title: 'registro Alterado no prontuário Com Sucesso!',
-        });
-        }
-        else
-        if (sessionStorage.getItem('registroAlterado') == 'false') {
             Toast.fire({
-            icon: 'error',
-            title: 'Erro ao Alterar registro no prontuário!',
+                icon: 'success',
+                title: 'registro Alterado no prontuário Com Sucesso!',
             });
         }
+        else
+            if (sessionStorage.getItem('registroAlterado') == 'false') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Erro ao Alterar registro no prontuário!',
+                });
+            }
         if (sessionStorage.getItem('registroApagado') == 'true') {
-        Toast.fire({
-            icon: 'success',
-            title: 'registro Excluído do prontuário Com Sucesso!',
-        });
+            Toast.fire({
+                icon: 'success',
+                title: 'registro Excluído do prontuário Com Sucesso!',
+            });
         }
 
-        
+
         sessionStorage.removeItem('registroAlterado');
         sessionStorage.removeItem('registroGravado');
         sessionStorage.removeItem('registroApagado');

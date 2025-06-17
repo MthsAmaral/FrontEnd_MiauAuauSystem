@@ -1,48 +1,122 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    carregarAnimais(); // lista pra escolher
-  
+  carregarAnimais(); // lista pra escolher
+
 });
 
 
 
-function visualizarProntuario(){
-    const codAnimal = document.getElementById("codAnimal").value;
-    if (!codAnimal) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Selecione um animal antes de visualizar o prontuário.'
-        });
-    }else{
-      carregarAnimal();
-      carregarAgendamentos();
-      carregarLancamentos();
-      carregarRegistroProntuario();
-    }
-    
+function visualizarProntuario() {
+  const codAnimal = document.getElementById("codAnimal").value;
+  if (!codAnimal) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Selecione um animal antes de visualizar o prontuário.'
+    });
+  } else {
+    // Oculta o botão de "Visualizar Prontuário"
+    document.getElementById("btnVisualizarProntuario").classList.add("invisible");
+
+
+    carregarAnimal();
+    carregarAgendamentos();
+    carregarLancamentos();
+    carregarRegistroProntuario();
+
+    //exibir botao depois de carregado prontuario
+    document.getElementById('botaoBaixarProntuario').classList.remove('invisible');
+
+  }
+
 }
 
 
-function carregarAnimal(){
+function baixarProntuario() {
+  let codAnimal = document.getElementById("codAnimal").value;
+  let nomeAnimal = document.getElementById("nomeAnimal").value;
+
+  if (!codAnimal) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Nenhum animal selecionado!',
+      text: 'Por favor, selecione um animal para gerar o PDF.',
+    });
+  }
+  else {
+    const URL = "http://localhost:8080/apis/prontuario/pdf/" + codAnimal;
+
+    Swal.fire({
+      title: 'Gerando PDF...',
+      text: 'Aguarde enquanto o prontuário é gerado.',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
+    fetch(URL, {
+      method: 'GET',
+      headers: { Accept: 'application/pdf' }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Erro ao gerar PDF.");
+        }
+        return response.blob();
+      })
+      .then(blob => {
+        Swal.close();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = "Prontuario_" + nomeAnimal + ".pdf";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+
+        // Exibe toast de sucesso
+        Swal.fire({
+          icon: 'success',
+          title: 'PDF gerado com sucesso!',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      })
+      .catch(error => {
+        Swal.close();
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro ao gerar o PDF!',
+          text: error.message
+        });
+      });
+  }
+}
+
+
+//---------------------------------------------------------------------------------
+
+function carregarAnimal() {
 
   let codAnimal = document.getElementById("codAnimal").value;
   const resultado = document.getElementById("resultadoAnimal");
 
-  const url = "http://localhost:8080/apis/animal/buscar-id/"+codAnimal;
-        fetch(url, {
-            method: 'GET', redirect: "follow"
-        })
-            .then((response) => {
-                return response.text();
-            })
-            .then(function (text) {
-              const json = JSON.parse(text); 
+  const url = "http://localhost:8080/apis/animal/buscar-id/" + codAnimal;
+  fetch(url, {
+    method: 'GET', redirect: "follow"
+  })
+    .then((response) => {
+      return response.text();
+    })
+    .then(function (text) {
+      const json = JSON.parse(text);
 
-              const dataOriginal = json.dataNascimento;
-              const [year, month, day] = dataOriginal.split('-'); 
-              const dataFormatada = `${day}/${month}/${year.slice(-2)}`; 
+      const dataOriginal = json.dataNascimento;
+      const [year, month, day] = dataOriginal.split('-');
+      const dataFormatada = `${day}/${month}/${year.slice(-2)}`;
 
-              const form = `
+      const form = `
                 <main class='container container-box mt-5'>
                   <h4 class="mb-4">Informações do Animal</h4>
 
@@ -111,35 +185,35 @@ function carregarAnimal(){
                 `;
 
 
-              resultado.innerHTML = form;
-            })
+      resultado.innerHTML = form;
+    })
 
-            .catch(function (error) {
-                console.error(error); 
-            });
+    .catch(function (error) {
+      console.error(error);
+    });
 }
 
-function carregarAgendamentos(){
-    let codAnimal = document.getElementById("codAnimal").value;
-    const resultado = document.getElementById("resultadoAgendamento");
-  
+function carregarAgendamentos() {
+  let codAnimal = document.getElementById("codAnimal").value;
+  const resultado = document.getElementById("resultadoAgendamento");
 
-    const url = "http://localhost:8080/apis/agendar-medicamento/buscar_animal/" + codAnimal;
-  
-    fetch(url, {
-      method: 'GET',
-      redirect: "follow"
+
+  const url = "http://localhost:8080/apis/agendar-medicamento/buscar_animal/" + codAnimal;
+
+  fetch(url, {
+    method: 'GET',
+    redirect: "follow"
+  })
+    .then((response) => {
+      return response.text();
     })
-      .then((response) => {
-        return response.text();
-      })
-      .then((text) => {
-        var json = JSON.parse(text);
-  
-        if (json.length === 0) {
-          resultado.innerHTML = "<main class='container container-box mt-5'><p>Nenhum agendamento encontrado.</p></main>";
-        } else {
-          let linhas = `
+    .then((text) => {
+      var json = JSON.parse(text);
+
+      if (json.length === 0) {
+        resultado.innerHTML = "<main class='container container-box mt-5'><p>Nenhum agendamento encontrado.</p></main>";
+      } else {
+        let linhas = `
           <main class='container container-box mt-5'>
             <h4>Agendamentos</h4>
             <table class='table table-bordered'>
@@ -152,30 +226,30 @@ function carregarAgendamentos(){
               <tbody>
           `;
 
-          json.forEach(agendamento => {
-            const [year, month, day] = agendamento.dataAplicacao.split("-");
-            const dataFormatada = `${day}/${month}/${year.slice(-2)}`;
+        json.forEach(agendamento => {
+          const [year, month, day] = agendamento.dataAplicacao.split("-");
+          const dataFormatada = `${day}/${month}/${year.slice(-2)}`;
 
-            linhas += `
+          linhas += `
               <tr>
                 <td>${agendamento.medicamento.nome}</td>
                 <td style="width: 20%;">${dataFormatada}</td>
               </tr>
             `;
-          });
+        });
 
-          linhas += "</tbody></table></main>";
+        linhas += "</tbody></table></main>";
 
-          resultado.innerHTML = linhas;
-        }
-      })
-      .catch((error) => {
-        console.error("Erro ao carregar agendamentos:", error);
-        resultado.innerHTML = "<main class='container container-box mt-5'><p class='text-danger'>Erro ao buscar agendamentos.</p></main>";
-      });
+        resultado.innerHTML = linhas;
+      }
+    })
+    .catch((error) => {
+      console.error("Erro ao carregar agendamentos:", error);
+      resultado.innerHTML = "<main class='container container-box mt-5'><p class='text-danger'>Erro ao buscar agendamentos.</p></main>";
+    });
 }
 
-function carregarLancamentos(){
+function carregarLancamentos() {
   let codAnimal = document.getElementById("codAnimal").value;
   const resultado = document.getElementById("resultadoLancamento");
 
@@ -186,20 +260,20 @@ function carregarLancamentos(){
     method: 'GET',
     redirect: "follow"
   })
-  .then((response) => {
-  return response.text();
-  })
-  .then((text) => {
-  var json = JSON.parse(text);
+    .then((response) => {
+      return response.text();
+    })
+    .then((text) => {
+      var json = JSON.parse(text);
 
-  if (json.length === 0) {
-      resultado.innerHTML = "<main class='container container-box mt-5'><p>Nenhum Lancamento encontrado.</p></main>";
-  } else {
-      let table = "<main class='container container-box mt-5'>"+"<table class='table table-bordered'>";
+      if (json.length === 0) {
+        resultado.innerHTML = "<main class='container container-box mt-5'><p>Nenhum Lancamento encontrado.</p></main>";
+      } else {
+        let table = "<main class='container container-box mt-5'>" + "<table class='table table-bordered'>";
 
-      table += "<h4>Lancamentos </h4>";
-      
-      table += `<thead>
+        table += "<h4>Lancamentos </h4>";
+
+        table += `<thead>
                   <tr>
                       <th>Data</th>
                       <th>Descrição</th>
@@ -207,17 +281,17 @@ function carregarLancamentos(){
                       <th>PDF</th>
                   </tr>
               </thead><tbody>`;
-  
-      json.forEach(lanc => {
-      let partes = lanc.data.split("-");
-      let dataFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`;
-  
-      // Verifica se a chave "arquivo" não é nula para decidir se cria o link ou não
-      const linkPDF = lanc.arquivo
-      ? `<a href="http://localhost:8080/apis/lancamento/arquivo/${lanc.cod}" target="_blank">PDF</a>`
-      : '<span>-</span>'; // Ou qualquer outra marcação de texto ou elemento vazio
 
-      table += `
+        json.forEach(lanc => {
+          let partes = lanc.data.split("-");
+          let dataFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`;
+
+          // Verifica se a chave "arquivo" não é nula para decidir se cria o link ou não
+          const linkPDF = lanc.arquivo
+            ? `<a href="http://localhost:8080/apis/lancamento/arquivo/${lanc.cod}" target="_blank">PDF</a>`
+            : '<span>-</span>'; // Ou qualquer outra marcação de texto ou elemento vazio
+
+          table += `
           <tr>
               <td>${dataFormatada}</td>
               <td>${lanc.descricao}</td>
@@ -225,15 +299,15 @@ function carregarLancamentos(){
               <td>${linkPDF}</td>
           </tr>
       `;
-      });
-      table+= "</tbody></table> </main>";
-      resultado.innerHTML = table;
-  }
-  })
-  .catch((error) => {
-  console.error("Erro ao carregar lancamentos:", error);
-  resultado.innerHTML = "<main class='container container-box mt-5'><p class='text-danger'>Erro ao buscar lancamentos.</p></main>";
-  });
+        });
+        table += "</tbody></table> </main>";
+        resultado.innerHTML = table;
+      }
+    })
+    .catch((error) => {
+      console.error("Erro ao carregar lancamentos:", error);
+      resultado.innerHTML = "<main class='container container-box mt-5'><p class='text-danger'>Erro ao buscar lancamentos.</p></main>";
+    });
 }
 
 function carregarRegistroProntuario() {
@@ -243,15 +317,15 @@ function carregarRegistroProntuario() {
   const url = "http://localhost:8080/apis/prontuario/buscar_animal/" + codAnimal;
 
   fetch(url, {
-      method: 'GET',
-      redirect: "follow"
+    method: 'GET',
+    redirect: "follow"
   })
-  .then((response) => response.json())
-  .then((json) => {
+    .then((response) => response.json())
+    .then((json) => {
       if (json.length === 0) {
-          resultado.innerHTML = "<main class='container container-box mt-5'><p>Nenhum registro encontrado no prontuário.</p></main>";
+        resultado.innerHTML = "<main class='container container-box mt-5'><p>Nenhum registro encontrado no prontuário.</p></main>";
       } else {
-          let table = `
+        let table = `
               <main class='container container-box mt-5'>
                   <h4>Registros</h4>
                   <table class='table table-bordered'>
@@ -267,19 +341,19 @@ function carregarRegistroProntuario() {
                       <tbody>
           `;
 
-          json.forEach(reg => {
-              const [year, month, day] = reg.data.split("-");
-              const dataFormatada = `${day}/${month}/${year.slice(-2)}`;
+        json.forEach(reg => {
+          const [year, month, day] = reg.data.split("-");
+          const dataFormatada = `${day}/${month}/${year.slice(-2)}`;
 
-              const linkPDF = reg.arquivo
-                  ? `<a href="http://localhost:8080/apis/prontuario/arquivo/${reg.cod}" target="_blank">PDF</a>`
-                  : '<span>-</span>';
+          const linkPDF = reg.arquivo
+            ? `<a href="http://localhost:8080/apis/prontuario/arquivo/${reg.cod}" target="_blank">PDF</a>`
+            : '<span>-</span>';
 
-              table += `
+          table += `
                   <tr>
                       <td>${dataFormatada}</td>
-                      <td style="width: 25%;">${reg.tipoRegistro}</td>
-                      <td style="width: 40%;">${reg.observacao}</td>
+                      <td style="width: 25%; word-break: break-word;">${reg.tipoRegistro}</td>
+                      <td style="width: 40%; word-break: break-word;">${reg.observacao}</td>
                       <td>${linkPDF}</td>
                       <td>
                           <button type="button" class="btn btn-sm btn-warning" onclick="editarProntuario(${reg.cod})">
@@ -291,21 +365,21 @@ function carregarRegistroProntuario() {
                       </td>
                   </tr>
               `;
-          });
+        });
 
-          table += `
+        table += `
                       </tbody>
                   </table>
               </main>
           `;
 
-          resultado.innerHTML = table;
+        resultado.innerHTML = table;
       }
-  })
-  .catch((error) => {
+    })
+    .catch((error) => {
       console.error("Erro ao carregar prontuário:", error);
       resultado.innerHTML = "<main class='container container-box mt-5'><p class='text-danger'>Erro ao buscar prontuário.</p></main>";
-  });
+    });
 }
 
 
@@ -358,54 +432,54 @@ function excluirProntuario(cod) {
 
 }
 
-var lista =   [];
+var lista = [];
 
 //modal animal
 
 function carregarAnimais() {
-    let filtro = document.getElementById("filtro").value.trim();
-    const container = document.querySelector("#modalAnimais .modal-body");
-    container.innerHTML = "";
+  let filtro = document.getElementById("filtro").value.trim();
+  const container = document.querySelector("#modalAnimais .modal-body");
+  container.innerHTML = "";
 
 
-    // Define URL com base no filtro
-    const url = "http://localhost:8080/apis/animal/buscar/" + (filtro.length > 0 ? filtro : "%20");
+  // Define URL com base no filtro
+  const url = "http://localhost:8080/apis/animal/buscar/" + (filtro.length > 0 ? filtro : "%20");
 
-    fetch(url, {
-        method: 'GET',
-        redirect: 'follow'
+  fetch(url, {
+    method: 'GET',
+    redirect: 'follow'
+  })
+    .then(response => {
+      if (!response.ok)
+        throw new Error("Erro ao carregar animais.");
+      else
+        return response.text();
     })
-        .then(response => {
-            if (!response.ok) 
-              throw new Error("Erro ao carregar animais.");
-            else
-              return response.text();
-        })
-        .then(text => {
-            lista = JSON.parse(text);
+    .then(text => {
+      lista = JSON.parse(text);
 
-            // Verifica se a lista está vazia
-            if (lista.length === 0) {
-                const mensagem = document.createElement("div");
-                mensagem.className = "alert alert-info";
-                mensagem.textContent = "Nenhum animal encontrado com esse filtro.";
-                container.appendChild(mensagem);
-            } else {
-              
-                /*for(let i =0; lista.length();i++)
-                {
-                  
-                }*/
-                lista.forEach((animal, indice) => {
-                  const col = document.createElement("div");
-                  col.className = "col-md-4 mb-3";
+      // Verifica se a lista está vazia
+      if (lista.length === 0) {
+        const mensagem = document.createElement("div");
+        mensagem.className = "alert alert-info";
+        mensagem.textContent = "Nenhum animal encontrado com esse filtro.";
+        container.appendChild(mensagem);
+      } else {
 
-                  //se n tiver foto coloca generica
-                  const imagemSrc = animal.imagemBase64 
-                      ? `data:image/jpeg;base64,${animal.imagemBase64}` 
-                      : '../img/semFoto.png';
+        /*for(let i =0; lista.length();i++)
+        {
+          
+        }*/
+        lista.forEach((animal, indice) => {
+          const col = document.createElement("div");
+          col.className = "col-md-4 mb-3";
 
-                  col.innerHTML = `
+          //se n tiver foto coloca generica
+          const imagemSrc = animal.imagemBase64
+            ? `data:image/jpeg;base64,${animal.imagemBase64}`
+            : '../img/semFoto.png';
+
+          col.innerHTML = `
                       <div class="card card-select" style="cursor: pointer;" onclick="selecionarAnimal(${indice})">
                         <img src="${imagemSrc}" class="card-img-top" alt="${animal.nome}" style="height: 180px; width: 100%; object-fit: contain; background-color: #f8f9fa;">
                         <div class="card-body">
@@ -414,24 +488,24 @@ function carregarAnimais() {
                       </div>
                   `;
 
-                  container.appendChild(col);
-              });
+          container.appendChild(col);
+        });
 
-            }
-        })
-        .catch(error => console.error(error.message));
+      }
+    })
+    .catch(error => console.error(error.message));
 }
 
 function selecionarAnimal(indice) {
-    const animal = lista[indice];
-    const previewDiv = document.getElementById("animalSelecionado");
-    
+  const animal = lista[indice];
+  const previewDiv = document.getElementById("animalSelecionado");
 
-    const imagemSrc = animal.imagemBase64 
-        ? `data:image/jpeg;base64,${animal.imagemBase64}` 
-        : '../img/semFoto.png';
 
-    previewDiv.innerHTML = `
+  const imagemSrc = animal.imagemBase64
+    ? `data:image/jpeg;base64,${animal.imagemBase64}`
+    : '../img/semFoto.png';
+
+  previewDiv.innerHTML = `
         <div class="row">
             <div class="col-md-8">
                 <div class="card card-select p-0 position-relative h-100">
@@ -446,37 +520,43 @@ function selecionarAnimal(indice) {
             </div>
         </div>
     `;
-    
-    document.getElementById("animalSelecionado").classList.remove("d-none");
 
-    //guarda cod formulario
-    document.getElementById("codAnimal").value = animal.codAnimal;
+  document.getElementById("animalSelecionado").classList.remove("d-none");
 
+  //guarda cod formulario
+  document.getElementById("codAnimal").value = animal.codAnimal;
+  document.getElementById("nomeAnimal").value = animal.nome;
 
-    // Fecha o modal automaticamente
-    const modal = bootstrap.Modal.getInstance(document.getElementById('modalAnimais'));
-    modal.hide();
+  // Fecha o modal automaticamente
+  const modal = bootstrap.Modal.getInstance(document.getElementById('modalAnimais'));
+  modal.hide();
 }
 
 
 function removerAnimalSelecionado() {
-    const previewDiv = document.getElementById("animalSelecionado");
-    previewDiv.innerHTML = "";
-    previewDiv.classList.add("d-none");
+  const previewDiv = document.getElementById("animalSelecionado");
+  previewDiv.innerHTML = "";
+  previewDiv.classList.add("d-none");
 
-    // Limpa o input que salva codAnimal no formulario
-    document.getElementById("codAnimal").value = "";
+  //oculta botao quando fechar prontuário
+  document.getElementById('botaoBaixarProntuario').classList.add('invisible');
 
-    // "Fecha" o formulário ocultando as seções exibidas
-    document.getElementById("resultadoAnimal").innerHTML = "";
-    document.getElementById("resultadoAgendamento").innerHTML = "";
-    document.getElementById("resultadoLancamento").innerHTML = "";
-    document.getElementById("resultadoProntuario").innerHTML = "";
+  //exibe botao de visualizar 
+  document.getElementById("btnVisualizarProntuario").classList.remove("invisible");
+
+  // Limpa o input que salva codAnimal no formulario
+  document.getElementById("codAnimal").value = "";
+
+  // "Fecha" o formulário ocultando as seções exibidas
+  document.getElementById("resultadoAnimal").innerHTML = "";
+  document.getElementById("resultadoAgendamento").innerHTML = "";
+  document.getElementById("resultadoLancamento").innerHTML = "";
+  document.getElementById("resultadoProntuario").innerHTML = "";
 }
 
 
 
-function redirecionarTelaCad(){
-  
+function redirecionarTelaCad() {
+
   window.location.href = "../TelasFundamentais/cadRegistroProntuario.html?";
 }
