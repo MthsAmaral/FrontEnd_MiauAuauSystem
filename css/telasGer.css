@@ -22,7 +22,15 @@ body {
     padding: 30px;                          /* Preenchimento interno */
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
-
+.container-box-animal {
+    width: 90%;                /* Largura proporcional, aproveita mais a tela */
+    max-width: 1335px;          /* Limite máximo pra não esticar demais */
+    margin: 20px auto;          /* Centraliza horizontalmente */
+    padding: 30px 40px;         /* Espaço interno */
+    background-color: var(--cor-clara);
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
 /* === TÍTULO === */
 h2 {
     color: var(--cor-petroleo);             /* Cor do título */
@@ -47,6 +55,9 @@ input[type="text"]:focus {
 }
 
 /* === TABELA === */
+.table-responsive {
+    overflow-x: auto;
+}
 .table {
     width: 100%;                            /* Largura total da tabela */
     border-collapse: collapse;              /* Remove espaçamento entre as células */

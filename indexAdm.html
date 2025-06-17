@@ -32,8 +32,11 @@
         <ul class="navbar-nav ms-auto me-auto central-navbar">
           <!--Botões de Adotar e Doar-->
           <!--<li class=""><a class="queroadotar" href="./TelasFundamentais/solicitarAdocao.html">Quero Adotar</a></li>-->
-          <li class=""><a class="queroadotar" href="./TelasFundamentais/cadAgendamentoDoacao.html">Quero Doar</a></li>
-
+          <!--<li class=""><a class="queroadotar" href="./TelasFundamentais/cadAgendamentoDoacao.html">Quero Doar</a></li>-->
+          <li class="nav-item dropdown-auaumiau">
+            <a id="userMenu" class="nav-link dropdown-toggle-auaumiau"></a>
+            <ul class="dropdown-menu-auaumiau"> </ul>
+          </li>
           <!--Relatórios-->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Relatórios</a>
@@ -94,7 +97,7 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="botaoNotificacoes" data-bs-toggle="modal"
             data-bs-target="#modalNotificacoes">
-            <i class="bi bi-bell"></i> <!-- Ícone de sino -->
+            <i class="fa-solid fa-bell"></i> <!-- Ícone de sino -->
             <span class="badge bg-danger" id="notificacoesCount">0</span> <!-- Contador de notificações -->
           </a>
         </li>
@@ -196,13 +199,13 @@
 </body>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-      const botao = document.getElementById('botaoNotificacoes');
-      if (botao) {
-        botao.addEventListener('click', function () {
-          carregarNotificacoes();
-        });
-      }
-    });
+    const botao = document.getElementById('botaoNotificacoes');
+    if (botao) {
+      botao.addEventListener('click', function () {
+        carregarNotificacoes();
+      });
+    }
+  });
 </script>
 
 </html>

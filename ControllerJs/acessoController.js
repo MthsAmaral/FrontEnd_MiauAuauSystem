@@ -24,7 +24,7 @@ function verificarPrivilegio()
       {
         const userMenu = document.getElementById("userMenu");
         const dropdownMenu = document.querySelector(".dropdown-menu-auaumiau");
-        userMenu.innerHTML = `Olá, ${payload.usuario}`;
+        userMenu.innerHTML = `<i class="fa-solid fa-user"></i> Olá, ${payload.usuario}`;
         dropdownMenu.innerHTML = `
         <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaMinhasAdocoes.html">Minhas Adoções</a></li>
         <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaDados.html">Dados Pessoais</a></li>
@@ -37,7 +37,7 @@ function verificarPrivilegio()
            {
               const li = document.createElement('li');
               li.classList.add('acesso-restrito');
-              li.innerHTML = `<a href="indexAdm.html">Acesso Restrito</a>`;
+              li.innerHTML = `<a href="indexAdm.html"><i class="fa-solid fa-key"></i> Acesso Restrito</a>`;
               menu.appendChild(li);
            }
            
@@ -70,17 +70,72 @@ function verificarPrivilegioIndexAdm()
     }
     if (flag == 1)
     {
-      if (payload.privilegio != 'A')
-      {
-        window.location.href = "./index.html";
-        sessionStorage.setItem('acessoNegado', 'true');
-      }
+       const userMenu = document.getElementById("userMenu");
+       const dropdownMenu = document.querySelector(".dropdown-menu-auaumiau");
+       userMenu.innerHTML = `<i class="fa-solid fa-user"></i> Olá, ${payload.usuario}`;
+       dropdownMenu.innerHTML = `
+       <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaMinhasAdocoes.html">Minhas Adoções</a></li>
+       <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaDados.html">Dados Pessoais</a></li>
+       <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaAlterarSenha.html">Alterar Senha</a></li>
+       <li><a class="dropdown-item-auaumiau" href="#" onclick="logout()">Sair</a></li>`;
+       if (payload.privilegio != 'A')
+       {
+         window.location.href = "./index.html";
+         sessionStorage.setItem('acessoNegado', 'true');
+       }
+       
     }
       
   }
   else
   {
     window.location.href = "./index.html";
+    sessionStorage.setItem('usuarioNaoAutenticado', 'true');
+  }
+}
+function verificarPrivilegioTelas()
+{
+  const token = localStorage.getItem("token");
+  if (token)
+  {  
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const payload = JSON.parse(window.atob(base64)); 
+    const now = Math.floor(Date.now() / 1000); 
+    let flag = 1;
+    if (payload.exp && payload.exp < now)
+    {
+      Swal.fire({
+        icon: "error",
+        title: "Sessão Expirada",
+        text: "Por favor, faça login novamente.",
+        confirmButtonText: "Ok"
+      }).then(() => {
+        logout(); 
+      });
+      flag = 0;
+    }
+    if (flag == 1)
+    {
+       const userMenu = document.getElementById("userMenu");
+       const dropdownMenu = document.querySelector(".dropdown-menu-auaumiau");
+       userMenu.innerHTML = `<i class="fa-solid fa-user"></i> Olá, ${payload.usuario}`;
+       dropdownMenu.innerHTML = `
+       <li><a class="dropdown-item-auaumiau" href="../TelasFundamentais/telaMinhasAdocoes.html">Minhas Adoções</a></li>
+       <li><a class="dropdown-item-auaumiau" href="../TelasFundamentais/telaDados.html">Dados Pessoais</a></li>
+       <li><a class="dropdown-item-auaumiau" href="../TelasFundamentais/telaAlterarSenha.html">Alterar Senha</a></li>
+       <li><a class="dropdown-item-auaumiau" href="#" onclick="logout()">Sair</a></li>`;
+       if (payload.privilegio != 'A')
+       {
+         window.location.href = "../index.html";
+         sessionStorage.setItem('acessoNegado', 'true');
+       }
+    }
+      
+  }
+  else
+  {
+    window.location.href = "../index.html";
     sessionStorage.setItem('usuarioNaoAutenticado', 'true');
   }
 }

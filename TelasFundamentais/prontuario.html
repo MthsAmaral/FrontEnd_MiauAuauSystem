@@ -22,6 +22,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.all.min.js"></script>
 
     <!--Imports Locais-->
+    <script src="../ControllerJs/acessoController.js"></script>
     <script src="../ControllerJs/prontuarioController.js"></script>
     <link rel="stylesheet" href="../css/styleNavBar.css">
     <link rel="stylesheet" href="../css/telasGer.css">
@@ -41,6 +42,17 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav ms-auto me-auto central-navbar">
+                    <li class="nav-item dropdown-auaumiau">
+                        <a id="userMenu" class="nav-link dropdown-toggle-auaumiau"></a>
+                        <ul class="dropdown-menu-auaumiau"> </ul>
+                    </li>
+                    <!--Relatórios-->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Relatórios</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="../TelasRelatorios/balancete.html">Balancete</a></li>
+                        </ul>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Operações</a>
                         <ul class="dropdown-menu">
@@ -49,6 +61,8 @@
                             <li><a class="dropdown-item" href="../TelasFundamentais/realizarLancamentos.html">Realizar
                                     Lançamento</a>
                             </li>
+                            
+                            <li><a class="dropdown-item" href="../TelasFundamentais/prontuario.html">Prontuário</a>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -86,13 +100,6 @@
                             <li><a class="dropdown-item" href="../TelasGerenciar/gerenUsuarios.html">Usuário</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Login</a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Entrar</a></li>
-                            <li><a class="dropdown-item" href="#">Sair</a></li>
-                        </ul>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -104,8 +111,8 @@
         <h2>Prontuário do Animal</h2>
 
         <!-- Select para escolher animal -->
-        
-            
+
+
         <div>
             <div class="row mb-3 align-items-end">
                 <div class="col-md-4">
@@ -117,7 +124,7 @@
                     <input type="hidden" id="codAnimal" name="codAnimal">
                 </div>
             </div>
-            
+
         </div>
         <div class="mb-2">
             <button class="btn btn-primary" onclick="visualizarProntuario()">Visualizar Prontuário</button>
@@ -166,7 +173,8 @@
     </div>
 
     <script>
-        window.onload = function() {
+        window.onload = function () {
+            verificarPrivilegioTelas();
             const animalSelecionadoJson = localStorage.getItem("animalSelecionado");
             if (animalSelecionadoJson) {
                 const animal = JSON.parse(animalSelecionadoJson);
@@ -181,57 +189,57 @@
 
         //quando clicar botao de busca chama a função
         document.getElementById("btnBuscarAnimal").addEventListener("click", () => {
-        carregarAnimais();
+            carregarAnimais();
         });
 
 
         //Notificação
         const Toast = Swal.mixin({
-        toast: true,
-        position: 'top',
-        iconColor: 'white',
-        customClass: {
-            popup: 'colored-toast',
-        },
-        showConfirmButton: false,
-        timer: 1500,
-        timerProgressBar: true,
+            toast: true,
+            position: 'top',
+            iconColor: 'white',
+            customClass: {
+                popup: 'colored-toast',
+            },
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
         });
 
         if (sessionStorage.getItem('registroGravado') == 'true') {
-        Toast.fire({
-            icon: 'success',
-            title: 'registro Gravado no prontuário Com Sucesso!',
-        });
-        }
-        else
-        if (sessionStorage.getItem('registroGravado') == 'false') {
             Toast.fire({
-            icon: 'error',
-            title: 'Erro ao Gravar registro no prontuário!',
+                icon: 'success',
+                title: 'registro Gravado no prontuário Com Sucesso!',
             });
         }
+        else
+            if (sessionStorage.getItem('registroGravado') == 'false') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Erro ao Gravar registro no prontuário!',
+                });
+            }
         if (sessionStorage.getItem('registroAlterado') == 'true') {
-        Toast.fire({
-            icon: 'success',
-            title: 'registro Alterado no prontuário Com Sucesso!',
-        });
-        }
-        else
-        if (sessionStorage.getItem('registroAlterado') == 'false') {
             Toast.fire({
-            icon: 'error',
-            title: 'Erro ao Alterar registro no prontuário!',
+                icon: 'success',
+                title: 'registro Alterado no prontuário Com Sucesso!',
             });
         }
+        else
+            if (sessionStorage.getItem('registroAlterado') == 'false') {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Erro ao Alterar registro no prontuário!',
+                });
+            }
         if (sessionStorage.getItem('registroApagado') == 'true') {
-        Toast.fire({
-            icon: 'success',
-            title: 'registro Excluído do prontuário Com Sucesso!',
-        });
+            Toast.fire({
+                icon: 'success',
+                title: 'registro Excluído do prontuário Com Sucesso!',
+            });
         }
 
-        
+
         sessionStorage.removeItem('registroAlterado');
         sessionStorage.removeItem('registroGravado');
         sessionStorage.removeItem('registroApagado');

@@ -289,7 +289,6 @@ svg{
   border-radius: 8px; /* Bordas arredondadas */
   text-align: center;
   text-decoration: none; /* Remove o sublinhado */
-  transition: background-color 0.3s ease, color 0.3s ease; /* Transição suave */
 }
 .adopt2-button2:hover {
   color: #ffffff !important;
@@ -509,6 +508,7 @@ footer {
   margin-bottom: 20px;
 }
 .btn_search{
+  
   width: 40%;
   padding: 12px;
   border: 1px solid #ddd;
@@ -522,6 +522,8 @@ footer {
   justify-content: center;
   margin: 10px 0 0 auto;
   cursor: pointer;
+  font-weight: bold;
+  white-space: nowrap;
 }
 .btn_search:hover{
   background-color: #0c6582;
@@ -870,7 +872,11 @@ footer {
   border-radius: 8px; /* Bordas arredondadas */
   text-decoration: none; /* Remove sublinhado */
   font-weight: bold; /* Texto em negrito */
-  transition: background-color 0.3s ease; /* Transição suave ao passar o mouse */
+  transition: background-color 0.3s ease; /* Transição suave ao passar o mouse */  
 }
-
+.acesso-restrito a:hover {
+  
+  background-color: red; /* Fundo vermelho */
+  color: white; /* Texto branco */
+}
 

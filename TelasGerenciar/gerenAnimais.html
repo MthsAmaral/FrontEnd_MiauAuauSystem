@@ -21,13 +21,14 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.all.min.js"></script>
 
   <!--Imports Locais-->
+  <script src="../ControllerJs/acessoController.js"></script>
   <script src="../ControllerJs/animalController.js"></script>
   <link rel="stylesheet" href="../css/styleNavBar.css">
   <link rel="stylesheet" href="../css/telasGer.css">
   <link rel="stylesheet" href="../css/stylesAlerts.css">
 </head>
 
-<body onload="buscarAnimal()">
+<body onload="buscarAnimal(); verificarPrivilegioTelas()">
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
       <a class="navbar-brand" href="../indexAdm.html">
@@ -39,6 +40,17 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav ms-auto me-auto central-navbar">
+          <li class="nav-item dropdown-auaumiau">
+            <a id="userMenu" class="nav-link dropdown-toggle-auaumiau"></a>
+            <ul class="dropdown-menu-auaumiau"> </ul>
+          </li>
+          <!--Relatórios-->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Relatórios</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="../TelasRelatorios/balancete.html">Balancete</a></li>
+            </ul>
+          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Operações</a>
             <ul class="dropdown-menu">
@@ -80,13 +92,14 @@
   </nav>
 
   <!-- Conteúdo -->
-  <div class="container mt-5">
-    <div class="container-box">
+  <div class="container-fluid mt-5">
+    <div class="container-box-animal">
       <h2>Gerenciar Animais</h2>
 
       <input type="text" id="filtro" class="form-control mb-3" placeholder="Filtrar por nome do animal" onkeyup="buscarAnimal()">
 
-      <table class="table">
+      <div class="table-responsive">
+        <table class="table">
         <thead>
           <tr>
             <th>ID</th><th>Nome</th><th>Raça</th><th>Data de Nascimento</th><th>Sexo</th>
@@ -96,6 +109,7 @@
         <tbody id = "resultado">
         </tbody>
       </table>
+      </div>
 
       <div class="d-flex gap-3 mt-3">
         <a href="../TelasCadastros/cadAnimal.html" class="btn btn-primary">
