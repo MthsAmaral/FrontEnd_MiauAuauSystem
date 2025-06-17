@@ -60,10 +60,12 @@ function verificaAnimal() {
 
 function selectTpLanc(id) {
   //realizar a consulta do "Tipo Lançamento"
+  let token = localStorage.getItem("token");
   let URL = "";
   URL = "http://localhost:8080/apis/tipo-lancamento/buscar/%20";
   fetch(URL, {
     method: 'GET',
+    headers: { 'Authorization': token },
     redirect: "follow"
   })
     .then((response) => {
@@ -102,10 +104,12 @@ function selectTpLanc(id) {
 
 function selectAnimal(id) {
   //realizar a consulta do "Animal"
+  const token = localStorage.getItem("token");
   let URL = "";
   URL = "http://localhost:8080/apis/animal/buscar/%20";
   fetch(URL, {
     method: 'GET',
+    headers: { 'Authorization': token },
     redirect: "follow"
   })
     .then((response) => {
@@ -144,10 +148,12 @@ function selectAnimal(id) {
 
 function selectDebCred(deb, cred) {
   //realizar a consulta do "Crédito" e "Débito"
+  const token = localStorage.getItem("token");
   let URL = "";
   URL = "http://localhost:8080/apis/plano-contas-gerencial/buscar/%20";
   fetch(URL, {
     method: 'GET',
+    headers: { 'Authorization': token },
     redirect: "follow"
   })
     .then((response) => {
@@ -259,11 +265,13 @@ function validarCadastrar() {
 }
 
 function cadLancamento() {
+  const token = localStorage.getItem("token");
   let URL = "http://localhost:8080/apis/lancamento/gravar";
   let formData = new FormData(document.getElementById("formLanc"));
 
   fetch(URL, {
     method: 'POST',
+    headers: { 'Authorization': token },
     body: formData
   })
     .then((response) => {
@@ -301,17 +309,18 @@ function limparFiltros() {
 
   // Limpa os campos de data
   const dataInicio = document.getElementById("dataInicio");
-  const dataFim    = document.getElementById("dataFim");
+  const dataFim = document.getElementById("dataFim");
   dataInicio.value = "";
-  dataFim.value    = "";
+  dataFim.value = "";
 
   // Se você estiver usando instâncias do Flatpickr:
   if (dataInicio._flatpickr) dataInicio._flatpickr.clear();
-  if (dataFim._flatpickr)    dataFim._flatpickr.clear();
+  if (dataFim._flatpickr) dataFim._flatpickr.clear();
 }
 
 
 function buscarLancamentosFiltro() {
+  const token = localStorage.getItem("token");
   let URL = "http://localhost:8080/apis/lancamento/buscar-filtro";
   let tudo = false;
   let fezFiltro = false;
@@ -331,23 +340,24 @@ function buscarLancamentosFiltro() {
       fezFiltro = true;
     }
   }
-  else if(dataIni !== "" && dataFim !== ""){
+  else if (dataIni !== "" && dataFim !== "") {
     URL += "?dataIni=" + dataIni + "&dataFim=" + dataFim;
   }
   else if (dataIni === "") { //quero tudo ate a data final
     URL += "?dataFim=" + dataFim;
   }
-  else{ //quero tudo depois da data inicial
+  else { //quero tudo depois da data inicial
     URL += "?dataIni=" + dataIni;
   }
 
-  if(filtro !== "" && !fezFiltro){
+  if (filtro !== "" && !fezFiltro) {
     URL += "&filtro=" + filtro;
   }
 
   if (!tudo) {
     fetch(URL, {
       method: 'GET',
+      headers: { 'Authorization': token },
       redirect: "follow"
     })
       .then((response) => {
@@ -366,8 +376,12 @@ function buscarLancamentosFiltro() {
 
           // Verifica se a chave "arquivo" não é nula para decidir se cria o link ou não
           const linkPDF = json[i].arquivo
-            ? `<a href="http://localhost:8080/apis/lancamento/arquivo/${json[i].cod}" target="_blank">PDF</a>`
-            : '<span>-</span>'; // Ou qualquer outra marcação de texto ou elemento vazio
+            ? `<a href="http://localhost:8080/apis/lancamento/arquivo/${json[i].cod}"
+                  onclick="abrirPDF(event)"
+                  target="_blank">
+                PDF
+              </a>`
+            : '<span>-</span>';
 
           let partes = json[i].data.split("-");
           let dataFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`;
@@ -399,11 +413,39 @@ function buscarLancamentosFiltro() {
   }
 }
 
+function abrirPDF(event) {
+  event.preventDefault();
+  const token = localStorage.getItem("token");
+  const el = event.currentTarget;
+
+  // Tenta data-url, senão href
+  const url = el.dataset.url ?? el.href;
+
+  fetch(url, {
+    headers: { 'Authorization': token }
+  })
+    .then(resp => {
+      if (!resp.ok) throw new Error(`Status ${resp.status}`);
+      return resp.blob();
+    })
+    .then(blob => {
+      const blobUrl = URL.createObjectURL(blob);
+      window.open(blobUrl, "_blank");
+      // opcional: URL.revokeObjectURL(blobUrl) depois
+    })
+    .catch(err => {
+      console.error("Erro ao abrir PDF:", err);
+      alert("Não foi possível abrir o PDF.");
+    });
+}
+
 function buscarLancamentos() {
+  const token = localStorage.getItem("token");
   let URL = "http://localhost:8080/apis/lancamento/buscar/%20";
 
   fetch(URL, {
     method: 'GET',
+    headers: { 'Authorization': token },
     redirect: "follow"
   })
     .then((response) => {
@@ -422,8 +464,12 @@ function buscarLancamentos() {
 
         // Verifica se a chave "arquivo" não é nula para decidir se cria o link ou não
         const linkPDF = json[i].arquivo
-          ? `<a href="http://localhost:8080/apis/lancamento/arquivo/${json[i].cod}" target="_blank">PDF</a>`
-          : '<span>-</span>'; // Ou qualquer outra marcação de texto ou elemento vazio
+          ? `<a href="http://localhost:8080/apis/lancamento/arquivo/${json[i].cod}"
+                  onclick="abrirPDF(event)"
+                  target="_blank">
+                PDF
+              </a>`
+          : '<span>-</span>';
 
         let partes = json[i].data.split("-");
         let dataFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`;
@@ -466,9 +512,13 @@ function excluirLancamento(id) {
     cancelButtonText: "Cancelar"
   }).then((result) => {
     if (result.isConfirmed) {
+      const token = localStorage.getItem("token");
       let URL = "http://localhost:8080/apis/lancamento/excluir/" + id;
 
-      fetch(URL, { method: 'DELETE' })
+      fetch(URL, {
+        method: 'DELETE',
+        headers: { 'Authorization': token }
+      })
         .then((response) => {
           return response.json();
         })
@@ -486,6 +536,7 @@ function excluirLancamento(id) {
 }
 
 async function editarLancamento() {
+  const token = localStorage.getItem("token");
   const URL = "http://localhost:8080/apis/lancamento/atualizar";
   document.getElementById("id").disabled = false;
   const fLancamento = document.getElementById("formLanc");
@@ -506,7 +557,9 @@ async function editarLancamento() {
       // Nenhum novo arquivo — busca o atual com fetch e adiciona no formData
       let linkPDF = pdfAtualDiv.querySelector("a");
       if (linkPDF) {
-        await fetch(linkPDF.href)
+        await fetch(linkPDF.href, {
+          headers: { 'Authorization': token }
+        })
           .then(res => res.blob())
           .then(blob => {
             let nomeArquivo = linkPDF.href.split("/").pop(); // ou um nome padrão
@@ -519,6 +572,7 @@ async function editarLancamento() {
   try {
     const response = await fetch(URL, {
       method: 'PUT',
+      headers: { 'Authorization': token },
       body: formData,
     });
     const json = await response.json();
@@ -540,11 +594,13 @@ function editarLancamentoID(id) {
 }
 
 function buscarLancID(id) {
+  const token = localStorage.getItem("token");
   let url = "http://localhost:8080/apis/lancamento/buscar-id/" + id;
   document.getElementById("inputId").hidden = false;
 
   fetch(url, {
     method: 'GET',
+    headers: { 'Authorization': token },
     redirect: "follow"
   })
     .then((response) => {
@@ -567,14 +623,16 @@ function buscarLancID(id) {
       // Verifica se há um arquivo existente
       if (json.arquivo) {
         let link = document.createElement('a');
-        link.href = `http://localhost:8080/apis/lancamento/arquivo/${json.cod}`;
-        link.target = '_blank';
+        link.href = '#';                        // evita navegação direta
         link.textContent = 'PDF Atual';
+        link.dataset.url =                      // guardamos a URL real aqui
+          `http://localhost:8080/apis/lancamento/arquivo/${json.cod}`;
+        link.addEventListener('click', abrirPDF);
 
+        pdfAtualDiv.innerHTML = '';             // limpa conteúdo anterior
         pdfAtualDiv.appendChild(link);
         pdfAtualDiv.hidden = false;
       } else {
-        // Se não houver arquivo, mantemos a div escondida
         pdfAtualDiv.hidden = true;
       }
 
@@ -589,64 +647,5 @@ function buscarLancID(id) {
     })
     .catch(function (error) {
       console.error("Erro ao buscar o Tipo de Lançamento" + error); // Exibe erros, se houver
-    });
-}
-
-function buscarLancPeriodo() {
-  let URL = "http://localhost:8080/apis/lancamento/buscar";
-  let formData = new FormData();
-  formData.append("dataIni", document.getElementById("elementoHTML").value); //data inicio
-  formData.append("dataFim", document.getElementById("elementoHTML2").value); //data fim
-
-  fetch(URL, {
-    method: 'GET',
-    redirect: "follow",
-    body: formData
-  })
-    .then((response) => {
-      return response.text();
-    })
-    .then(function (text) {
-      var json = JSON.parse(text); // Converte a resposta JSON
-      var table = "";
-
-      for (let i = 0; i < json.length; i++) {
-        // Inicializa variáveis para acessar as propriedades aninhadas com segurança
-        const descricaoTpLanc = json[i].TpLanc ? json[i].TpLanc.descricao : '-';
-        const nomeAnimal = json[i].animal ? json[i].animal.nome : '-';
-        const descricaoDebito = json[i].debito ? json[i].debito.descricao : '-';
-        const descricaoCredito = json[i].credito ? json[i].credito.descricao : '-';
-
-        // Verifica se a chave "arquivo" não é nula para decidir se cria o link ou não
-        const linkPDF = json[i].arquivo
-          ? `<a href="http://localhost:8080/apis/lancamento/arquivo/${json[i].cod}" target="_blank">PDF</a>`
-          : '<span>-</span>'; // Ou qualquer outra marcação de texto ou elemento vazio
-
-        let partes = json[i].data.split("-");
-        let dataFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`;
-
-        table += `
-          <tr>
-              <td>${json[i].cod}</td>
-              <td>${dataFormatada}</td>
-              <td>${json[i].descricao}</td>
-              <td>${descricaoTpLanc}</td>
-              <td>${nomeAnimal}</td>
-              <td>${descricaoDebito}</td>
-              <td>${descricaoCredito}</td>
-              <td>${json[i].valor}</td>
-              <td>${linkPDF}</td>
-              <td>
-                  <button type="button" class="btn btn-sm btn-warning" onclick="editarLancamentoID(${json[i].cod})"><i class="bi bi-pencil-square"></i></button>
-              </td>
-              <td>
-                  <button type="button" class="btn btn-sm btn-danger" onclick="excluirLancamento(${json[i].cod})"><i class="bi bi-trash"></i></button>
-              </td>
-          </tr>`;
-      }
-      document.getElementById("resultado").innerHTML = table; // Exibe a tabela no elemento "resultado"
-    })
-    .catch(function (error) {
-      console.error(error); // Exibe erros, se houver
     });
 }

@@ -2,30 +2,35 @@ function balancete() {
     //url para realizar o fetch
     let URL = "http://localhost:8080/apis/balancete";
 
+    //token para enviar no header
+    let token = localStorage.getItem("token");
+
     //para editar a URL eu preciso saber os valores que possuo nos meus inputs
     let ano = document.getElementById("filtroAno").value;
     let mes = document.getElementById("filtroMes").value;
 
-    if(ano === ""){
+    if (ano === "") {
         ano = new Date().getFullYear();
         URL += "?ano=" + ano;
     }
-    else{
-        if(mes === ""){ //filtro apenas pelo ano
+    else {
+        if (mes === "") { //filtro apenas pelo ano
             URL += "?ano=" + ano;
         }
-        else{ //filtrar pelo ano e pelo mes
+        else { //filtrar pelo ano e pelo mes
             URL += "?ano=" + ano + "&mes=" + mes;
         }
     }
 
-    fetch(URL)
+    fetch(URL, {
+        headers: { 'Authorization': token }
+    })
         .then(response => {
             if (!response.ok)
                 throw new Error("Erro ao recuperar o Balancete!");
             return response.json();
         })
-        .then(json => {2
+        .then(json => {
             if (json.length > 0) {
 
                 // 1. Irá ordenar pela classificacao e depois pelo referencial
@@ -36,33 +41,13 @@ function balancete() {
                     else
                         return a.referencial.localeCompare(b.referencial);
                 });
-                // 1. Irá ordenar pela classificacao e depois pelo referencial
-                json.sort((a, b) => {
-                    const c = a.classificacao.localeCompare(b.classificacao);
-                    if (c !== 0)
-                        return c;
-                    else
-                        return a.referencial.localeCompare(b.referencial);
-                });
 
                 // 2. Deixa zerada as duas tabelas
                 const corpoBalancete = document.getElementById("resultadoBalancete");
                 corpoBalancete.innerHTML = "";
                 const corpoPlano = document.getElementById("resultado");
                 corpoPlano.innerHTML = "";
-                // 2. Deixa zerada as duas tabelas
-                const corpoBalancete = document.getElementById("resultadoBalancete");
-                corpoBalancete.innerHTML = "";
-                const corpoPlano = document.getElementById("resultado");
-                corpoPlano.innerHTML = "";
 
-                // ---- variáveis para controlar os indices e as somas ----
-                let grupo = 0; // índice do grupo de classificação
-                let classeAtual = json[0].classificacao;
-                let somaCredGrupo = 0;
-                let somaDebGrupo = 0;
-                let totalCreditos = 0;
-                let totalDebitos = 0;
                 // ---- variáveis para controlar os indices e as somas ----
                 let grupo = 0; // índice do grupo de classificação
                 let classeAtual = json[0].classificacao;
@@ -80,7 +65,8 @@ function balancete() {
                         <td id="debitos${index}" style="background:#808080;"></td>
                         <td id="creditos${index}" style="background:#808080;"></td>
                         <td id="mvtoPeriodo${index}" style="background:#808080;"></td>
-                        <td id="saldoAtual${index}" style="background:#808080;"></td>`;
+                        <td id="saldoAtual${index}" style="background:#808080;"></td>
+                    `;
                     corpoBalancete.appendChild(linha);
                 };
                 criaCabecalhoGrupo(classeAtual, grupo);
@@ -88,21 +74,11 @@ function balancete() {
                 // 3. Percorre o JSON
                 for (let i = 0; i < json.length; i++) {
                     const registro = json[i];
-                // 3. Percorre o JSON
-                for (let i = 0; i < json.length; i++) {
-                    const registro = json[i];
 
                     // Se mudou a classificação, fecha o grupo anterior
                     if (registro.classificacao !== classeAtual) {
                         const mov = somaDebGrupo - somaCredGrupo;
-                    // Se mudou a classificação, fecha o grupo anterior
-                    if (registro.classificacao !== classeAtual) {
-                        const mov = somaDebGrupo - somaCredGrupo;
 
-                        document.getElementById(`debitos${grupo}`).textContent = somaDebGrupo.toFixed(2);
-                        document.getElementById(`creditos${grupo}`).textContent = somaCredGrupo.toFixed(2);
-                        document.getElementById(`mvtoPeriodo${grupo}`).textContent = mov.toFixed(2);
-                        document.getElementById(`saldoAtual${grupo}`).textContent = mov.toFixed(2);
                         document.getElementById(`debitos${grupo}`).textContent = somaDebGrupo.toFixed(2);
                         document.getElementById(`creditos${grupo}`).textContent = somaCredGrupo.toFixed(2);
                         document.getElementById(`mvtoPeriodo${grupo}`).textContent = mov.toFixed(2);
@@ -113,14 +89,7 @@ function balancete() {
                         classeAtual = registro.classificacao;
                         somaCredGrupo = 0;
                         somaDebGrupo = 0;
-                        // inicia um novo grupo
-                        grupo++;
-                        classeAtual = registro.classificacao;
-                        somaCredGrupo = 0;
-                        somaDebGrupo = 0;
 
-                        criaCabecalhoGrupo(classeAtual, grupo);
-                    }
                         criaCabecalhoGrupo(classeAtual, grupo);
                     }
 
@@ -153,19 +122,7 @@ function balancete() {
                     totalCreditos += +registro.credito;
                     totalDebitos += +registro.debito;
                 }
-                    // acumula somas
-                    somaCredGrupo += +registro.credito;
-                    somaDebGrupo += +registro.debito;
-                    totalCreditos += +registro.credito;
-                    totalDebitos += +registro.debito;
-                }
 
-                // 4. Fecha o último grupo (fora do loop)
-                const movFinal = somaDebGrupo - somaCredGrupo;
-                document.getElementById(`debitos${grupo}`).textContent = somaDebGrupo.toFixed(2);
-                document.getElementById(`creditos${grupo}`).textContent = somaCredGrupo.toFixed(2);
-                document.getElementById(`mvtoPeriodo${grupo}`).textContent = movFinal.toFixed(2);
-                document.getElementById(`saldoAtual${grupo}`).textContent = movFinal.toFixed(2);
                 // 4. Fecha o último grupo (fora do loop)
                 const movFinal = somaDebGrupo - somaCredGrupo;
                 document.getElementById(`debitos${grupo}`).textContent = somaDebGrupo.toFixed(2);
@@ -181,6 +138,7 @@ function balancete() {
                     <td colspan="2"></td>
                     <td style="font-weight:bold;">${totalDebitos.toFixed(2)}</td>
                     <td style="font-weight:bold;">${totalCreditos.toFixed(2)}</td>
+                    
                 `;
                 //<td style="font-weight:bold; background:${cor};">${dif.toFixed(2)}</td>
                 corpoPlano.appendChild(totalRow);

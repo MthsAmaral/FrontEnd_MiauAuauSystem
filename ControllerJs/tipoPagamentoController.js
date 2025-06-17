@@ -1,5 +1,6 @@
 //cadastrar
 function cadTipoPagamento() {
+    const token = localStorage.getItem("token");
     const URL = "http://localhost:8080/apis/plano-contas-gerencial/gravar";
     const ftipopagamento = document.getElementById("ftipopagamento");
     const formData = new FormData(ftipopagamento);
@@ -11,6 +12,7 @@ function cadTipoPagamento() {
     else {
         fetch(URL, {
             method: 'POST',
+            headers: { 'Authorization': token },
             body: formData
         })
             .then((response) => {
@@ -44,6 +46,7 @@ function cadTipoPagamento() {
 function buscarTipoPagamento(filtro) {
     // deixar um espaço ao final da string para buscar por todos os registros já cadastrados
     let url = "http://localhost:8080/apis/plano-contas-gerencial/buscar";
+    const token = localStorage.getItem("token");
 
     if (filtro.length > 0)
         url = url + "/" + filtro; //buscar utilizando o filtro
@@ -52,6 +55,7 @@ function buscarTipoPagamento(filtro) {
 
     fetch(url, {
         method: 'GET',
+        headers: { 'Authorization': token },
         redirect: "follow"
     })
         .then((response) => {
@@ -85,6 +89,7 @@ function buscarTipoPagamento(filtro) {
 function buscarTipoPagFiltro() {
     let filtro = document.getElementById("filtro").value;
     let url = "http://localhost:8080/apis/plano-contas-gerencial/buscar";
+    const token = localStorage.getItem("token");
 
     if (filtro.length > 0)
         url = url + "/" + filtro; //buscar utilizando o filtro
@@ -93,6 +98,7 @@ function buscarTipoPagFiltro() {
 
     fetch(url, {
         method: 'GET',
+        headers: { 'Authorization': token },
         redirect: "follow"
     })
         .then((response) => {
@@ -126,9 +132,11 @@ function buscarTipoPagFiltro() {
 function buscarTipoPagID(id) {
     // deixar um espaço ao final da string para buscar por todos os registros já cadastrados
     let url = "http://localhost:8080/apis/plano-contas-gerencial/buscar-id/" + id;
+    const token = localStorage.getItem("token");
 
     fetch(url, {
         method: 'GET',
+        headers: { 'Authorization': token },
         redirect: "follow"
     })
         .then((response) => {
@@ -163,8 +171,11 @@ function selectReferencial(id) {
     //realizar a consulta do "Plano de contas referencial"
     let URL = "";
     URL = "http://localhost:8080/apis/plano-contas-referencial/buscar/%20";
+    const token = localStorage.getItem("token");
+
     fetch(URL, {
       method: 'GET',
+      headers: { 'Authorization': token },
       redirect: "follow"
     })
       .then((response) => {
@@ -215,8 +226,12 @@ function excluirTipoPagamento(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             const URL = "http://localhost:8080/apis/plano-contas-gerencial/excluir/" + id;
+            const token = localStorage.getItem("token");
 
-            fetch(URL, { method: 'DELETE' })
+            fetch(URL, { 
+                method: 'DELETE',
+                headers: { 'Authorization': token }
+            })
                 .then((response) => {
                     return response.json();
                 })
@@ -235,6 +250,7 @@ function excluirTipoPagamento(id) {
 
 //edição
 function editarTipoPag() {
+    const token = localStorage.getItem("token");
     const URL = "http://localhost:8080/apis/plano-contas-gerencial/atualizar";
     document.getElementById("cod").disabled = false;
     const ftipopagamento = document.getElementById("ftipopagamento");
@@ -243,6 +259,7 @@ function editarTipoPag() {
 
     fetch(URL, {
         method: 'PUT',
+        headers: { 'Authorization': token },
         body: formData,
     })
         .then((response) => {

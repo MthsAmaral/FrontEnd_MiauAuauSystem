@@ -1,5 +1,6 @@
 //cadastrar
 function cadTipoLancamento() {
+    const token = localStorage.getItem("token");
     const URL = "http://localhost:8080/apis/tipo-lancamento/gravar";
     const ftipolancamento = document.getElementById("ftipolancamento");
     const formData = new FormData(ftipolancamento);
@@ -11,6 +12,7 @@ function cadTipoLancamento() {
     else {
         fetch(URL, {
             method: 'POST',
+            headers: { 'Authorization': token },
             body: formData
         })
             .then((response) => {
@@ -45,6 +47,7 @@ function cadTipoLancamento() {
 function buscarTipoLancamento(filtro) {
     // deixar um espaço ao final da string para buscar por todos os registros já cadastrados
     let url = "http://localhost:8080/apis/tipo-lancamento/buscar";
+    const token = localStorage.getItem("token");
 
     if (filtro.length > 0)
         url = url + "/" + filtro; //buscar utilizando o filtro
@@ -52,7 +55,9 @@ function buscarTipoLancamento(filtro) {
         url = url + "/%20"; //buscar todos os valores
 
     fetch(url, {
-        method: 'GET', redirect: "follow"
+        method: 'GET', 
+        headers: { 'Authorization': token },
+        redirect: "follow"
     })
         .then((response) => {
             return response.text();
@@ -82,6 +87,7 @@ function buscarTipoLancamento(filtro) {
 }
 
 function buscarTipoLancFiltro() {
+    const token = localStorage.getItem("token");
     let filtro = document.getElementById("filtro").value;
     let url = "http://localhost:8080/apis/tipo-lancamento/buscar";
 
@@ -91,7 +97,9 @@ function buscarTipoLancFiltro() {
         url = url + "/%20"; //buscar todos os valores
 
     fetch(url, {
-        method: 'GET', redirect: "follow"
+        method: 'GET', 
+        headers: { 'Authorization': token },
+        redirect: "follow"
     })
         .then((response) => {
             return response.text();
@@ -123,9 +131,11 @@ function buscarTipoLancFiltro() {
 function buscarTipoLancID(id) {
     // deixar um espaço ao final da string para buscar por todos os registros já cadastrados
     let url = "http://localhost:8080/apis/tipo-lancamento/buscar-id/" + id;
+    const token = localStorage.getItem("token");
 
     fetch(url, {
         method: 'GET',
+        headers: { 'Authorization': token },
         redirect: "follow"
     })
         .then((response) => {
@@ -154,8 +164,12 @@ function excluirTipoLancamento(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             const URL = "http://localhost:8080/apis/tipo-lancamento/excluir/" + id;
+            const token = localStorage.getItem("token");
 
-            fetch(URL, { method: 'DELETE' })
+            fetch(URL, { 
+                method: 'DELETE',
+                headers: { 'Authorization': token }
+            })
                 .then((response) => {
                     return response.json();
                 })
@@ -174,6 +188,7 @@ function excluirTipoLancamento(id) {
 
 //edição
 function editarTipoLanc() {
+    const token = localStorage.getItem("token");
     const URL = "http://localhost:8080/apis/tipo-lancamento/atualizar";
     document.getElementById("cod").disabled = false;
     const ftipolancamento = document.getElementById("ftipolancamento");
@@ -182,7 +197,8 @@ function editarTipoLanc() {
 
     fetch(URL, {
         method: 'PUT',
-        body: formData,
+        headers: { 'Authorization': token },
+        body: formData
     })
         .then((response) => {
             return response.json();

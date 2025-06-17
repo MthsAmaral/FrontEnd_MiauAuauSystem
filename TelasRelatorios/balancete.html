@@ -102,8 +102,6 @@
     <main class="container container-box mt-5">
         <h2>Balancete de Verificação</h2>
 
-
-
         <!--Testar os campos de filtro-->
         <!-- Campo para selecionar o ANO -->
         <select id="filtroAno" class="form-control mb-3">
@@ -136,7 +134,10 @@
             // 1) Função para carregar anos via fetch
             async function carregarAnos() {
                 try {
-                    const res = await fetch('http://localhost:8080/apis/lancamento/anos'); // ajuste aqui
+                    const token = localStorage.getItem("token");
+                    const res = await fetch('http://localhost:8080/apis/lancamento/anos',{
+                        headers: { 'Authorization': token }
+                    }); // ajuste aqui
                     if (!res.ok) throw new Error('Erro ao buscar anos');
                     const dados = await res.json(); // [{ ano: 2016 }, { ano: 2024 }, …]
 
@@ -169,9 +170,6 @@
             // 3) Inicia carregamento assim que a página estiver pronta
             document.addEventListener('DOMContentLoaded', carregarAnos);
         </script>
-
-
-
 
         <!-- Campo de filtro
         <input type="text" id="filtro" placeholder="Filtrar pelo ANO" onkeyup="funcaoAqui" class="form-control mb-3" /> -->
