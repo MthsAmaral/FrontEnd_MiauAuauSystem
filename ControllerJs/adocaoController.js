@@ -1,3 +1,4 @@
+
 function limparForm() {
   var fdados = document.getElementById("fadocao");
   fdados.cod_usuario.value = "";
@@ -616,6 +617,8 @@ function buscarAnimalAdocaoVersaoGabriel() {
 
 }
 function buscarAdocao() {
+
+  const token = localStorage.getItem("token");
   let filtroAno = document.getElementById("filtroAno").value;
   let filtroStatus = document.getElementById("filtroStatus").value;
   let filtro = "";
@@ -639,7 +642,7 @@ function buscarAdocao() {
     console.log(filtro)
     const url = "http://localhost:8080/apis/adocao/buscar/" + filtro;
     fetch(url, {
-      method: 'GET', redirect: "follow"
+      method: 'GET', redirect: "follow",  headers: { 'Authorization': token }
     })
       .then((response) => {
         return response.text();
@@ -692,7 +695,7 @@ function buscarAdocao() {
   else {
     const url = "http://localhost:8080/apis/adocao/buscar/%20";
     fetch(url, {
-      method: 'GET', redirect: "follow"
+      method: 'GET', redirect: "follow",  headers: { 'Authorization': token }
     })
       .then((response) => {
         return response.text();
@@ -743,11 +746,12 @@ function buscarAdocao() {
 }
 
 function buscarAnos() {
+  const token = localStorage.getItem("token");
   const filtroAno = document.getElementById("filtroAno");
   const url = "http://localhost:8080/apis/adocao/buscarAno";
   fetch(url, {
     method: 'GET',
-    redirect: "follow"
+    redirect: "follow", headers: { 'Authorization': token }
   })
     .then((response) => {
       return response.json();
@@ -935,10 +939,10 @@ function carregarAnimaisModal() {
   const container = document.getElementById("resultadoAnimal");
   container.innerHTML = "";
   const url = "http://localhost:8080/apis/animal/buscar/%20";
-
+  const token = localStorage.getItem("token");
   fetch(url, {
     method: "GET",
-    redirect: "follow",
+    redirect: "follow", headers: { 'Authorization': token }
   })
     .then((response) => response.text())
     .then(function (text) {
@@ -983,10 +987,10 @@ function carregarUsuariosModal() {
   const container = document.getElementById("resultadoUsuario");
   container.innerHTML = "";
   const url = "http://localhost:8080/apis/usuario/buscar/%20";
-
+  const token = localStorage.getItem("token");
   fetch(url, {
     method: "GET",
-    redirect: "follow",
+    redirect: "follow", headers: { 'Authorization': token }
   })
     .then((response) => response.text())
     .then(function (text) {
@@ -1022,7 +1026,8 @@ function carregarUsuariosModal() {
 }
 
 function cadAdocao() {
-
+  
+  const token = localStorage.getItem("token");
   var fadocao = document.getElementById("fadocao");
   var formData = new FormData(fadocao);
   var cod = document.getElementById("codAdocao").value;
@@ -1030,7 +1035,7 @@ function cadAdocao() {
 
     const URL = "http://localhost:8080/apis/adocao/atualizar"
     fetch(URL, {
-      method: 'PUT', body: formData
+      method: 'PUT', body: formData, headers: { 'Authorization': token }
     })
       .then((response) => {
         if (!response.ok) {
@@ -1052,7 +1057,7 @@ function cadAdocao() {
   else {
     const URL = "http://localhost:8080/apis/adocao/gravar"
     fetch(URL, {
-      method: 'POST', body: formData
+      method: 'POST', body: formData, headers: { 'Authorization': token }
     })
       .then((response) => {
         if (!response.ok) {
@@ -1074,6 +1079,7 @@ function cadAdocao() {
 }
 function excluirAdocao(id, status) {
 
+  const token = localStorage.getItem("token");
   if (status != "Pendente" && status != "Aprovada") {
     Swal.fire({
       title: "Deseja apagar está solicitação de adoção ?",
@@ -1092,7 +1098,7 @@ function excluirAdocao(id, status) {
         fetch(URL, {
           headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json', 'Authorization': token
           },
           method: 'DELETE'
         })
@@ -1135,7 +1141,7 @@ function excluirAdocao(id, status) {
       if (result.isConfirmed) {
         fetch(URL, {
           headers: {
-            Accept: 'application/json',
+            Accept: 'application/json', 'Authorization': token
           },
           method: 'GET',
         })
@@ -1155,7 +1161,7 @@ function excluirAdocao(id, status) {
             URL = "http://localhost:8080/apis/adocao/atualizar";
             return fetch(URL, {
               method: 'PUT',
-              body: formData,
+              body: formData, headers: { 'Authorization': token }
             });
           })
           .then((response) => {
@@ -1186,6 +1192,7 @@ function excluirAdocao(id, status) {
 
 function emitirTermo(id) {
 
+  const token = localStorage.getItem("token");
   let URL = "http://localhost:8080/apis/adocao/buscar-id/" + id;
   var formData = new FormData();
 
@@ -1202,7 +1209,7 @@ function emitirTermo(id) {
     if (result.isConfirmed) {
       fetch(URL, {
         headers: {
-          Accept: 'application/json',
+          Accept: 'application/json', 'Authorization': token 
         },
         method: 'GET',
       })
@@ -1222,7 +1229,7 @@ function emitirTermo(id) {
           URL = "http://localhost:8080/apis/adocao/atualizar";
           return fetch(URL, {
             method: 'PUT',
-            body: formData,
+            body: formData, headers: { 'Authorization': token }
           });
         })
         .then((response) => {
@@ -1251,7 +1258,7 @@ function emitirTermo(id) {
 
 function gerarPdf(id) {
   const URL = "http://localhost:8080/apis/adocao/download-pdf/" + id;
-
+  const token = localStorage.getItem("token");
   Swal.fire({
     title: 'Gerando PDF...',
     text: 'Aguarde Enquanto o Termo é Gerado!',
@@ -1263,7 +1270,7 @@ function gerarPdf(id) {
 
   fetch(URL, {
     method: 'GET',
-    headers: { Accept: 'application/pdf' }
+    headers: { Accept: 'application/pdf', 'Authorization': token }
   })
     .then(response => {
       if (!response.ok) {
@@ -1299,10 +1306,10 @@ function editarAdocao(id) {
 
 function buscarAdocaoPeloId(id) {
   const URL = "http://localhost:8080/apis/adocao/buscar-id/" + id;
-
+  const token = localStorage.getItem("token");
   fetch(URL, {
     headers: {
-      'Accept': 'application/json'
+      'Accept': 'application/json', 'Authorization': token
     },
     method: 'GET'
   })
