@@ -82,7 +82,7 @@ function cadDoacao() {
   fetch(url, {
     method: cod ? "PUT" : "POST",
     headers: {
-      Authorization: "Bearer " + token,
+      'Authorization': token,
       "Content-Type": "application/x-www-form-urlencoded"
     },
     body: formData
@@ -94,10 +94,15 @@ function cadDoacao() {
     .then(() => {
       Swal.fire({
         icon: "success",
-        title: cod ? "Doação atualizada!" : "Doação cadastrada!",
+        title: cod ? "Doação atualizada!" : "Doação cadastrada com sucesso!",
         timer: 1500,
         showConfirmButton: false
       });
+
+      setTimeout(() => {
+        window.location.href = "./TelasFundamentais/telaPagamento.html";
+      }, 1500); // redireciona após o toast
+
       limparForm();
       fecharModal();
     })
@@ -112,6 +117,7 @@ function cadDoacao() {
 }
 
 function buscarDoacao() {
+  const token = localStorage.getItem("token");
   let filtro = document.getElementById("filtro").value
   const resultado = document.getElementById("resultado");
 
@@ -119,7 +125,7 @@ function buscarDoacao() {
   {
     const url = "http://localhost:8080/apis/adocao/buscar/" + filtro;
     fetch(url, {
-      method: 'GET', redirect: "follow"
+      method: 'GET', redirect: "follow", headers: { 'Authorization': token }
     })
       .then((response) => {
         return response.text();
@@ -166,7 +172,7 @@ function buscarDoacao() {
   else {
     const url = "http://localhost:8080/apis/doacao/buscar/%20";
     fetch(url, {
-      method: 'GET', redirect: "follow"
+      method: 'GET', redirect: "follow", headers: { 'Authorization': token }
     })
       .then((response) => {
         return response.text();
@@ -210,7 +216,7 @@ function buscarDoacao() {
   }
 }
 function excluirDoacao(id) {
-
+  const token = localStorage.getItem("token");
   Swal.fire({
     title: "Você tem certeza ?",
     text: "Você não poderá reverter isso!",
@@ -229,7 +235,8 @@ function excluirDoacao(id) {
       fetch(URL, {
           headers: {
               'Accept': 'application/json',
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'Authorization': token
           },
           method: 'DELETE'
       })
@@ -264,7 +271,7 @@ function confirmarDoacao(id) {
 
   fetch(`http://localhost:8080/apis/doacao/buscar-id/${id}`, {
     method: "GET",
-    headers: { Authorization: "Bearer " + token }
+    headers: { 'Authorization': token }
   })
     .then(response => response.json())
     .then(doacao => {
@@ -278,7 +285,7 @@ function confirmarDoacao(id) {
       return fetch("http://localhost:8080/apis/doacao/atualizar", {
         method: "PUT",
         headers: {
-          Authorization: "Bearer " + token,
+          'Authorization': token,
           "Content-Type": "application/x-www-form-urlencoded"
         },
         body: formData
@@ -300,36 +307,81 @@ function confirmarDoacao(id) {
     });
 }
 
-function buscarDoacaoPeloId(id) {
-  const URL = "http://localhost:8080/apis/doacao/buscar-id/" + id;
+function obterPayloadToken() {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
 
-  fetch(URL, {
-      headers: {
-          'Accept': 'application/json'
-      },
-      method: 'GET'
-  })
-      .then((response) => {
-          if (!response.ok) {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const payload = JSON.parse(window.atob(base64));
+    return payload;
+  } catch (e) {
+    console.error("Erro ao decodificar o token:", e);
+    return null;
+  }
+}
 
-              window.location.href = "../TelasGerenciar/gerenDoacao.html";
-              throw new Error("Erro ao buscar a doação: " + response.status);
-              
-          }
-          return response.json();
-      })
-      .then((json) => {
-          document.getElementById('codDoacao').value = id;
-          document.getElementById('cod_usuario').value = json.usuario.codUsuario;
-          document.getElementById('status').value = json.status;
-          document.getElementById('data').value = json.data;
-          document.getElementById('valor').value =  json.valor;
-          const botaoUsuario = document.getElementById("botaoSelecionarUsuario");
 
-          botaoUsuario.textContent =  `Doador: ${json.usuario.nome}`;
-      })
-      .catch((error) => {
-          console.error("Erro ao buscar a doação:", error);
+
+function buscarDoacoesPeloUsuId() {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    Swal.fire({
+      icon: "warning",
+      title: "Você precisa estar logado",
+      confirmButtonText: "Ir para login"
+    }).then(() => {
+      window.location.href = "./telaLogin.html";
+    });
+    return;
+  }
+
+  const payload = JSON.parse(atob(token.split('.')[1]));
+  const cod_usuario = payload.cod_usuario || payload.cod || payload.id;
+
+  fetch(`http://localhost:8080/apis/doacao/buscarPorUsuario/${cod_usuario}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Erro na busca das doações.");
+      }
+      return response.json();
+    })
+    .then(doacoes => {
+      const tabela = document.getElementById("resultadoDoacao");
+      tabela.innerHTML = "";
+
+      if (!doacoes || doacoes.length === 0) {
+        tabela.innerHTML = `
+            <tr>
+              <td colspan="5" style="text-align:center;">Nenhuma doação encontrada.</td>
+            </tr>`;
+        return;
+      }
+
+      doacoes.forEach(doacao => {
+        const linha = `
+            <tr>
+              <td>${doacao.codDoacao}</td>
+              <td>${formatarData(doacao.data)}</td>
+              <td>R$ ${parseFloat(doacao.valor).toFixed(2)}</td>
+              <td>${doacao.status}</td>
+              <td>
+                <button class="btn btn-danger btn-sm" onclick="excluirDoacao(${doacao.codDoacao})">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>`;
+        tabela.innerHTML += linha;
       });
+    })
+    .catch(error => {
+      console.error(error);
+      Swal.fire("Erro", "Não foi possível carregar as doações.", "error");
+    });
+}
 
+function formatarData(data) {
+  const [ano, mes, dia] = data.split("-");
+  return `${dia}/${mes}/${ano}`;
 }

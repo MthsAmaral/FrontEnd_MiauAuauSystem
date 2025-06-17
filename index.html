@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <title>Página Inicial</title>
   <link rel="stylesheet" href="./css/indexNovo.css" />
+  <link rel="stylesheet" href="./css/modalDoacao.css">
 
   <!-- FONTE  -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
@@ -40,6 +41,9 @@
       </li>
       <li>
         <a href="adocao.html" class="adopt2-button2">Quero Adotar</a>
+      </li>
+      <li>
+        <a class="adopt2-button2" onclick="abrirModal()">Quero Doar</a>
       </li>
       <li><a href="#inicio">Início</a></li>
       <li><a href="#sobre">Sobre</a></li>
@@ -135,31 +139,45 @@
     <button class="cta-button" onclick="abrirModal()">Faça uma doação</button>
   </div>
 
-  <!-- Modal de agendamento -->
+  <!-- Modal de Cadastro de Doação -->
   <div id="modalDoacao" class="modal-overlay" onclick="fecharModalFora(event)">
-    <div class="modal-conteudo">
+    <div class="modal-conteudo" style="max-width: 450px;">
       <span class="fechar" onclick="fecharModal()">&times;</span>
 
       <div class="modal-banner">
-        <img src="img/banner_doe.png" alt="">
+        <img src="img/banner_doe.png" alt="Banner Doe" style="max-width: 100%; border-radius: 8px;">
       </div>
-      <h2>Agende Sua Doação aqui!</h2>
-      <form method="post" id="fdoacao">
+
+      <h2 style="margin-top: 15px; font-weight: 700; text-align: center;">Agende Sua Doação</h2>
+
+      <form id="fdoacao" class="d-flex flex-column gap-3 mt-3">
 
         <input type="hidden" id="codDoacao" name="codDoacao" />
         <input type="hidden" id="cod_usuario" name="cod_usuario" />
         <input type="hidden" id="status" name="status" value="Pendente" />
-        <div class="mb-3">
-          <label for="data" class="form-label">Data da Solicitação de Doação</label>
+
+        <!-- Data -->
+        <div>
+          <label class="form-label fw-semibold">Data da Solicitação:</label>
           <input type="date" id="data" name="data" class="form-control" required />
         </div>
-        <div class="mb-3">
-          <label for="valor" class="form-label">Valor</label>
-          <input type="text" id="valor" name="valor" class="form-control" required />
+
+        <!-- Valor -->
+        <div>
+          <label class="form-label fw-semibold">Valor (R$):</label>
+          <input type="number" id="valor" name="valor" class="form-control" min="1" step="0.01" placeholder="Ex: 10.00"
+            required />
         </div>
-        <div class="d-flex gap-3 mt-3">
-          <button type="button" class="btn btn-primary" onclick="validarCampos()">Confirmar</button>
-          <a href="TelasFundamentais/telaPagamento"> <button type="button" class="btn btn-secondary">Voltar</button></a>
+
+        <!-- Botões -->
+        <div class="d-flex justify-content-between gap-3">
+          <button type="button" class="btn btn-secondary w-100" onclick="fecharModal()">
+            <i class="fa-solid fa-xmark"></i> Cancelar
+          </button>
+
+          <button type="button" class="btn btn-success w-100" onclick="validarCampos()">
+            <i class="fa-solid fa-check"></i> Confirmar
+          </button>
         </div>
       </form>
     </div>
