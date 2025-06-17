@@ -15,13 +15,14 @@ body {
     padding: 0;                                 /* Remove preenchimento padrão */
 }
 
-/* === CONTAINER PRINCIPAL === */
 .container-box {
-    width: 1450px;
-    background-color: var(--cor-clara);     /* Cor de fundo do container */
-    border-radius: 20px;                    /* Bordas arredondadas */
-    padding: 30px;                          /* Preenchimento interno */
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    width: 90%;               
+    max-width: 1650px;          
+    margin: 20px auto;          
+    padding: 30px;
+    background-color: var(--cor-clara);
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 /* === TÍTULO === */
@@ -48,9 +49,12 @@ input[type="text"]:focus {
 }
 
 /* === TABELA === */
+.table-responsive {
+    overflow-x: auto;
+}
 .table {
-    width: 100%;                            /* Largura total da tabela */
-    border-collapse: collapse;              /* Remove espaçamento entre as células */
+    width: 100%;
+    min-width: 600px; /* Mantém a tabela legível em telas pequenas */
 }
 
 .table th,

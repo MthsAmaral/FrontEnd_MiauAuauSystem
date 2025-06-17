@@ -208,16 +208,27 @@ function excluirUsuario(id) {
 
             fetch(URL, { method: 'DELETE' })
                 .then((response) => {
+                    if(!response.ok)
+                    {
+                        
+                        Toast.fire({
+                        icon: 'error',
+                        title: 'Erro ao Excluir Usuário!',
+                        });
+                    }
+                    else
+                    {
+                        sessionStorage.setItem("usuarioApagado", 'true');
+                        window.location.reload();
+                    }
                     return response.json();
+
                 })
                 .then((json) => {
-                    console.log("Usuário Excluído Com Sucesso! " + JSON.stringify(json));
-                    sessionStorage.setItem("usuarioApagado", 'true');
-                    window.location.reload();
+                    
                 })
                 .catch((error) => {
-                    console.error("Erro ao excluir o Usuário!! " + error);
-                    sessionStorage.setItem("usuarioApagado", 'false');
+                    
                 });
         }
     });

@@ -851,6 +851,7 @@ function solicitarAdocao(id)
   }
   else
   {
+    sessionStorage.setItem("usuarioNaoAutenticado", 'true');
     window.location.href = "./TelasFundamentais/telaLogin.html";
   }
 

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alterar Senha - Sistema MiauAuau</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/indexNovo.css" />
+  <link rel="stylesheet" href="../css/form.css">
+  <link rel="stylesheet" href="../css/menu.css">
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+  <!-- Alerts -->
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.all.min.js"></script>
+  <!-- Mascaras -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
+  <!-- Meu JS -->
+  <script src="../ControllerJs/acessoController.js"></script>
+
+</head>
+
+<body onload="buscarUsuarioPeloId()">
+  <nav class="navbar" style="justify-content: center;">
+    <a href="../index.html" style="text-decoration: none;">
+      <div class="logo-container">
+        <span class="logo-text">Grupo MiauAuau</span>
+        <img src="../img/logo.png" alt="Sistema MiauAuau" class="logo" />
+      </div>
+    </a>
+  </nav>
+
+  <main class="container mt-5">
+    <aside class="menu-lateral">
+      <a href="../TelasFundamentais/telaMinhasAdocoes.html"><i class="fas fa-paw"></i> Minhas Adoções</a>
+      <a href="../TelasFundamentais/telaDados.html"><i class="fas fa-user"></i> Dados Pessoais</a>
+      <a href="../TelasFundamentais/telaAlterarSenha.html"> <i class="fas fa-lock"></i> Alterar Senha</a>
+      <a onclick="logout()" href="../index.html"><i class="fas fa-sign-out-alt"></i> Sair</a>
+    </aside>
+    <div class="d-flex justify-content-center">
+      <div class="row justify-content-center w-auto">
+        <div class="col-md-12">
+          <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body p-4">
+              <h3 class="card-title text-center mb-4">Alterar Senha</h3>
+              <form id="fsenha" method="post" novalidate>
+
+                <input type="hidden" id="cod" name="cod">
+                <input type="hidden" id="cpf" name="cpf">
+                <input type="hidden" id="senha" name="senha">
+                <input type="hidden" id="nome" name="nome">
+                <input type="hidden" id="sexo" name="sexo">
+                <input type="hidden" id="privilegio" name="privilegio">
+                <input type="hidden" id="email" name="email">
+                <input type="hidden" id="telefone" name="telefone">
+                <input type="hidden" id="cep" name="cep">
+                <input type="hidden" id="rua" name="rua">
+                <input type="hidden" id="cidade" name="cidade">
+                <input type="hidden" id="estado" name="estado">
+                <input type="hidden" id="bairro" name="bairro">
+                <input type="hidden" id="numero" name="numero">
+
+                <div class="form-floating mb-3">
+                  <input type="password" class="form-control" id="senhaAtual" name="senhaAtual" placeholder=" "
+                    required>
+                  <label for="senhaAtual">Senha Atual</label>
+                  <div class="invalid-feedback">
+                    Campo obrigatório
+                  </div>
+                </div>
+                <div class="form-floating mb-3">
+                  <input onchange="validarSenha()" type="password" class="form-control" id="senhaNova" name="senhaNova"
+                    placeholder=" " required>
+                  <label for="senhaNova">Nova Senha</label>
+                  <div class="invalid-feedback">
+                    Campo obrigatório
+                  </div>
+                </div>
+                <div class="form-floating mb-3">
+                  <input onchange="validarSenha()" type="password" class="form-control" id="senhaNova2"
+                    name="senhaNova2" placeholder=" " required>
+                  <label for="senhaNova2">Confirmar Senha</label>
+                  <div id="confirmar-feedback" class="invalid-feedback">
+                    Campo obrigatório
+                  </div>
+                </div>
+
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary">Alterar Senha</button>
+                  <a href="../index.html" class="btn btn-secondary">Cancelar</a>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+
+</body>
+
+</html>

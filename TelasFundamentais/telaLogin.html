@@ -41,16 +41,18 @@
     </a>
     <ul class="nav-links" style="margin-right: 15px; position: relative; top: 7.5px; align-items: center;">
       <li class="nav-item dropdown-auaumiau">
-        <a class="nav-link dropdown-toggle-auaumiau" href="#" data-bs-toggle="dropdown-auaumiau">Acesse sua conta</a>
+        <a class="nav-link dropdown-toggle-auaumiau" href="#" data-bs-toggle="dropdown-auaumiau"><i class="fa-solid fa-user"></i> Acesse sua conta</a>
         <ul class="dropdown-menu-auaumiau custom-dropdown-menu">
           <li><a class="dropdown-item-auaumiau" href="../TelasFundamentais/telaLogin.html">Entrar</a></li>
           <li><a class="dropdown-item-auaumiau" href="../TelasFundamentais/telaCadastro.html">Cadastre-se</a></li>
         </ul>
       </li>
-      <li><a href="#">Início</a></li>
-      <li><a href="#">Sobre</a></li>
-      <li><a href="#">Serviços</a></li>
-      <li><a href="#">Contato</a></li>
+      <li>
+      <a href="../adocao.html" class="adopt2-button2">Quero Adotar</a>
+      </li>
+      <li><a href="../index.html#inicio">Início</a></li>
+      <li><a href="../index.html#sobre">Sobre</a></li>
+      <li><a href="../index.html#sobre">Contato</a></li>
     </ul>
   </nav>
 
@@ -107,7 +109,16 @@
         title: 'Cadastro Realizado Com Sucesso!',
       });
     }
+    else
+    if(sessionStorage.getItem('usuarioNaoAutenticado') == 'true')
+    {
+      Toast.fire({
+        icon: 'error',
+        title: 'Ops! Você não está logado',
+      });
+    }
     sessionStorage.removeItem('usuarioCadastrado');
+    sessionStorage.removeItem('usuarioNaoAutenticado');
   </script>
 </body>
 

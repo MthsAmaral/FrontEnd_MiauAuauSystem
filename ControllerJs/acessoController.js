@@ -24,15 +24,120 @@ function verificarPrivilegio()
       {
         const userMenu = document.getElementById("userMenu");
         const dropdownMenu = document.querySelector(".dropdown-menu-auaumiau");
-        userMenu.innerHTML = `Olá, ${payload.usuario}`;
+        userMenu.innerHTML = `<i class="fa-solid fa-user"></i> Olá, ${payload.usuario}`;
         dropdownMenu.innerHTML = `
-        <li><a class="dropdown-item-auaumiau" href="#">Minhas Adoções</a></li>
-        <li><a class="dropdown-item-auaumiau" href="#">Dados Pessoais</a></li>
-        <li><a class="dropdown-item-auaumiau" href="#">Alterar Senha</a></li>
+        <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaMinhasAdocoes.html">Minhas Adoções</a></li>
+        <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaDados.html">Dados Pessoais</a></li>
+        <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaAlterarSenha.html">Alterar Senha</a></li>
         <li><a class="dropdown-item-auaumiau" href="#" onclick="logout()">Sair</a></li>`;
+        if (payload.privilegio == 'A')
+        {
+           const menu = document.getElementById('nav');
+           if (menu)
+           {
+              const li = document.createElement('li');
+              li.classList.add('acesso-restrito');
+              li.innerHTML = `<a href="indexAdm.html"><i class="fa-solid fa-key"></i> Acesso Restrito</a>`;
+              menu.appendChild(li);
+           }
+           
+        }
       }
       
     }
+}
+function verificarPrivilegioIndexAdm()
+{
+  const token = localStorage.getItem("token");
+  if (token)
+  {  
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const payload = JSON.parse(window.atob(base64)); 
+    const now = Math.floor(Date.now() / 1000); 
+    let flag = 1;
+    if (payload.exp && payload.exp < now)
+    {
+      Swal.fire({
+        icon: "error",
+        title: "Sessão Expirada",
+        text: "Por favor, faça login novamente.",
+        confirmButtonText: "Ok"
+      }).then(() => {
+        logout(); 
+      });
+      flag = 0;
+    }
+    if (flag == 1)
+    {
+       const userMenu = document.getElementById("userMenu");
+       const dropdownMenu = document.querySelector(".dropdown-menu-auaumiau");
+       userMenu.innerHTML = `<i class="fa-solid fa-user"></i> Olá, ${payload.usuario}`;
+       dropdownMenu.innerHTML = `
+       <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaMinhasAdocoes.html">Minhas Adoções</a></li>
+       <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaDados.html">Dados Pessoais</a></li>
+       <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaAlterarSenha.html">Alterar Senha</a></li>
+       <li><a class="dropdown-item-auaumiau" href="#" onclick="logout()">Sair</a></li>`;
+       if (payload.privilegio != 'A')
+       {
+         window.location.href = "./index.html";
+         sessionStorage.setItem('acessoNegado', 'true');
+       }
+       
+    }
+      
+  }
+  else
+  {
+    window.location.href = "./index.html";
+    sessionStorage.setItem('usuarioNaoAutenticado', 'true');
+  }
+}
+function verificarPrivilegioTelas()
+{
+  const token = localStorage.getItem("token");
+  if (token)
+  {  
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const payload = JSON.parse(window.atob(base64)); 
+    const now = Math.floor(Date.now() / 1000); 
+    let flag = 1;
+    if (payload.exp && payload.exp < now)
+    {
+      Swal.fire({
+        icon: "error",
+        title: "Sessão Expirada",
+        text: "Por favor, faça login novamente.",
+        confirmButtonText: "Ok"
+      }).then(() => {
+        logout(); 
+      });
+      flag = 0;
+    }
+    if (flag == 1)
+    {
+       const userMenu = document.getElementById("userMenu");
+       const dropdownMenu = document.querySelector(".dropdown-menu-auaumiau");
+       userMenu.innerHTML = `<i class="fa-solid fa-user"></i> Olá, ${payload.usuario}`;
+       dropdownMenu.innerHTML = `
+       <li><a class="dropdown-item-auaumiau" href="../TelasFundamentais/telaMinhasAdocoes.html">Minhas Adoções</a></li>
+       <li><a class="dropdown-item-auaumiau" href="../TelasFundamentais/telaDados.html">Dados Pessoais</a></li>
+       <li><a class="dropdown-item-auaumiau" href="../TelasFundamentais/telaAlterarSenha.html">Alterar Senha</a></li>
+       <li><a class="dropdown-item-auaumiau" href="#" onclick="logout()">Sair</a></li>`;
+       if (payload.privilegio != 'A')
+       {
+         window.location.href = "../index.html";
+         sessionStorage.setItem('acessoNegado', 'true');
+       }
+    }
+      
+  }
+  else
+  {
+    window.location.href = "../index.html";
+    sessionStorage.setItem('usuarioNaoAutenticado', 'true');
+  }
 }
 function logout() 
 {
@@ -43,7 +148,7 @@ function logout()
 async function validarEmail(email)
 {
   const url = "http://localhost:8080/apis/usuario/buscar-email/"+email;
-
+  const cod_usuario = document.getElementById("cod").value;
   try {
     const response = await fetch(url, {
       method: 'GET',
@@ -52,13 +157,35 @@ async function validarEmail(email)
     const text = await response.text();
     const json = JSON.parse(text);
 
-    if (json.email == email)
+    if (cod_usuario) // alteracao
     {
-      return 0; 
+      if (json.email == email && json.cod == cod_usuario) // pertence ao usuario
+      {
+        return 1; 
+      }
+      else
+      if(json.email == email && json.cod != cod_usuario) // nao pertence ao usuario
+      {
+
+        return 0;
+      }
+      else 
+      if(json.email != email)
+      {
+        return 1;
+      }
+
     }
     else
     {
-      return 1; 
+      if (json.email == email)
+      {
+        return 0; 
+      }
+      else
+      {
+        return 1;
+      }
     }
   } 
   catch (error) {
@@ -91,64 +218,104 @@ async function validarCPF(cpf)
   }
 }
 function validarSubmit()
- {
+{
   const formid = document.getElementById("fid");
-  const formcad = document.getElementById("fusuario")
-  
+  const formcad = document.getElementById("fusuario");
+  const formsenha = document.getElementById("fsenha");
   if (formcad != null)
   {
       formcad.addEventListener("submit", async function (event) {
       event.preventDefault();
       const form = event.target;
+      const cod_usuario = document.getElementById("cod").value;
       let flag = 1;
-      if (form.querySelector(".is-invalid"))
+      if(cod_usuario)
       {
-        flag = 0;
-      }
-      if (flag == 1)
-      {
-        if (form.checkValidity())
+        if (form.querySelector(".is-invalid"))
         {
-          const cpf = document.getElementById("cpf").value;
-          const email = document.getElementById("email").value;
-          const emailValido = await validarEmail(email);
-          if(emailValido) 
+          flag = 0;
+        }
+        if (flag == 1)
+        {
+          if (form.checkValidity())
           {
-            const cpfValido = await validarCPF(cpf);
-            if(cpfValido)
+            const email = document.getElementById("email").value;
+            const emailValido = await validarEmail(email);
+            if(emailValido) 
             {
-              cadusuario(); 
+              cadusuario();   
             }
             else
             {
               Swal.fire({
                 icon: "error",
-                title: "Este CPF ja está vinculado a uma conta. Faça Login",
+                title: "Este e-mail já está vinculado a uma conta. Faça Login",
                 timer: 1500,
                 timerProgressBar: true
               })
-              document.getElementById("cpf").value = "";
+              
+              document.getElementById("email").value = "";
             }
+            
           }
           else
           {
-            Swal.fire({
-              icon: "error",
-              title: "Este e-mail já está vinculado a uma conta. Faça Login",
-              timer: 1500,
-              timerProgressBar: true
-            })
-            
-            document.getElementById("email").value = "";
+            form.classList.add('was-validated')
           }
-          
         }
-        else
+      }
+      else
+      {
+        
+        if (form.querySelector(".is-invalid"))
         {
-          form.classList.add('was-validated')
+          flag = 0;
         }
-    }
-  });
+        if (flag == 1)
+        {
+          if (form.checkValidity())
+          {
+            const cpf = document.getElementById("cpf").value;
+            const email = document.getElementById("email").value;
+            const emailValido = await validarEmail(email);
+            if(emailValido) 
+            {
+              const cpfValido = await validarCPF(cpf);
+              if(cpfValido)
+              {
+                cadusuario(); 
+              }
+              else
+              {
+                Swal.fire({
+                  icon: "error",
+                  title: "Este CPF ja está vinculado a uma conta. Faça Login",
+                  timer: 1500,
+                  timerProgressBar: true
+                })
+                document.getElementById("cpf").value = "";
+              }
+            }
+            else
+            {
+              Swal.fire({
+                icon: "error",
+                title: "Este e-mail já está vinculado a uma conta. Faça Login",
+                timer: 1500,
+                timerProgressBar: true
+              })
+              
+              document.getElementById("email").value = "";
+            }
+            
+          }
+          else
+          {
+            form.classList.add('was-validated')
+          }
+        }
+      }
+    });  
   }
   else
   if(formid != null)
@@ -165,7 +332,48 @@ function validarSubmit()
         form.classList.add('was-validated');
       }
   });
-  }  
+  } 
+  else
+  if(formsenha != null)
+  {
+      formsenha.addEventListener("submit", function (event) {
+      event.preventDefault(); 
+      const form = event.target;
+      let flag = 1;
+      if (form.querySelector(".is-invalid"))
+      {
+        flag = 0;
+      }
+      if (flag == 1)
+      {
+        if(form.checkValidity())
+        {
+          const senhaAtual = document.getElementById("senhaAtual").value;
+          const senha = document.getElementById("senha").value;
+          if(senhaAtual != senha)
+          {
+            Swal.fire({
+                icon: "error",
+                title: "Senha Atual é Inválida!",
+                timer: 1500,
+                timerProgressBar: true
+              })  
+            document.getElementById("senhaAtual").value = "";
+          }
+          else
+          {
+            const novaSenha = document.getElementById("senhaNova").value;
+            document.getElementById("senha").value = novaSenha;
+            cadusuario();
+          }
+        }
+        else
+        {
+          form.classList.add('was-validated');
+        }
+      }
+    });
+  } 
 }
 
 function logar() {
@@ -203,12 +411,81 @@ function logar() {
 function cadusuario()
 {
   var fusuario = document.getElementById("fusuario");
-  var formData = new FormData(fusuario);
-  formData.append("privilegio", "C");
-  const URL = "http://localhost:8080/apis/usuario/gravar"
-  fetch(URL, {
-      method: 'POST', body: formData
-  })
+  var fsenha = document.getElementById("fsenha");
+  const cod_usuario = document.getElementById("cod").value;
+  if (fusuario != null)
+  {
+    var formData = new FormData(fusuario);
+    if (cod_usuario) // alteracao
+    {
+      const token = localStorage.getItem("token");
+      if (token)
+      {  
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const payload = JSON.parse(window.atob(base64)); 
+        const now = Math.floor(Date.now() / 1000); 
+        let flag = 1;
+        if (payload.exp && payload.exp < now)
+        {
+          Swal.fire({
+            icon: "error",
+            title: "Sessão Expirada",
+            text: "Por favor, faça login novamente.",
+            confirmButtonText: "Ok"
+          }).then(() => {
+            logout(); 
+          });
+          flag = 0;
+        }
+        if (flag == 1)
+        {
+          const cpf = document.getElementById('cpf').value
+          formData.append("cpf", cpf); 
+          const URL = "http://localhost:8080/apis/usuario/atualizar"
+          fetch(URL, {
+              method: 'PUT', body: formData
+          })
+          .then((response) => {
+              if(!response.ok)
+              {
+                Swal.fire({
+                  icon: "error",
+                  title: "Erro ao Alterar!",
+                  timer: 1500,
+                  timerProgressBar: true
+                })
+              }
+              else
+              {
+                Swal.fire({
+                icon: "success",
+                title: "Dados Alterados Com Sucesso!",
+                timer: 1500,
+                timerProgressBar: true,
+                showConfirmButton: false
+              }).then(() => {
+                location.reload();
+              });
+
+              }
+              return response.json();
+          })
+          .then((json) => {
+
+          })
+          .catch((error) => console.error(error))
+        }
+          
+      }
+    }
+    else
+    {
+      const URL = "http://localhost:8080/apis/usuario/gravar"
+      formData.append("privilegio", "C");
+      fetch(URL, {
+          method: 'POST', body: formData
+      })
       .then((response) => {
           if(!response.ok)
           {
@@ -231,8 +508,74 @@ function cadusuario()
 
       })
       .catch((error) => console.error(error))
-  
+    }
+  }
+  else
+  if(fsenha != null)
+  {
+    var formData = new FormData(fsenha);
+    if (cod_usuario) // alteracao
+    {
+      const token = localStorage.getItem("token");
+      if (token)
+      {  
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const payload = JSON.parse(window.atob(base64)); 
+        const now = Math.floor(Date.now() / 1000); 
+        let flag = 1;
+        if (payload.exp && payload.exp < now)
+        {
+          Swal.fire({
+            icon: "error",
+            title: "Sessão Expirada",
+            text: "Por favor, faça login novamente.",
+            confirmButtonText: "Ok"
+          }).then(() => {
+            logout(); 
+          });
+          flag = 0;
+        }
+        if (flag == 1)
+        {
+          const URL = "http://localhost:8080/apis/usuario/atualizar"
+          fetch(URL, {
+              method: 'PUT', body: formData
+          })
+          .then((response) => {
+              if(!response.ok)
+              {
+                Swal.fire({
+                  icon: "error",
+                  title: "Erro ao Alterar!",
+                  timer: 1500,
+                  timerProgressBar: true
+                })
+              }
+              else
+              {
+                Swal.fire({
+                icon: "success",
+                title: "Dados Alterados Com Sucesso!",
+                timer: 1500,
+                timerProgressBar: true,
+                showConfirmButton: false
+              }).then(() => {
+                location.reload();
+              });
 
+              }
+              return response.json();
+          })
+          .then((json) => {
+
+          })
+          .catch((error) => console.error(error))
+        }
+          
+      }
+    }
+  }
 }
 function buscarCEP()
 {
@@ -331,4 +674,346 @@ function validarInputCPF()
   }
   });
 }
+function validarSenha()
+{
+  const senhaNovaElem = document.getElementById("senhaNova");
+  const confirmarSenhaElem = document.getElementById("senhaNova2");
+  const senhaFeedback = document.getElementById("confirmar-feedback");
+  const senha1 = senhaNovaElem.value;
+  const senha2 = confirmarSenhaElem.value;
+  if (senha1 && senha2)
+  {
+    if(senha1 != senha2)
+    {
+      confirmarSenhaElem.classList.add("is-invalid");
+      senhaFeedback.textContent = "As senhas digitadas não correspondem"
+    }
+    else
+    {
+      confirmarSenhaElem.classList.remove("is-invalid");
+      senhaNovaElem.classList.remove("is-invalid");
+      
+    }
+  }
+  else
+  if(senha1 && !senha2)
+  {
+    confirmarSenhaElem.classList.add("is-invalid");
+    senhaFeedback.textContent = "Campo obrigatório"
+  }
+}
+function validarCadSenha()
+ {
+    const inputSenha = document.getElementById("senha");
+    const senhaFeedback = document.getElementById("senha-feedback");
+
+    inputSenha.addEventListener("blur", () => {
+    const senha = inputSenha.value;
+
+    if (senha === "")
+    {
+      inputSenha.classList.add("is-invalid");
+      senhaFeedback.style.display = "block";
+      senhaFeedback.textContent = "Campo obrigatório";
+    } 
+    else if (senha.length < 8)
+    {
+      inputSenha.classList.add("is-invalid");
+      senhaFeedback.style.display = "block";
+      senhaFeedback.textContent = "A senha deve ter no mínimo 8 caracteres";
+    } 
+    else
+   {
+      inputSenha.classList.remove("is-invalid");
+      senhaFeedback.style.display = "none";
+    }
+  });
+}
+function buscarUsuarioPeloId()
+{
+    const token = localStorage.getItem("token");
+    if (token)
+    {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const payload = JSON.parse(window.atob(base64)); 
+      const now = Math.floor(Date.now() / 1000); 
+      let flag = 1;
+      if (payload.exp && payload.exp < now)
+      {
+        Swal.fire({
+          icon: "error",
+          title: "Sessão Expirada",
+          text: "Por favor, faça login novamente.",
+          confirmButtonText: "Ok"
+        }).then(() => {
+          logout(); 
+        });
+        flag = 0;
+      }
+      if (flag == 1)
+      {
+        const URL = "http://localhost:8080/apis/usuario/buscar-id/"+payload.cod_usuario;
+        fetch(URL, {
+            headers: {
+                'Accept': 'application/json'
+            },
+            method: 'GET'
+        })
+        .then((response) => {
+        if (!response.ok) {
+
+            window.location.href = "../index.html";
+            throw new Error("Erro ao buscar o usuario: " + response.status);
+            
+        }
+        return response.json();
+        })
+        .then((json) => {
+            document.getElementById('cod').value = json.cod;
+            document.getElementById('cpf').value = json.cpf;
+            document.getElementById('nome').value = json.nome;
+            document.getElementById('sexo').value = json.sexo;
+            document.getElementById('email').value = json.email;
+            document.getElementById('telefone').value = json.telefone;
+            document.getElementById('cep').value = json.cep;
+            document.getElementById('rua').value = json.rua;
+            document.getElementById('cidade').value = json.cidade;
+            document.getElementById('estado').value = json.estado;
+            document.getElementById('bairro').value = json.bairro;
+            document.getElementById('numero').value = json.numero;
+            document.getElementById('senha').value = json.senha;
+            document.getElementById('privilegio').value = json.privilegio;
+        })
+        .catch((error) => {
+            console.error("Erro ao buscar o usuario:", error);
+        });
+      }
+    }  
+    else
+    {
+      window.location.href = "../index.html";
+      sessionStorage.setItem('usuarioNaoAutenticado', 'true');
+    }
+    
+}
+function buscarAdocaoPeloUsuId()
+{
+  const token = localStorage.getItem("token");
+  if (token)
+  {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const payload = JSON.parse(window.atob(base64)); 
+    const now = Math.floor(Date.now() / 1000); 
+    let flag = 1;
+    if (payload.exp && payload.exp < now)
+    {
+      Swal.fire({
+        icon: "error",
+        title: "Sessão Expirada",
+        text: "Por favor, faça login novamente.",
+        confirmButtonText: "Ok"
+      }).then(() => {
+        logout(); 
+      });
+      flag = 0;
+    }
+    if (flag == 1)
+    {
+    let filtro = document.getElementById("filtro").value;
+    const resultado = document.getElementById("resultado");
+    if (filtro.length > 0) // busca com filtro
+    {
+      console.log(filtro)
+      const url = `http://localhost:8080/apis/adocao/buscarAdocaoPeloUsuId/${payload.cod_usuario}/`+filtro;
+      fetch(url, {
+        method: 'GET', redirect: "follow"
+      })
+        .then((response) => {
+          return response.text();
+        })
+        .then(function (text) {
+          var json = JSON.parse(text);
+
+          var table = "<table border='1'>";
+
+
+          for (let i = 0; i < json.length; i++) {
+            const dataOriginal = json[i].data; // exemplo: "2025-05-20"
+            const [ano, mes, dia] = dataOriginal.split("-");
+            const dataFormatada = `${dia}/${mes}/${ano.slice(-2)}`;
+
+            const dataNascimento = json[i].animal.dataNascimento;
+            const [anoNasc, mesNasc, diaNasc] = dataNascimento.split("-");
+            const nascimentoFormatado = `${diaNasc}/${mesNasc}/${anoNasc.slice(-2)}`;
+            table += `<tr>
+                          <td>${json[i].codAdocao}</td>
+                          <td>${dataFormatada}</td>
+                          <td>
+                          <img src="data:image/jpeg;base64,${json[i].animal.imagemBase64}" alt="Imagem do animal" style="width: 100px; height: 100px; object-fit: cover;">
+                          </td>
+                          <td>${json[i].animal.nome}</td>
+                          <td>${json[i].animal.raca}</td>
+                          <td>${nascimentoFormatado}</td>
+                          <td>
+                          <span class="badge 
+                            ${json[i].status === 'Aprovada' ? 'bg-success' : json[i].status === 'Cancelada' ? 'bg-danger' : 'bg-warning text-dark'} fs-6 p-2"> ${json[i].status}
+                          </span>
+                          </td>
+                          <td>
+                          ${
+                            json[i].status !== 'Aprovada' && json[i].status !== 'Cancelada'
+                              ? `<button type="button" class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1" onclick="cancelarAdocao(${json[i].codAdocao}, '${json[i].status}')">
+                                  Cancelar
+                                </button>`
+                              : ''
+                          }
+                          </td>
+                      </tr>`;
+          }
+          table += "</table>";
+          resultado.innerHTML = table;
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    }
+    else {
+      const url = `http://localhost:8080/apis/adocao/buscarAdocaoPeloUsuId/${payload.cod_usuario}/%20`;
+      fetch(url, {
+        method: 'GET', redirect: "follow"
+      })
+        .then((response) => {
+          return response.text();
+        })
+        .then(function (text) {
+          var json = JSON.parse(text);
+
+          var table = "<table border='1'>";
+
+          for (let i = 0; i < json.length; i++) {
+
+            const dataOriginal = json[i].data; // exemplo: "2025-05-20"
+            const [ano, mes, dia] = dataOriginal.split("-");
+            const dataFormatada = `${dia}/${mes}/${ano.slice(-2)}`;
+
+            const dataNascimento = json[i].animal.dataNascimento;
+            const [anoNasc, mesNasc, diaNasc] = dataNascimento.split("-");
+            const nascimentoFormatado = `${diaNasc}/${mesNasc}/${anoNasc.slice(-2)}`;
+
+            table += `<tr>
+                          <td>${json[i].codAdocao}</td>
+                          <td>${dataFormatada}</td>
+                          <td>
+                          <img src="data:image/jpeg;base64,${json[i].animal.imagemBase64}" alt="Imagem do animal" style="width: 100px; height: 100px; object-fit: cover;">
+                          </td>
+                          <td>${json[i].animal.nome}</td>
+                          <td>${json[i].animal.raca}</td>
+                          <td>${nascimentoFormatado}</td>
+                          <td>
+                          <span class="badge 
+                            ${json[i].status === 'Aprovada' ? 'bg-success' : json[i].status === 'Cancelada' ? 'bg-danger' : 'bg-warning text-dark'} fs-6 p-2"> ${json[i].status}
+                          </span>
+                          </td>
+                          <td>
+                            ${
+                              json[i].status !== 'Aprovada' && json[i].status !== 'Cancelada'
+                                ? `<button type="button" class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1" onclick="cancelarAdocao(${json[i].codAdocao}, '${json[i].status}')">
+                                    Cancelar
+                                  </button>`
+                                : ''
+                            }
+                          </td>
+                      </tr>`;
+          }
+          table += "</table>";
+          resultado.innerHTML = table;
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+      }
+    }
+  }  
+  else
+  {
+    window.location.href = "../index.html";
+    sessionStorage.setItem('usuarioNaoAutenticado', 'true');
+  }
+}
+
+function cancelarAdocao(id)
+{
+  let URL = "http://localhost:8080/apis/adocao/buscar-id/"+id;
+  var formData = new FormData();
+
+  Swal.fire({
+    title: "Deseja cancelar está solicitação de adoção ?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Confirmar",
+    cancelButtonText: "Cancelar"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch(URL, {
+        headers: {
+          Accept: 'application/json',
+        },
+        method: 'GET',
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Erro ao buscar dados da adoção.");
+          }
+          return response.json();
+        })
+        .then((json) => {
+          formData.append("codAdocao", id);
+          formData.append("cod_animal", json.animal.codAnimal);
+          formData.append("cod_usuario", json.usuario.codUsuario);
+          formData.append("data", json.data);
+          formData.append("status", "Cancelada");
+
+          URL = "http://localhost:8080/apis/adocao/atualizar";
+          return fetch(URL, {
+            method: 'PUT',
+            body: formData,
+          });
+        })
+        .then((response) => {
+          if (!response.ok) {
+            Toast.fire({
+              icon: 'error',
+              title: 'Erro ao Cancelar Adoção!',
+            });
+          }
+          else
+          {
+            Swal.fire({
+            icon: "success",
+            title: "Adoção Cancelada Com Sucesso!",
+            timer: 1500,
+            timerProgressBar: true,
+            showConfirmButton: false
+            }).then(() => {
+              location.reload();
+            });
+          }
+
+          return response.json();
+        })
+        .then(() => {
+
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  });
+
+}
+
 document.addEventListener("DOMContentLoaded", validarSubmit);

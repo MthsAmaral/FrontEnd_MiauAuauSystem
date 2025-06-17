@@ -4,6 +4,9 @@
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
+html{
+  scroll-behavior: smooth;
+}
 body{
   background-color: #f8f0e5;
 
@@ -277,6 +280,20 @@ svg{
 .adopt-btn:hover {
   background-color: #ff8c33;
 }
+.adopt2-button2 {
+  display: inline-block;
+  padding: 10px 15px; /* Espaçamento interno */
+  background-color: #d5a96c; /* Cor de fundo */
+  color:ffffff; /* Cor do texto */
+  border: 2px solid #d5a96c; /* Borda */
+  border-radius: 8px; /* Bordas arredondadas */
+  text-align: center;
+  text-decoration: none; /* Remove o sublinhado */
+}
+.adopt2-button2:hover {
+  color: #ffffff !important;
+}
+
 @media (max-width: 768px) {
   .banner-card {
     flex-direction: column;
@@ -491,7 +508,8 @@ footer {
   margin-bottom: 20px;
 }
 .btn_search{
-  width: 30%;
+  
+  width: 40%;
   padding: 12px;
   border: 1px solid #ddd;
   border-radius: 6px;
@@ -504,6 +522,8 @@ footer {
   justify-content: center;
   margin: 10px 0 0 auto;
   cursor: pointer;
+  font-weight: bold;
+  white-space: nowrap;
 }
 .btn_search:hover{
   background-color: #0c6582;
@@ -852,7 +872,11 @@ footer {
   border-radius: 8px; /* Bordas arredondadas */
   text-decoration: none; /* Remove sublinhado */
   font-weight: bold; /* Texto em negrito */
-  transition: background-color 0.3s ease; /* Transição suave ao passar o mouse */
+  transition: background-color 0.3s ease; /* Transição suave ao passar o mouse */  
 }
-
+.acesso-restrito a:hover {
+  
+  background-color: red; /* Fundo vermelho */
+  color: white; /* Texto branco */
+}
 
