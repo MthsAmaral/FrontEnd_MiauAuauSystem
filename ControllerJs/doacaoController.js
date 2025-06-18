@@ -16,20 +16,15 @@ function validarData(dataString) {
   const [ano, mes, dia] = dataString.split("-").map(Number);
   const data = new Date(ano, mes - 1, dia);
 
-  if (
-    data.getFullYear() !== ano ||
-    data.getMonth() !== mes - 1 ||
-    data.getDate() !== dia
-  ) {
-    return false;
-  }
-
   const hoje = new Date();
   hoje.setHours(0, 0, 0, 0);
   data.setHours(0, 0, 0, 0);
 
-  return data <= hoje;
+  // ✅ Só permite se a data for exatamente hoje
+  return data.getTime() === hoje.getTime();
 }
+
+
 
 function validarCampos() {
   const status = document.getElementById("status").value;
@@ -82,7 +77,7 @@ function cadDoacao() {
   fetch(url, {
     method: cod ? "PUT" : "POST",
     headers: {
-      'Authorization': token,
+      'Authorization': token,
       "Content-Type": "application/x-www-form-urlencoded"
     },
     body: formData
@@ -118,103 +113,70 @@ function cadDoacao() {
 
 function buscarDoacao() {
   const token = localStorage.getItem("token");
-  let filtro = document.getElementById("filtro").value
+  const filtro = document.getElementById("filtro").value.trim();
   const resultado = document.getElementById("resultado");
 
-  if (filtro.length > 0) // busca com filtro
-  {
-    const url = "http://localhost:8080/apis/adocao/buscar/" + filtro;
-    fetch(url, {
-      method: 'GET', redirect: "follow", headers: { 'Authorization': token }
+  const url = filtro.length > 0
+    ? "http://localhost:8080/apis/doacao/buscar/" + filtro
+    : "http://localhost:8080/apis/doacao/buscar/%20";
+
+  fetch(url, {
+    method: 'GET',
+    headers: { 'Authorization': token }
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Erro ao buscar dados");
+      }
+      return response.json();
     })
-      .then((response) => {
-        return response.text();
-      })
-      .then(function (text) {
-        var json = JSON.parse(text);
+    .then(json => {
+      let table = "";
 
-        var table = "<table border='1'>";
+      if (json.length === 0) {
+        table = `<tr><td colspan="9" style="text-align:center;">Nenhuma doação encontrada.</td></tr>`;
+      }
 
+      json.forEach(doacao => {
+        const [ano, mes, dia] = doacao.data.split('-');
+        const dataFormatada = `${dia}/${mes}/${ano.slice(-2)}`;
 
-        for (let i = 0; i < json.length; i++) 
-          {
-            const dataOriginal = json[i].data;
-            const [year, month, day] = dataOriginal.split('-'); 
-            const dataFormatada = `${day}/${month}/${year.slice(-2)}`;  
-          table += `<tr>
-                        <td>${json[i].codDoacao}</td>
-                        <td>${dataFormatada}</td>
-                        <td>${json[i].usuario.nome}</td>
-                        <td>${json[i].usuario.email}</td>
-                        <td>${json[i].usuario.telefone}</td>
-                        <td>${json[i].valor}</td>
-                        <td>
-                        <span class="badge ${json[i].status === 'Aprovada' ? 'bg-success' : 'bg-warning text-dark'} fs-6 p-2">
-                          ${json[i].status}
-                        </span>
-                        </td>
-                        <td>
-                        <button type="button" class="btn btn-sm btn-warning" onclick="editarDoacao(${json[i].codDoacao})"${json[i].status === "Aprovada" ? "disabled" : ""}><i class="bi bi-pencil-square"></i></button>
-                        </td>
-                        <td>
-                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirDoacao(${json[i].codDoacao})"><i class="bi bi-trash"></i></button>
-                        </td>
-                        
-                      </tr>`;
-        }
-        table += "</table>";
-        resultado.innerHTML = table;
-      })
-      .catch(function (error) {
-        console.error(error);
+        table += `
+          <tr>
+            <td>${doacao.codDoacao}</td>
+            <td>${dataFormatada}</td>
+            <td>${doacao.usuario.nome}</td>
+            <td>${doacao.usuario.email}</td>
+            <td>${doacao.usuario.telefone}</td>
+            <td>R$ ${doacao.valor}</td>
+            <td>
+              <span class="badge ${doacao.status === 'Aprovada' ? 'bg-success' : doacao.status === 'Cancelada' ? 'bg-danger' : 'bg-warning text-dark'} fs-6 p-2">
+                ${doacao.status}
+              </span>
+            </td>
+            <td>
+              <button type="button" class="btn btn-sm btn-warning" onclick="editarDoacao(${doacao.codDoacao})"
+                ${doacao.status === "Aprovada" ? "disabled" : ""}>
+                <i class="bi bi-pencil-square"></i>
+              </button>
+            </td>
+            <td>
+              <button type="button" class="btn btn-sm btn-danger" onclick="excluirDoacao(${doacao.codDoacao})">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `;
       });
-  }
-  else {
-    const url = "http://localhost:8080/apis/doacao/buscar/%20";
-    fetch(url, {
-      method: 'GET', redirect: "follow", headers: { 'Authorization': token }
+
+      resultado.innerHTML = table;
     })
-      .then((response) => {
-        return response.text();
-      })
-      .then(function (text) {
-        var json = JSON.parse(text);
-
-        var table = "<table border='1'>";
-       
-        for (let i = 0; i < json.length; i++) 
-          {
-          const dataOriginal = json[i].data;
-          const [year, month, day] = dataOriginal.split('-'); 
-          const dataFormatada = `${day}/${month}/${year.slice(-2)}`; 
-          table += `<tr>
-                        <td>${json[i].codDoacao}</td>
-                        <td>${dataFormatada}</td>
-                        <td>${json[i].usuario.nome}</td>
-                        <td>${json[i].usuario.email}</td>
-                        <td>${json[i].usuario.telefone}</td>
-                        <td>${json[i].valor}</td>
-                        <td>
-                        <span class="badge ${json[i].status === 'Aprovada' ? 'bg-success' : 'bg-warning text-dark'} fs-6 p-2">
-                          ${json[i].status}
-                        </span>
-                        </td>
-                        <td>
-                        <button type="button" class="btn btn-sm btn-warning" onclick="editarDoacao(${json[i].codDoacao})"${json[i].status === "Aprovada" ? "disabled" : ""}><i class="bi bi-pencil-square"></i></button>
-                        </td>
-                        <td>
-                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirDoacao(${json[i].codDoacao})"><i class="bi bi-trash"></i></button>
-                        </td>
-                      </tr>`;
-        }
-        table += "</table>";
-        resultado.innerHTML = table;
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
-  }
+    .catch(error => {
+      console.error("Erro ao buscar doações:", error);
+    });
 }
+
+
 function excluirDoacao(id) {
   const token = localStorage.getItem("token");
   Swal.fire({
@@ -227,43 +189,41 @@ function excluirDoacao(id) {
     confirmButtonText: "Apagar",
     cancelButtonText: "Cancelar"
   }).then((result) => {
-    if (result.isConfirmed) 
-    {
+    if (result.isConfirmed) {
 
       const URL = "http://localhost:8080/apis/doacao/excluir/" + id;
 
       fetch(URL, {
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'Authorization': token
-          },
-          method: 'DELETE'
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
+        method: 'DELETE'
       })
-          .then((response) => {
-              if(!response.ok)
-                Toast.fire({
-                    icon: 'error',
-                    title: 'Erro ao Excluir a Doação!',
-                  });
-              else
-              {
-                  sessionStorage.setItem('doacaoApagada', 'true');
-                  window.location.reload();
-              } 
+        .then((response) => {
+          if (!response.ok)
+            Toast.fire({
+              icon: 'error',
+              title: 'Erro ao Excluir a Doação!',
+            });
+          else {
+            sessionStorage.setItem('doacaoApagada', 'true');
+            window.location.reload();
+          }
 
-              return response.json();
-          })
-          .then((json) => {
-              
-          })
-          .catch((error) => {
-              console.error("Erro ao excluir a doação:", error);
-          });
+          return response.json();
+        })
+        .then((json) => {
+
+        })
+        .catch((error) => {
+          console.error("Erro ao excluir a doação:", error);
+        });
 
     }
   });
-  
+
 }
 
 function confirmarDoacao(id) {
@@ -271,7 +231,7 @@ function confirmarDoacao(id) {
 
   fetch(`http://localhost:8080/apis/doacao/buscar-id/${id}`, {
     method: "GET",
-    headers: { 'Authorization': token }
+    headers: { 'Authorization': token }
   })
     .then(response => response.json())
     .then(doacao => {
@@ -285,7 +245,7 @@ function confirmarDoacao(id) {
       return fetch("http://localhost:8080/apis/doacao/atualizar", {
         method: "PUT",
         headers: {
-          'Authorization': token,
+          'Authorization': token,
           "Content-Type": "application/x-www-form-urlencoded"
         },
         body: formData
@@ -313,6 +273,8 @@ function obterPayloadToken() {
 
   try {
     const base64Url = token.split('.')[1];
+    if (!base64Url) return null; // Verifica se existe a parte do payload
+
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     const payload = JSON.parse(window.atob(base64));
     return payload;
@@ -322,11 +284,11 @@ function obterPayloadToken() {
   }
 }
 
-
-
 function buscarDoacoesPeloUsuId() {
   const token = localStorage.getItem("token");
-  if (!token) {
+  const payload = obterPayloadToken();
+
+  if (!token || !payload) {
     Swal.fire({
       icon: "warning",
       title: "Você precisa estar logado",
@@ -337,10 +299,16 @@ function buscarDoacoesPeloUsuId() {
     return;
   }
 
-  const payload = JSON.parse(atob(token.split('.')[1]));
-  const cod_usuario = payload.cod_usuario || payload.cod || payload.id;
+  const cod_usuario = payload.cod_usuario;
+  const filtro = document.getElementById("filtro").value.trim().toLowerCase();
 
-  fetch(`http://localhost:8080/apis/doacao/buscarPorUsuario/${cod_usuario}`)
+  fetch(`http://localhost:8080/apis/doacao/buscarPorUsuario/${cod_usuario}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': token,
+      'Content-Type': 'application/json'
+    }
+  })
     .then(response => {
       if (!response.ok) {
         throw new Error("Erro na busca das doações.");
@@ -351,26 +319,40 @@ function buscarDoacoesPeloUsuId() {
       const tabela = document.getElementById("resultadoDoacao");
       tabela.innerHTML = "";
 
+      // Se não encontrar nada
       if (!doacoes || doacoes.length === 0) {
         tabela.innerHTML = `
             <tr>
-              <td colspan="5" style="text-align:center;">Nenhuma doação encontrada.</td>
+              <td colspan="4" style="text-align:center;">Nenhuma doação encontrada.</td>
             </tr>`;
         return;
       }
 
-      doacoes.forEach(doacao => {
+      // Aplica o filtro por data ou valor
+      const resultadoFiltrado = doacoes.filter(doacao => {
+        const data = doacao.data.toLowerCase();
+        const valor = doacao.valor.toString();
+        return (
+          data.includes(filtro) ||
+          valor.includes(filtro)
+        );
+      });
+
+      if (resultadoFiltrado.length === 0) {
+        tabela.innerHTML = `
+            <tr>
+              <td colspan="4" style="text-align:center;">Nenhuma doação encontrada para esse filtro.</td>
+            </tr>`;
+        return;
+      }
+
+      resultadoFiltrado.forEach(doacao => {
         const linha = `
             <tr>
               <td>${doacao.codDoacao}</td>
-              <td>${formatarData(doacao.data)}</td>
+              <td>${doacao.data}</td>
               <td>R$ ${parseFloat(doacao.valor).toFixed(2)}</td>
               <td>${doacao.status}</td>
-              <td>
-                <button class="btn btn-danger btn-sm" onclick="excluirDoacao(${doacao.codDoacao})">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </td>
             </tr>`;
         tabela.innerHTML += linha;
       });

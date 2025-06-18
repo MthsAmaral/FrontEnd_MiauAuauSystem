@@ -128,25 +128,40 @@ function excluirPlanoContasReferencial(id) {
     cancelButtonText: "Cancelar",
   }).then((result) => {
     if (result.isConfirmed) {
-      fetch(`${API_BASE_URL}/excluir/${id}`, { method: "DELETE",
-                                              headers: { 'Authorization': token }
+      fetch(`${API_BASE_URL}/excluir/${id}`, {
+        method: "DELETE",
+        headers: { 'Authorization': token }
       })
         .then((response) => {
-          if (!response.ok) throw new Error("Erro ao excluir");
+          if (!response.ok) {
+            throw new Error("Erro ao excluir");
+          }
           return response.json();
         })
-        .then((json) => {
-          console.log("Resposta do servidor:", json);
-          sessionStorage.setItem("pcrExcluido", "true");
-          window.location.reload();
+        .then(() => {
+          Swal.fire({
+            icon: "success",
+            title: "Plano Contas Referencial excluído com sucesso!",
+            timer: 1500,
+            showConfirmButton: false,
+            timerProgressBar: true,
+          }).then(() => {
+            window.location.reload();
+          });
         })
         .catch((error) => {
-          sessionStorage.setItem("pcrExcluido", "false");
           console.error("Erro ao excluir:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Erro ao excluir Plano Contas Referencial!",
+            text: "Tente novamente mais tarde.",
+            confirmButtonText: "OK"
+          });
         });
     }
   });
 }
+
 
 // Editar registro
 function editarPlanoContasReferencial() {

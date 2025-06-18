@@ -76,6 +76,7 @@ function verificarPrivilegioIndexAdm()
        userMenu.innerHTML = `<i class="fa-solid fa-user"></i> Olá, ${payload.usuario}`;
        dropdownMenu.innerHTML = `
        <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaMinhasAdocoes.html">Minhas Adoções</a></li>
+       <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaMinhasDoacoes.html">Minhas Doações</a></li>
        <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaDados.html">Dados Pessoais</a></li>
        <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaAlterarSenha.html">Alterar Senha</a></li>
        <li><a class="dropdown-item-auaumiau" href="#" onclick="logout()">Sair</a></li>`;
