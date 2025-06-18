@@ -125,6 +125,7 @@ function gravarAgendamento() {
 
           return fetch("http://localhost:8080/apis/agendar-medicamento/gravar", {
             method: "POST",
+            headers: { 'Authorization': token },
             body: formData
           });
         });
@@ -526,8 +527,8 @@ function carregarNotificacoes() {
               diasRestantes: Math.ceil(diffDays),
               id: agendamento.codAgendarMedicamento,
               animalId: agendamento.animal.codAnimal,
-              medicamentoId: agendamento.medicamento.codTipoMedicamento, // <--- corrigido
-              dataAplicacao: agendamento.dataAplicacao // <--- adicionado
+              medicamentoId: agendamento.medicamento.codTipoMedicamento,
+              dataAplicacao: agendamento.dataAplicacao 
             };
 
             notificacoes.push(notificacao);
@@ -603,6 +604,7 @@ function atualizarStatusAgendamento(id, novoStatus) {
 
       return fetch("http://localhost:8080/apis/agendar-medicamento/atualizar", {
         method: "PUT",
+        headers: { 'Authorization': token },
         body: formData
       });
     })
