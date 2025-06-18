@@ -165,6 +165,13 @@ function buscarDoacao() {
                 <i class="bi bi-trash"></i>
               </button>
             </td>
+            <td>
+              ${doacao.status !== "Aprovada" ? `
+                <button type="button" class="btn btn-sm btn-success" onclick="confirmarDoacao(${doacao.codDoacao})">
+                  <i class="bi bi-check-circle"></i>
+                </button>
+              ` : ''}
+            </td>
           </tr>
         `;
       });
@@ -347,10 +354,11 @@ function buscarDoacoesPeloUsuId() {
       }
 
       resultadoFiltrado.forEach(doacao => {
+        const dataFormatada = formatarData(doacao.data);
         const linha = `
             <tr>
               <td>${doacao.codDoacao}</td>
-              <td>${doacao.data}</td>
+              <td>${dataFormatada}</td>
               <td>R$ ${parseFloat(doacao.valor).toFixed(2)}</td>
               <td>${doacao.status}</td>
             </tr>`;

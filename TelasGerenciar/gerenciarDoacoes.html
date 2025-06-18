@@ -21,6 +21,7 @@
 
   <!--Imports Locais-->
   <script src="../ControllerJs/doacaoController.js"></script>
+  <script src="../ControllerJs/acessoController.js"></script>
   <link rel="stylesheet" href="../css/styleNavBar.css">
   <link rel="stylesheet" href="../css/telasGer.css">
   <link rel="stylesheet" href="../css/stylesAlerts.css">
@@ -124,99 +125,6 @@
       </div>
     </div>
   </div>
-
-  <script>
-    function buscarDoacao() {
-      const filtro = document.getElementById("filtro").value.trim();
-      const resultado = document.getElementById("resultado");
-      const URL = filtro.length > 0
-        ? "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/doacao/buscar/" + filtro
-        : "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/doacao/buscar/%20";
-
-      fetch(URL, { method: 'GET' })
-        .then(response => response.json())
-        .then(json => {
-          let table = "";
-          json.filter(doa => doa.status === "Pendente").forEach(doacao => {
-            const dataOriginal = doacao.data;
-            const [year, month, day] = dataOriginal.split('-');
-            const dataFormatada = `${day}/${month}/${year.slice(-2)}`;
-
-            table += `
-              <tr>
-                <td>${doacao.codDoacao}</td>
-                <td>${dataFormatada}</td>
-                <td>${doacao.usuario.nome}</td>
-                <td>${doacao.usuario.email}</td>
-                <td>${doacao.usuario.telefone}</td>
-                <td>R$ ${doacao.valor}</td>
-                <td>
-                  <button type="button" class="btn btn-sm btn-success" onclick="confirmarDoacao(${doacao.codDoacao})">
-                    <i class="bi bi-check-circle"></i> Confirmar
-                  </button>
-                  <button type="button" class="btn btn-sm btn-danger" onclick="excluirDoacao(${doacao.codDoacao})">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </td>
-              </tr>`;
-          });
-          resultado.innerHTML = table;
-        })
-        .catch(error => {
-          console.error("Erro ao buscar doações:", error);
-        });
-    }
-    function verificarPrivilegioTelas() {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      window.location.href = "../index.html";
-      sessionStorage.setItem('usuarioNaoAutenticado', 'true');
-      return;
-    }
-
-    try {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const payload = JSON.parse(atob(base64));
-
-      const now = Math.floor(Date.now() / 1000);
-      if (payload.exp && payload.exp < now) {
-        Swal.fire({
-          icon: "error",
-          title: "Sessão Expirada",
-          text: "Por favor, faça login novamente.",
-          confirmButtonText: "Ok"
-        }).then(() => {
-          localStorage.removeItem("token");
-          window.location.href = "../index.html";
-        });
-        return;
-      }
-
-      // Preencher nome do usuário na navbar
-      const userMenu = document.getElementById("userMenu");
-      const dropdownMenu = document.querySelector(".dropdown-menu-auaumiau");
-      userMenu.innerHTML = `<i class="fa-solid fa-user"></i> Olá, ${payload.usuario}`;
-      dropdownMenu.innerHTML = `
-        <li><a class="dropdown-item-auaumiau" href="../TelasFundamentais/telaMinhasAdocoes.html">Minhas Adoções</a></li>
-        <li><a class="dropdown-item-auaumiau" href="../TelasFundamentais/telaMinhasDoacoes.html">Minhas Doações</a></li>
-        <li><a class="dropdown-item-auaumiau" href="../TelasFundamentais/telaDados.html">Dados Pessoais</a></li>
-        <li><a class="dropdown-item-auaumiau" href="../TelasFundamentais/telaAlterarSenha.html">Alterar Senha</a></li>
-        <li><a class="dropdown-item-auaumiau" href="#" onclick="logout()">Sair</a></li>
-      `;
-
-    } catch (e) {
-      console.error("Erro ao decodificar o token:", e);
-      localStorage.removeItem("token");
-      window.location.href = "../index.html";
-    }
-  }
-
-  function logout() {
-    localStorage.removeItem("token");
-    window.location.href = "../index.html";
-  }
-  </script>
 
 </body>
 

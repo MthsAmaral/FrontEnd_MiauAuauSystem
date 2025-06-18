@@ -22,6 +22,15 @@ function balancete() {
         }
     }
 
+    Swal.fire({
+        title: 'Gerando BALANCETE...',
+        text: 'Em instantes iremos retornar os dados!',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+    });
+
     fetch(URL, {
         headers: { 'Authorization': token }
     })
@@ -143,8 +152,29 @@ function balancete() {
                 //<td style="font-weight:bold; background:${cor};">${dif.toFixed(2)}</td>
                 corpoPlano.appendChild(totalRow);
             }
+            // Fecha o Swal de carregamento
+            Swal.close();
+
+            // Exibe um Swal de sucesso que some automaticamente
+            Swal.fire({
+            icon: 'success',
+            title: 'Balancete Gerado',
+            text: 'O balancete foi gerado com sucesso!',
+            showConfirmButton: false, // Remove o botão "OK"
+            timer: 1000,              // Duração em milissegundos (ex: 2000 = 2 segundos)
+            timerProgressBar: true    // Mostra uma barra de tempo decrescente
+            });
         })
         .catch(error => {
             console.error("Erro ao recuperar Balancete:", error);
+            // Fecha o Swal de carregamento
+            Swal.close();
+
+            // Exibe erro
+            Swal.fire({
+            icon: 'error',
+            title: 'Erro',
+            text: 'Não foi possível gerar o balancete.'
+            });
         });
 }

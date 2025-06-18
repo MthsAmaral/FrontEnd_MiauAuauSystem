@@ -294,9 +294,18 @@ function carregarLancamentos(){
           let dataFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`;
 
           // Verifica se a chave "arquivo" não é nula para decidir se cria o link ou não
+          //const linkPDF = lanc.arquivo
+           // ? `<a href="#" onclick="abrirPDF('${lanc.cod}')" style="color:blue; cursor:pointer;">PDF</a>`
+           // : '<span>-</span>';
+
           const linkPDF = lanc.arquivo
-            ? `<a href="https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/lancamento/arquivo/${lanc.cod}" target="_blank">PDF</a>`
-            : '<span>-</span>'; // Ou qualquer outra marcação de texto ou elemento vazio
+          ? `<a href="https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/lancamento/arquivo/${lanc.cod}"
+                onclick="abrirPDF(event)"
+                target="_blank">
+                PDF
+            </a>`
+          : '<span>-</span>';
+
 
           table += `
           <tr>
@@ -317,12 +326,52 @@ function carregarLancamentos(){
     });
 }
 
+function abrirPDF(event) {
+  event.preventDefault(); // Evita que o navegador siga o link
+
+  const token = localStorage.getItem("token");
+  const url = event.currentTarget.href;
+
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      'Authorization': token
+    }
+  })
+  .then(response => {
+    if (!response.ok) throw new Error('Erro ao carregar PDF');
+    return response.blob();
+  })
+  .then(blob => {
+    const blobUrl = URL.createObjectURL(blob);
+    window.open(blobUrl, '_blank'); // Abre o PDF em nova aba
+    // Opcional: você pode deixar o revoke para depois se quiser que o PDF funcione bem em nova aba
+  })
+  .catch(error => {
+    console.error(error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Erro',
+      text: 'Não foi possível abrir o PDF.'
+    });
+  });
+}
+
 function carregarRegistroProntuario() {
   const token = localStorage.getItem("token");
   let codAnimal = document.getElementById("codAnimal").value;
   const resultado = document.getElementById("resultadoProntuario");
 
   const url = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/prontuario/buscar_animal/" + codAnimal;
+
+  Swal.fire({
+    title: 'Recuperando os dados...',
+    text: 'Em instantes iremos retornar os dados!',
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  });
 
   fetch(url, {
       method: 'GET',
@@ -384,10 +433,33 @@ function carregarRegistroProntuario() {
 
         resultado.innerHTML = table;
       }
+
+      // Fecha o Swal de carregamento
+      Swal.close();
+
+      // Exibe um Swal de sucesso que some automaticamente
+      Swal.fire({
+        icon: 'success',
+        title: 'Dados Recuperados',
+        text: 'Dados recuperados com sucesso!',
+        showConfirmButton: false, // Remove o botão "OK"
+        timer: 1000,              // Duração em milissegundos (ex: 2000 = 2 segundos)
+        timerProgressBar: true    // Mostra uma barra de tempo decrescente
+      });
     })
     .catch((error) => {
       console.error("Erro ao carregar prontuário:", error);
       resultado.innerHTML = "<main class='container container-box mt-5'><p class='text-danger'>Erro ao buscar prontuário.</p></main>";
+
+      // Fecha o Swal de carregamento
+      Swal.close();
+
+      // Exibe erro
+      Swal.fire({
+        icon: 'error',
+        title: 'Erro',
+        text: 'Não foi possível recuperar os dados.'
+      });
     });
 }
 

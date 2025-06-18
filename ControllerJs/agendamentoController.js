@@ -300,6 +300,16 @@ function carregarAnimais() {
   // Define URL com base no filtro
   const url = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/animal/buscar/" + (filtro.length > 0 ? filtro : "%20");
 
+
+  Swal.fire({
+    title: 'Recuperando os Dados...',
+    text: 'Em instantes iremos retornar os dados!',
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  });
+
   fetch(url, {
     method: 'GET',
     redirect: 'follow',
@@ -352,8 +362,33 @@ function carregarAnimais() {
           container.appendChild(col);
         });
       }
+
+      // Fecha o Swal de carregamento
+      Swal.close();
+
+      // Exibe um Swal de sucesso que some automaticamente
+      Swal.fire({
+        icon: 'success',
+        title: 'Dados Recuperados',
+        text: 'Dados recuperados com sucesso!',
+        showConfirmButton: false, // Remove o botão "OK"
+        timer: 1000,              // Duração em milissegundos (ex: 2000 = 2 segundos)
+        timerProgressBar: true    // Mostra uma barra de tempo decrescente
+      });
     })
-    .catch(error => console.error(error.message));
+    .catch(error => {
+      console.error(error.message);
+
+      // Fecha o Swal de carregamento
+      Swal.close();
+
+      // Exibe erro
+      Swal.fire({
+        icon: 'error',
+        title: 'Erro',
+        text: 'Não foi possível recuperar os dados.'
+      });
+    });
 }
 
 function confirmarSelecaoAnimais() {

@@ -355,6 +355,15 @@ function buscarLancamentosFiltro() {
   }
 
   if (!tudo) {
+    Swal.fire({
+      title: 'Trazendo LANÇAMENTOS...',
+      text: 'Em instantes iremos retornar os dados!',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
     fetch(URL, {
       method: 'GET',
       headers: { 'Authorization': token },
@@ -406,9 +415,32 @@ function buscarLancamentosFiltro() {
             </tr>`;
         }
         document.getElementById("resultado").innerHTML = table; // Exibe a tabela no elemento "resultado"
+
+        // Fecha o Swal de carregamento
+        Swal.close();
+
+        // Exibe um Swal de sucesso que some automaticamente
+        Swal.fire({
+          icon: 'success',
+          title: 'Lançamentos Recuperados',
+          text: 'Dados recuperados com sucesso!',
+          showConfirmButton: false, // Remove o botão "OK"
+          timer: 1000,              // Duração em milissegundos (ex: 2000 = 2 segundos)
+          timerProgressBar: true    // Mostra uma barra de tempo decrescente
+        });
       })
       .catch(function (error) {
         console.error(error); // Exibe erros, se houver
+
+        // Fecha o Swal de carregamento
+        Swal.close();
+
+        // Exibe erro
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro',
+          text: 'Não foi possível recuperar os lançamentos.'
+        });
       });
   }
 }
@@ -421,6 +453,15 @@ function abrirPDF(event) {
   // Tenta data-url, senão href
   const url = el.dataset.url ?? el.href;
 
+  Swal.fire({
+    title: 'Recuperando o DOCUMENTO...',
+    text: 'Em instantes iremos retornar os dados!',
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  });
+
   fetch(url, {
     headers: { 'Authorization': token }
   })
@@ -432,16 +473,48 @@ function abrirPDF(event) {
       const blobUrl = URL.createObjectURL(blob);
       window.open(blobUrl, "_blank");
       // opcional: URL.revokeObjectURL(blobUrl) depois
+
+      // Fecha o Swal de carregamento
+      Swal.close();
+
+      // Exibe um Swal de sucesso que some automaticamente
+      Swal.fire({
+        icon: 'success',
+        title: 'Documento Recuperado',
+        text: 'Dados recuperados com sucesso!',
+        showConfirmButton: false, // Remove o botão "OK"
+        timer: 1000,              // Duração em milissegundos (ex: 2000 = 2 segundos)
+        timerProgressBar: true    // Mostra uma barra de tempo decrescente
+      });
     })
     .catch(err => {
       console.error("Erro ao abrir PDF:", err);
       alert("Não foi possível abrir o PDF.");
+
+      // Fecha o Swal de carregamento
+      Swal.close();
+
+      // Exibe erro
+      Swal.fire({
+        icon: 'error',
+        title: 'Erro',
+        text: 'Não foi possível recuperar o documento.'
+      });
     });
 }
 
 function buscarLancamentos() {
   const token = localStorage.getItem("token");
   let URL = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/lancamento/buscar/%20";
+
+  Swal.fire({
+    title: 'Trazendo LANÇAMENTOS...',
+    text: 'Em instantes iremos retornar os dados!',
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  });
 
   fetch(URL, {
     method: 'GET',
@@ -494,9 +567,32 @@ function buscarLancamentos() {
           </tr>`;
       }
       document.getElementById("resultado").innerHTML = table; // Exibe a tabela no elemento "resultado"
+
+      // Fecha o Swal de carregamento
+      Swal.close();
+
+      // Exibe um Swal de sucesso que some automaticamente
+      Swal.fire({
+        icon: 'success',
+        title: 'Lançamentos Recuperados',
+        text: 'Dados recuperados com sucesso!',
+        showConfirmButton: false, // Remove o botão "OK"
+        timer: 1000,              // Duração em milissegundos (ex: 2000 = 2 segundos)
+        timerProgressBar: true    // Mostra uma barra de tempo decrescente
+      });
     })
     .catch(function (error) {
       console.error(error); // Exibe erros, se houver
+
+      // Fecha o Swal de carregamento
+      Swal.close();
+
+      // Exibe erro
+      Swal.fire({
+        icon: 'error',
+        title: 'Erro',
+        text: 'Não foi possível recuperar os lançamentos.'
+      });
     });
 }
 

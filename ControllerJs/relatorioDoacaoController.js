@@ -1,4 +1,5 @@
 function gerarRelatorio() {
+    const token = localStorage.getItem("token");
     const dataInicio = document.getElementById("dataInicio").value;
     const dataFim = document.getElementById("dataFim").value;
 
@@ -7,7 +8,10 @@ function gerarRelatorio() {
         return;
     }
 
-    fetch(`https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/doacao/relatorio-por-data?dataInicio=${dataInicio}&dataFim=${dataFim}`)
+    fetch(`https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/doacao/relatorio-por-data?dataInicio=${dataInicio}&dataFim=${dataFim}`, {
+        method: "GET",
+        headers: { "Authorization": token }
+    })
         .then(response => response.json())
         .then(data => {
             const tabela = document.getElementById("resultado");
@@ -21,13 +25,14 @@ function gerarRelatorio() {
             let total = 0;
 
             data.forEach(item => {
+                const dataFormatada = item.data.split('-').reverse().join('/');
                 const linha = `
-                    <tr>
-                        <td>${item.codDoacao}</td>
-                        <td>${item.data}</td>
-                        <td>R$ ${parseFloat(item.valor).toFixed(2)}</td>
-                        <td>${item.status}</td>
-                    </tr>
+                <tr>
+                    <td>${item.codDoacao}</td>
+                    <td>${dataFormatada}</td>
+                    <td>R$ ${parseFloat(item.valor).toFixed(2)}</td>
+                    <td>${item.status}</td>
+                </tr>
                 `;
                 tabela.innerHTML += linha;
                 total += parseFloat(item.valor);

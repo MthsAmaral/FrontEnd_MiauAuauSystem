@@ -891,7 +891,7 @@ function buscarAdocaoPeloUsuId()
         .then((response) => {
           return response.text();
         })
-        .then(function (text) {
+        .then(function (text) { 
           var json = JSON.parse(text);
 
           var table = "<table border='1'>";

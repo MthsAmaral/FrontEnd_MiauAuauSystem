@@ -414,6 +414,13 @@ function buscarAnimalAdocaoVersaoGabriel() {
   
   const container = document.getElementById("resultado");
   container.innerHTML = "";
+  Swal.fire({
+    title: 'Carregando...',
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  });
   if (filtro.length <= 0) 
   {
     const url = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/animal/buscar-filtro/%20";
@@ -424,6 +431,8 @@ function buscarAnimalAdocaoVersaoGabriel() {
         return response.text();
       })
       .then(function (text) {
+        
+        Swal.close();
         var json = JSON.parse(text); // Converte a resposta JSON
         for (let i = 0; i < json.length; i++) {
           if (json[i].adotado == 'Não') {
@@ -524,6 +533,7 @@ function buscarAnimalAdocaoVersaoGabriel() {
       })
       .then(function (text) {
         
+        Swal.close();
         var json = JSON.parse(text); // Converte a resposta JSON
         for (let i = 0; i < json.length; i++) {
           if (json[i].adotado == 'Não') {
@@ -637,6 +647,13 @@ function buscarAdocao() {
   console.log(filtroStatus)
   console.log(filtro)
   const resultado = document.getElementById("resultado");
+  Swal.fire({
+    title: 'Carregando...',
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  });
   if (filtro.length > 0) // busca com filtro
   {
     console.log(filtro)
@@ -648,6 +665,8 @@ function buscarAdocao() {
         return response.text();
       })
       .then(function (text) {
+        
+        Swal.close();
         var json = JSON.parse(text);
 
         var table = "<table border='1'>";
@@ -701,6 +720,8 @@ function buscarAdocao() {
         return response.text();
       })
       .then(function (text) {
+        
+        Swal.close();
         var json = JSON.parse(text);
 
         var table = "<table border='1'>";
