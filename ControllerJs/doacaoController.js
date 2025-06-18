@@ -358,8 +358,8 @@ function buscarDoacoesPeloUsuId() {
       });
     })
     .catch(error => {
-      console.error(error);
-      Swal.fire("Erro", "Não foi possível carregar as doações.", "error");
+      //console.error(error);
+      //Swal.fire("Erro", "Não foi possível carregar as doações.", "error");
     });
 }
 
