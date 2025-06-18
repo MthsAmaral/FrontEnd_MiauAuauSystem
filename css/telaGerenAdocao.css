@@ -15,103 +15,14 @@ body {
     padding: 0;                                 /* Remove preenchimento padrão */
 }
 
-/* === ESTILOS GERAIS DO NAVBAR === */
-.navbar {
-    background-color: var(--cor-petroleo); /* Cor de fundo da barra de navegação */
-    padding: 0.8rem 1rem;                   /* Espaçamento interno do navbar */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave abaixo da navbar */
-    border-bottom: 2px solid var(--cor-destaque); /* Linha de destaque na parte inferior */
-}
-
-/* === ESTILO DA MARCA "SISTEMA MIAUAUAU" === */
-.navbar-brand {
-    font-weight: 700;                      /* Peso da fonte mais grosso */
-    font-size: 1.8rem;                     /* Tamanho da fonte maior */
-    color: var(--cor-clara);               /* Cor clara para o texto */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Sombra suave no texto */
-    letter-spacing: 1px;                   /* Espaçamento entre letras */
-    transition: all 0.3s ease;             /* Transição suave para os efeitos de hover */
-    position: relative;                    /* Necessário para o efeito ::after */
-    padding: 0.5rem 1rem;                  /* Espaçamento interno */
-}
-
-.navbar-brand:hover {
-    color: var(--cor-destaque);            /* Cor do texto ao passar o mouse */
-    text-shadow: 2px 2px 6px rgba(211, 169, 106, 0.5); /* Aumenta a sombra no hover */
-}
-
-/* Efeito de sublinhado animado */
-.navbar-brand::after {
-    content: '';                           /* Cria um pseudo-elemento vazio */
-    position: absolute;                    /* Posiciona o sublinhado */
-    width: 100%;                            /* Sublinha o texto inteiro */
-    height: 3px;                           /* Altura do sublinhado */
-    bottom: 0;                             /* Posiciona o sublinhado na parte inferior */
-    left: 0;                               /* Começa da esquerda */
-    background-color: var(--cor-destaque);  /* Cor do sublinhado */
-    transform: scaleX(0);                  /* Inicialmente o sublinhado está invisível */
-    transform-origin: bottom right;        /* Ponto de origem da transformação */
-    transition: transform 0.3s ease;       /* Transição suave para o efeito de hover */
-}
-
-.navbar-brand:hover::after {
-    transform: scaleX(1);                  /* Torna o sublinhado visível ao passar o mouse */
-    transform-origin: bottom left;         /* Inicia a transformação da esquerda para a direita */
-}
-
-/* === ESTILOS DOS ITENS DO MENU === */
-.nav-link {
-    font-weight: 500;                      /* Peso de fonte médio */
-    color: var(--cor-clara);               /* Cor clara para os itens do menu */
-    padding: 0.5rem 1rem;                  /* Espaçamento interno */
-    margin: 0 0.2rem;                      /* Margem entre os itens do menu */
-    border-radius: 4px;                    /* Arredonda os cantos */
-    transition: all 0.3s ease;             /* Transição suave para os efeitos de hover */
-}
-
-.nav-link:hover {
-    color: var(--cor-destaque);            /* Cor de destaque ao passar o mouse */
-    background-color: rgba(205, 238, 234, 0.1); /* Fundo leve ao passar o mouse */
-}
-
-.dropdown-menu {
-    background-color: var(--cor-petroleo); /* Cor de fundo do menu suspenso */
-    border: 1px solid var(--cor-destaque);  /* Borda de destaque */
-}
-
-.dropdown-item {
-    color: var(--cor-clara);               /* Cor dos itens do dropdown */
-    transition: all 0.2s ease;             /* Transição suave para o hover */
-}
-
-.dropdown-item:hover {
-    background-color: var(--cor-destaque); /* Cor de fundo ao passar o mouse */
-    color: var(--cor-petroleo);            /* Cor do texto ao passar o mouse */
-}
-
-/* === MENU MOBILE === */
-.navbar-toggler {
-    border-color: var(--cor-clara); /* Cor da borda do botão de toggle */
-}
-
-.navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(245, 245, 245, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"); /* Ícone do menu hamburger */
-}
-
-/* === CENTRALIZAÇÃO DOS ITENS === */
-.central-navbar {
-    display: flex;                          /* Usa flexbox para layout */
-    justify-content: flex-end;              /* Alinha os itens à direita */
-    width: 80%;                             /* Define a largura dos itens do menu */
-}
-
-/* === CONTAINER PRINCIPAL === */
 .container-box {
-    width: 1450px;
-    background-color: var(--cor-clara);     /* Cor de fundo do container */
-    border-radius: 20px;                    /* Bordas arredondadas */
-    padding: 30px;                          /* Preenchimento interno */
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    width: 90%;               
+    max-width: 1650px;          
+    margin: 20px auto;          
+    padding: 30px;
+    background-color: var(--cor-clara);
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 /* === TÍTULO === */
@@ -138,9 +49,12 @@ input[type="text"]:focus {
 }
 
 /* === TABELA === */
+.table-responsive {
+    overflow-x: auto;
+}
 .table {
-    width: 100%;                            /* Largura total da tabela */
-    border-collapse: collapse;              /* Remove espaçamento entre as células */
+    width: 100%;
+    min-width: 600px; /* Mantém a tabela legível em telas pequenas */
 }
 
 .table th,
@@ -196,13 +110,3 @@ input[type="text"]:focus {
     transform: translateY(-4px);             /* Efeito de movimento ao passar o mouse */
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Sombra mais forte no hover */
 }
-
-/* Estilo para imagens dentro da navbar */
-.navbar-brand img {
-    max-height: 50px;                      /* Define altura máxima da imagem */
-    margin-right: 10px;                     /* Espaçamento entre a imagem e o texto */
-    vertical-align: middle;                 /* Alinha verticalmente a imagem */
-}
-
-
-  

@@ -2,162 +2,372 @@
 <html lang="pt-br">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Página com Cabeçalho e Menu</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>Página Inicial</title>
+  <link rel="stylesheet" href="./css/indexNovo.css" />
+  <link rel="stylesheet" href="./css/modalDoacao.css">
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- FONTE  -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
-  <link rel="stylesheet" href="./css/index.css" />
+  <!--Alerts-->
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.min.css" rel="stylesheet">
+  </link>
+  <link rel="stylesheet" href="./css/stylesAlerts.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.all.min.js"></script>
+
+  <script src="./ControllerJs/acessoController.js"></script>
+  <script src="./ControllerJs/doacaoController.js"></script>
 </head>
 
-<body>
+<body onload="verificarPrivilegio()">
+  <nav id="inicio" class="navbar">
+    <a href="index.html" style="text-decoration: none;">
+      <div class="logo-container">
+        <span class="logo-text">Grupo MiauAuau</span>
+        <img src="img/logo.png" alt="Sistema MiauAuau" class="logo" />
+      </div>
+    </a>
+    <ul id="nav" class="nav-links" style="align-items: center;">
+      <li class="nav-item dropdown-auaumiau">
+        <a id="userMenu" class="nav-link dropdown-toggle-auaumiau"><i class="fa-solid fa-user"></i> Acesse
+          sua conta</a>
+        <ul class="dropdown-menu-auaumiau">
+          <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaLogin.html">Entrar</a></li>
+          <li><a class="dropdown-item-auaumiau" href="./TelasFundamentais/telaCadastro.html">Cadastre-se</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="adocao.html" class="adopt2-button2">Quero Adotar</a>
+      </li>
+      <li>
+        <a href="#doacao" class="adopt2-button2">Quero Doar</a>
+      </li>
+      <li><a href="#inicio">Início</a></li>
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#sobre">Contato</a></li>
+    </ul>
+  </nav>
+  <main>
 
+    <div class="carrosel">
+      <div class="carousel-container">
+        <div class="carousel">
+          <img src="img/banner1.png" class="carousel-slide active" alt="Banner 1">
+          <img src="img/banner2.png" class="carousel-slide" alt="Banner 2">
+          <img src="img/banner3.png" class="carousel-slide" alt="Banner 3">
 
-  <!-- Cabeçalho -->
-  <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="./index.html">
-        Sistema MiauAuau
-        <img src="./img/logo.png" alt="Logo Sistema MiauAuau" style="max-height: 50px;">
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav ms-auto me-auto central-navbar">
-          <li class=""><a class="queroadotar" href="./TelasFundamentais/solicitarAdocao.html">Quero Adotar</a></li>
-          <li class=""><a class="queroadotar" href="./TelasFundamentais/cadAgendamentoDoacao.html">Quero Doar</a></li>
-          <!--Minha Parte (pissinin)-->
+          <button class="nav prev">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+              class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5" />
+            </svg>
+          </button>
+          <button class="nav next">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+              class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8" />
+            </svg>
+          </button>
 
-          <!--(Pissinin)-->
+        </div>
+        <div class="indicators">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+      </div>
+      </section>
+      <section class="info-section">
+        <div class="info-container">
+          <div class="info-box">
+            <i class="fas fa-paw"></i>
+            <h3>Adoção Responsável</h3>
+            <p>Adote com consciência e mude uma vida com amor e carinho.</p>
+          </div>
+          <div class="info-box">
+            <i class="fas fa-heart"></i>
+            <h3>Conecte com Amor</h3>
+            <p>Encontre o companheiro ideal entre centenas de animais resgatados.</p>
+          </div>
+          <div class="info-box">
+            <i class="fas fa-shield-alt"></i>
+            <h3>Segurança e Apoio</h3>
+            <p>Todo o processo é acompanhado por nossa equipe especializada.</p>
+          </div>
+        </div>
+      </section>
+      <section class="adopt-section">
+        <div class="banner-card">
+          <img src="img/cat.png" alt="Gato para adoção" class="animal-img left">
+          <div class="banner-text">
+            <h3>Se interessou?</h3>
+            <p>Adote um animalzinho e transforme duas vidas: a dele e a sua.</p>
+            <button class="adopt-btn" onclick="window.location.href='adocao.html'">Quero Adotar</button>
+          </div>
+          <img src="img/dog.png" alt="Cachorro para adoção" class="animal-img right">
+        </div>
+      </section>
+      <section class="impact-section">
+        <h2 class="impact-title">
+          Apoie e faça parte da nossa ação voluntária.<br />
+          <span class="impact-subtitle">Toda ajuda conta e faz muita diferença.</span>
+        </h2>
+        <div class="impact-metrics">
+          <div class="impact-card">
+            <p class="impact-number" id="moneyRaised">R$ 0</p>
+            <p class="impact-label">Doações Recebidas</p>
+          </div>
+          <div class="impact-card">
+            <p class="impact-number" id="rescuedCount">0</p>
+            <p class="impact-label">Animais Resgatados</p>
+          </div>
+          <div class="impact-card">
+            <p class="impact-number" id="volunteersCount">0</p>
+            <p class="impact-label">Voluntários Ativos</p>
+          </div>
+        </div>
+      </section>
+  </main>
+  <div id="doacao" class="cta-section">
+    <h2>Ajude a salvar vidas agora</h2>
+    <p>Com apenas <strong>R$10</strong>, você contribui para o cuidado de animais resgatados</p>
+    <button class="cta-button" onclick="abrirModal()">Faça uma doação</button>
+  </div>
 
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Operações</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="./TelasFundamentais/agendarMedicamento.html">Agendar Medicamento</a>
-              <li><a class="dropdown-item" href="./TelasFundamentais/realizarLancamentos.html">Realizar Lançamento</a>
-              </li>
-            </ul>
+  <!-- Modal de Cadastro de Doação -->
+  <div id="modalDoacao" class="modal-overlay" onclick="fecharModalFora(event)">
+    <div class="modal-conteudo" style="max-width: 450px;">
+      <span class="fechar" onclick="fecharModal()">&times;</span>
+
+      <div class="modal-banner">
+        <img src="img/banner_doe.png" alt="Banner Doe" style="max-width: 100%; border-radius: 8px;">
+      </div>
+
+      <h2 style="margin-top: 15px; font-weight: 700; text-align: center;">Agende Sua Doação</h2>
+
+      <form id="fdoacao" class="d-flex flex-column gap-3 mt-3">
+
+        <input type="hidden" id="codDoacao" name="codDoacao" />
+        <input type="hidden" id="cod_usuario" name="cod_usuario" />
+        <input type="hidden" id="status" name="status" value="Pendente" />
+
+        <!-- Data -->
+        <div>
+          <label class="form-label fw-semibold">Data da Solicitação:</label>
+          <input type="date" id="data" name="data" class="form-control" required />
+        </div>
+
+        <!-- Valor -->
+        <div>
+          <label class="form-label fw-semibold">Valor (R$):</label>
+          <input type="number" id="valor" name="valor" class="form-control" min="1" step="0.01" placeholder="Ex: 10.00"
+            required />
+        </div>
+
+        <!-- Botões -->
+        <div class="d-flex justify-content-between gap-3">
+          <button type="button" class="btn btn-secondary w-100" onclick="fecharModal()">
+            <i class="fa-solid fa-xmark"></i> Cancelar
+          </button>
+
+          <button type="button" class="btn btn-success w-100" onclick="validarCampos()">
+            <i class="fa-solid fa-check"></i> Confirmar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer id="sobre">
+    <div class="footer-container">
+      <div class="footer-column">
+        <h4>Sobre a ONG</h4>
+        <p>Somos uma associação sem fins lucrativos com intuito de ajudar animais abandonados e em situações de
+          vulnerabilidade. Realizamos ações, bingos e rifas para arrecadar fundos a fim de custear as despesas.</p>
+        <br>
+        <h4>Nossa Missão</h4>
+        <p>Transformando vidas com amor e cuidado aos animais resgatados.</p>
+      </div>
+      <div class="footer-column">
+        <h4>Redes Sociais</h4>
+        <ul>
+          <li><a href="https://www.instagram.com/miauauau_rf/?igsh=bHBhbG94ZG54NWtr#" target="_blank"><i
+                class="fa-brands fa-instagram"></i> miauauau_rf</a></li>
+          <li><a href="https://api.whatsapp.com/send/?phone=5518997605428&text&type=phone_number&app_absent=0"
+              target="_blank"><i class="fa-brands fa-whatsapp"></i> +55 18 99760-5428</a></li>
+          <li><a href="mailto:grupomiauauau.rf@gmail.com" target="_blank"><i class="fa-regular fa-envelope"></i>
+              grupomiauauau.rf@gmail.com</a></li>
+          <br>
+          <li>
+            <h4>Endereço</h4>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Cadastro</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="./TelasCadastros/cadUsuario.html">Usuário</a></li>
-              <li><a class="dropdown-item" href="./TelasCadastros/cadAnimal.html">Animal</a></li>
-              <li><a class="dropdown-item" href="./TelasCadastros/cadTipoLancamento.html">Tipo de Lançamento</a></li>
-              <li><a class="dropdown-item" href="./TelasCadastros/cadTipoMedicamento.html">Tipo de Medicamento</a></li>
-              <li><a class="dropdown-item" href="./TelasCadastros/cadAdocao.html">Adoção</a></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Gerenciar</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="./TelasGerenciar/gerenUsuarios.html">Usuário</a></li>
-              <li><a class="dropdown-item" href="./TelasGerenciar/gerenAnimais.html">Animal</a></li>
-              <li><a class="dropdown-item" href="./TelasGerenciar/gerenTipoLancamentos.html">Tipo de Lançamento</a></li>
-              <li><a class="dropdown-item" href="./TelasGerenciar/gerenMedicamentos.html">Tipo de Medicamento</a></li>
-              <li><a class="dropdown-item" href="./TelasGerenciar/gerenAdocao.html">Adoção</a></li>
-              <li><a class="dropdown-item" href="./TelasGerenciar/gerenciarDoacoes.html">Doação</a></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Acesse sua conta</a>
-            <ul class="dropdown-menu custom-dropdown-menu">
-              <li><a class="dropdown-item" href="./TelasFundamentais/telaLogin.html">Entrar</a></li>
-              <li><a class="dropdown-item" href="#">Sair</a></li>
-            </ul>
-          </li>
-          
+          <li><a href="https://maps.app.goo.gl/dRZkx7aPabJpoVXA6" target="_blank"><i
+                class="fa-solid fa-location-dot"></i> Teófilo Otoni, 515, Centro, Regente Feijó/SP</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Como Ajudar</h4>
+        <ul>
+          <li><a href="adocao.html#adocao"><i class="fa-solid fa-paw"></i> Quero Adotar</a></li>
+          <li><a href="#doacao"><i class="fa-solid fa-donate"></i> Quero Doar </a></li>
         </ul>
       </div>
     </div>
-  </nav>
-
-  <main class="container mt-5">
-
-    <section class="text-center mb-5">
-      <h2>Sobre a ONG</h2>
-      <p class="lead">
-        Somos uma associação sem fins lucrativos com intuito de ajudar animais abandonados e em situações de
-        vulnerabilidade.
-        Realizamos ações, bingos e rifas para arrecadar fundos a fim de custear as despesas.
-      </p>
-    </section>
-
-
-    <section class="text-center mb-5">
-      <h3>Nosso Instagram</h3>
-      <a href="https://www.instagram.com/miauauau_rf?igsh=bHBhbG94ZG54NWtr" target="_blank">
-        <img src="./img/logo.png" alt="Instagram ONG" style="width: 200px; border-radius: 10px; transition: 0.3s;"
-          onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-      </a>
-    </section>
-
-
-    <section class="row text-center mb-5">
-      <div class="col-md-6">
-        <div class="p-4 bg-light rounded shadow-sm">
-          <h4>Adoções Realizadas</h4>
-          <p class="display-5" id="adocoes">+120</p>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="p-4 bg-light rounded shadow-sm">
-          <h4>Doações Recebidas</h4>
-          <p class="display-5" id="doacoes">R$ 18.000,00</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="text-center mb-5">
-      <h3>Contato</h3>
-      <p><strong>Email:</strong> grupomiauauau.rf@gmail.com</p>
-      <p><strong>Endereço:</strong> Rua Teófilo Otoni, 515, Centro, Regente Feijó/SP, CEP: 19570-000</p>
-    </section>
-
-  </main>
-  <footer class="bg-dark text-white text-center py-1">
-    <p class="mt-3">&copy; 2025 Grupo Miau Au Au.</p>
+    <div class="footer-bottom">
+      &copy; 2025 Grupo Miau Au Au.
+    </div>
   </footer>
-
-  <a href="https://wa.me/5518997605428" target="_blank"
-    style="position: fixed; bottom: 20px; right: 20px; background-color: #25d366; color: white; padding: 10px 15px; border-radius: 50%; text-align: center; font-size: 24px; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3);">
-    <i class="fab fa-whatsapp" style="font-size: 30px;"></i>
-  </a>
-
+  <button id="scrollTopBtn" onclick="scrollToTop()">
+    <i class="fa-solid fa-caret-up"></i>
+  </button>
 
   <script>
-    function animateCounter(id, start, end, duration, prefix = '', suffix = '') {
-      const element = document.getElementById(id);
-      let current = start;
-      const increment = (end - start) / (duration / 20);
+    const slides = document.querySelectorAll('.carousel-slide');
+    const dots = document.querySelectorAll('.dot');
+    let currentIndex = 0;
 
-      const timer = setInterval(() => {
-        current += increment;
-        if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
-          current = end;
-          clearInterval(timer);
-        }
-
-        if (id === 'doacoes') {
-          element.textContent = prefix + current.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + suffix;
-        } else {
-          element.textContent = prefix + Math.floor(current) + suffix;
-        }
-      }, 20);
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+        dots[i].classList.toggle('active', i === index);
+      });
+      currentIndex = index;
     }
 
-    window.onload = () => {
-      animateCounter('adocoes', 0, 50, 1500, '+');
-      animateCounter('doacoes', 0, 10000, 1500);
-    };
-  </script>
+    document.querySelector('.prev').addEventListener('click', () => {
+      const index = (currentIndex - 1 + slides.length) % slides.length;
+      showSlide(index);
+    });
 
+    document.querySelector('.next').addEventListener('click', () => {
+      const index = (currentIndex + 1) % slides.length;
+      showSlide(index);
+    });
+
+    function animateCount(id, end, isCurrency = false) {
+      const el = document.getElementById(id);
+      let start = 0;
+      const duration = 2000;
+      const stepTime = 20;
+      const steps = duration / stepTime;
+      const increment = end / steps;
+
+      const counter = setInterval(() => {
+        start += increment;
+        if (start >= end) {
+          start = end;
+          clearInterval(counter);
+        }
+        el.textContent = isCurrency
+          ? 'R$ ' + start.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+          : Math.floor(start);
+      }, stepTime);
+    }
+    animateCount('moneyRaised', 0, true);
+    animateCount('rescuedCount', 0);
+    animateCount('volunteersCount', 0);
+
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+    window.onscroll = function () {
+      const scrollTopBtn = document.getElementById('scrollTopBtn');
+      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        scrollTopBtn.classList.add('show');
+      } else {
+        scrollTopBtn.classList.remove('show');
+      }
+    };
+
+    function abrirModal() {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        Swal.fire({
+          icon: "warning",
+          title: "Você precisa estar logado",
+          text: "Por favor, faça login para realizar uma doação.",
+          confirmButtonText: "Ir para login"
+        }).then(() => {
+          window.location.href = "TelasFundamentais/telaLogin.html";
+        });
+        return;
+      }
+
+      // Valida se o token está expirado
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const payload = JSON.parse(window.atob(base64));
+      const now = Math.floor(Date.now() / 1000);
+
+      if (payload.exp && payload.exp < now) {
+        Swal.fire({
+          icon: "error",
+          title: "Sessão Expirada",
+          text: "Por favor, faça login novamente.",
+          confirmButtonText: "Ok"
+        }).then(() => {
+          localStorage.removeItem("token");
+          window.location.href = "TelasFundamentais/telaLogin.html";
+        });
+        return;
+      }
+
+      // ✅ Se estiver tudo certo, preenche o cod_usuario
+      const codUsuario = payload.cod_usuario;
+      document.getElementById("cod_usuario").value = codUsuario;
+
+      // ✅ Agora sim, abre a modal
+      document.getElementById("modalDoacao").style.display = "flex";
+    }
+
+
+    function fecharModal() {
+      document.getElementById("modalDoacao").style.display = "none";
+    }
+
+    function fecharModalFora(event) {
+      if (event.target.id === "modalDoacao") {
+        fecharModal();
+      }
+    }
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top',
+      iconColor: 'white',
+      customClass: {
+        popup: 'colored-toast',
+      },
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true,
+    });
+
+    if (sessionStorage.getItem('usuarioNaoAutenticado') == 'true') {
+      Toast.fire({
+        icon: 'error',
+        title: 'Ops! Você não está logado',
+      });
+    }
+    else
+      if (sessionStorage.getItem('acessoNegado') == 'true') {
+        Toast.fire({
+          icon: 'error',
+          title: 'Acesso Negado',
+        });
+
+      }
+    sessionStorage.removeItem('acessoNegado');
+    sessionStorage.removeItem('usuarioNaoAutenticado');
+  </script>
 </body>
 
 </html>

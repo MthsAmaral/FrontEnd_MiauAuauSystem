@@ -6,24 +6,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gerenciar Adoções</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <!--Fonte-->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 
-  <link rel="stylesheet" href="../css/telaGerenAdocao.css">
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!--Alerts-->
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.min.css" rel="stylesheet">
+  </link>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.all.min.js"></script>
+
+  <!--Imports Locais-->
+  <script src="../ControllerJs/acessoController.js"></script>
   <script src="../ControllerJs/adocaoController.js"></script>
-
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/styleNavBar.css">
+  <link rel="stylesheet" href="../css/telaGerenAdocao.css">
+  <link rel="stylesheet" href="../css/stylesAlerts.css">
 </head>
 
-<body onload="buscarAdocao(); buscarAnos();">
-
+<body onload="verificarPrivilegioTelas(); buscarAdocao(); buscarAnos();">
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <a class="navbar-brand" href="../index.html">
+      <a class="navbar-brand" href="../indexAdm.html">
         Sistema MiauAuau
         <img src="../img/logo.png" alt="Logo Sistema MiauAuau" style="max-height: 50px;">
       </a>
@@ -32,40 +41,56 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav ms-auto me-auto central-navbar">
+          <li class="nav-item dropdown-auaumiau">
+            <a id="userMenu" class="nav-link dropdown-toggle-auaumiau"></a>
+            <ul class="dropdown-menu-auaumiau"> </ul>
+          </li>
+          <!--Relatórios-->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Relatórios</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="../TelasRelatorios/balancete.html">Balancete</a></li>
+              <li><a class="dropdown-item" href="../TelasRelatorios/relatorioDoacoes.html">Relatório de Doações</a></li>
+            </ul>
+          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Operações</a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="../TelasFundamentais/agendarMedicamento.html">Agendar Medicamento</a>
               <li><a class="dropdown-item" href="../TelasFundamentais/realizarLancamentos.html">Realizar Lançamento</a>
+              <li><a class="dropdown-item" href="../TelasFundamentais/prontuario.html">Prontuário</a>
               </li>
             </ul>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Cadastro</a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="../TelasCadastros/cadUsuario.html">Usuário</a></li>
               <li><a class="dropdown-item" href="../TelasCadastros/cadAnimal.html">Animal</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadAdocao.html">Adoção</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadTipoPagamento.html">Plano de Contas Gerencial</a>
+              </li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadPlanoContasReferencial.html">Plano de Contas
+                  Referencial</a></li>
               <li><a class="dropdown-item" href="../TelasCadastros/cadTipoLancamento.html">Tipo de Lançamento</a></li>
               <li><a class="dropdown-item" href="../TelasCadastros/cadTipoMedicamento.html">Tipo de Medicamento</a></li>
-              <li><a class="dropdown-item" href="../TelasCadastros/cadAdocao.html">Adoção</a></li>
+              <li><a class="dropdown-item" href="../TelasCadastros/cadUsuario.html">Usuário</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Gerenciar</a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="./gerenUsuarios.html">Usuário</a></li>
-              <li><a class="dropdown-item" href="./gerenAnimais.html">Animal</a></li>
-              <li><a class="dropdown-item" href="./gerenTipoLancamentos.html">Tipo de Lançamento</a></li>
-              <li><a class="dropdown-item" href="./gerenMedicamentos.html">Tipo de Medicamento</a></li>
-              <li><a class="dropdown-item" href="./gerenAdocao.html">Adoção</a></li>
-              <li><a class="dropdown-item" href="./gerenciarDoacoes.html">Doação</a></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Login</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Entrar</a></li>
-              <li><a class="dropdown-item" href="#">Sair</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenAdocao.html">Adoção</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenAnimais.html">Animal</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenciarDoacoes.html">Doação</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenLancamentos.html">Lançamentos</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Plano de Contas
+                  Gerencial</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoPagamento.html">Plano de Contas
+                  Referencial</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenTipoLancamentos.html">Tipo de Lançamento</a>
+              </li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenMedicamentos.html">Tipo de Medicamento</a></li>
+              <li><a class="dropdown-item" href="../TelasGerenciar/gerenUsuarios.html">Usuário</a></li>
             </ul>
           </li>
         </ul>
@@ -73,8 +98,7 @@
     </div>
   </nav>
 
-
-  <div class="container mt-5">
+  <div class="container-fluid mt-5">
     <div class="container-box">
       <h2>Gerenciar Solicitações de Adoção</h2>
 
@@ -89,9 +113,9 @@
           <option value="Cancelada">Cancelada</option>
         </select>
       </div>
-      
-      
-      <table class="table">
+
+      <div class="table-responsive">
+        <table class="table">
         <thead>
           <tr>
             <th>ID</th>
@@ -109,12 +133,13 @@
         <tbody id="resultado">
         </tbody>
       </table>
+      </div>
 
       <div class="d-flex gap-3 mt-3">
         <a href="../TelasCadastros/cadAdocao.html" class="btn btn-primary">
           <i class="bi bi-plus-circle"></i> Cadastrar Nova Solicitação
         </a>
-        <a href="../index.html"><button class="btn btn-secondary">
+        <a href="../indexAdm.html"><button class="btn btn-secondary">
             <i class="bi bi-arrow-left"></i> Voltar
           </button></a>
       </div>
@@ -143,50 +168,45 @@
       });
     }
     else
-    if (sessionStorage.getItem('adocaoGravada') == 'false') {
-      Toast.fire({
-        icon: 'error',
-        title: 'Erro ao Gravar Adoção!',
-      });
-    }
-    if(sessionStorage.getItem('adocaoAlterada') == 'true')
-    {
+      if (sessionStorage.getItem('adocaoGravada') == 'false') {
+        Toast.fire({
+          icon: 'error',
+          title: 'Erro ao Gravar Adoção!',
+        });
+      }
+    if (sessionStorage.getItem('adocaoAlterada') == 'true') {
       Toast.fire({
         icon: 'success',
         title: 'Adoção Alterada Com Sucesso!',
       });
     }
     else
-    if(sessionStorage.getItem('adocaoAlterada') == 'false')
-    {
-      Toast.fire({
-        icon: 'error',
-        title: 'Erro ao Alterar Adoção!',
-      });
-    }
-    if(sessionStorage.getItem('adocaoEmitida') == 'true')
-    {
+      if (sessionStorage.getItem('adocaoAlterada') == 'false') {
+        Toast.fire({
+          icon: 'error',
+          title: 'Erro ao Alterar Adoção!',
+        });
+      }
+    if (sessionStorage.getItem('adocaoEmitida') == 'true') {
       Toast.fire({
         icon: 'success',
         title: 'Termo Emitido Com Sucesso!',
       });
     }
-    if(sessionStorage.getItem('adocaoApagada') == 'true')
-    {
+    if (sessionStorage.getItem('adocaoApagada') == 'true') {
       Toast.fire({
         icon: 'success',
         title: 'Adoção Excluída Com Sucesso!',
       });
     }
     else
-    if(sessionStorage.getItem('adocaoCancelada') == 'true')
-    {
-      Toast.fire({
-        icon: 'success',
-        title: 'Adoção Cancelada Com Sucesso!',
-      });
+      if (sessionStorage.getItem('adocaoCancelada') == 'true') {
+        Toast.fire({
+          icon: 'success',
+          title: 'Adoção Cancelada Com Sucesso!',
+        });
 
-    }
+      }
     sessionStorage.removeItem('adocaoEmitida');
     sessionStorage.removeItem('adocaoApagada')
     sessionStorage.removeItem('adocaoAlterada');

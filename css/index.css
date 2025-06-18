@@ -15,96 +15,6 @@ body {
     padding: 0;                               /* Remove preenchimentos internos padrão */
 }
 
-/* === NAVBAR (barra de navegação superior) === */
-.navbar {
-    background-color: var(--cor-petroleo); /* Cor de fundo da navbar */
-    padding: 0.8rem 1rem;                  /* Espaçamento interno da navbar */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra sutil para profundidade */
-    border-bottom: 2px solid var(--cor-destaque); /* Linha inferior destacada */
-}
-
-/* === LOGO OU NOME DO SISTEMA NA NAVBAR === */
-.navbar-brand {
-    font-weight: 700;            /* Deixa o texto mais grosso */
-    font-size: 1.8rem;           /* Tamanho da fonte */
-    color: var(--cor-clara);     /* Cor clara para contraste */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Sombra no texto */
-    letter-spacing: 1px;         /* Espaço entre letras */
-    transition: all 0.3s ease;   /* Transição suave em efeitos */
-    position: relative;          /* Para controle de posicionamento do pseudo-elemento */
-    padding: 0.5rem 1rem;        /* Espaçamento interno */
-}
-
-.navbar-brand:hover {
-    color: var(--cor-destaque); /* Muda cor ao passar o mouse */
-    text-shadow: 2px 2px 6px rgba(211, 169, 106, 0.5); /* Sombra mais intensa */
-}
-
-/* === ANIMAÇÃO DE SUBLINHADO NA MARCA === */
-.navbar-brand::after {
-    content: '';                           /* Necessário para pseudo-elementos */
-    position: absolute;                   /* Posicionamento absoluto em relação ao elemento pai */
-    width: 100%;                          /* Ocupa toda a largura */
-    height: 3px;                          /* Altura da linha */
-    bottom: 0; left: 0;                   /* Posicionamento da linha */
-    background-color: var(--cor-destaque); /* Cor da linha */
-    transform: scaleX(0);                 /* Inicialmente invisível */
-    transform-origin: bottom right;       /* Origem da animação */
-    transition: transform 0.3s ease;      /* Animação suave */
-}
-
-.navbar-brand:hover::after {
-    transform: scaleX(1);                /* Faz a linha crescer ao passar o mouse */
-    transform-origin: bottom left;       /* Origem agora do lado esquerdo */
-}
-
-/* === ITENS DE MENU (links) === */
-.nav-link {
-    font-weight: 500;                      /* Peso da fonte médio */
-    color: var(--cor-clara);              /* Cor clara para contraste */
-    padding: 0.5rem 1rem;                 /* Espaçamento interno */
-    margin: 0 0.2rem;                     /* Margem entre os links */
-    border-radius: 4px;                   /* Cantos levemente arredondados */
-    transition: all 0.3s ease;            /* Transições suaves */
-}
-
-.nav-link:hover {
-    color: var(--cor-destaque);           /* Muda a cor ao passar o mouse */
-    background-color: rgba(205, 238, 234, 0.1); /* Fundo sutil ao hover */
-}
-
-/* === DROPDOWN (submenus) === */
-.dropdown-menu {
-    background-color: var(--cor-petroleo);         /* Cor de fundo escura */
-    border: 1px solid var(--cor-destaque);         /* Borda destacada */
-}
-
-.dropdown-item {
-    color: var(--cor-clara);                      /* Cor clara dos itens */
-    transition: all 0.2s ease;                    /* Transições suaves */
-}
-
-.dropdown-item:hover {
-    background-color: var(--cor-destaque);        /* Fundo ao passar o mouse */
-    color: var(--cor-petroleo);                   /* Inversão de cor para contraste */
-}
-
-/* === BOTÃO DE MENU MOBILE === */
-.navbar-toggler {
-    border-color: var(--cor-clara);              /* Cor da borda */
-}
-
-.navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(245, 245, 245, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"); /* Ícone hamburguer branco */
-}
-
-/* === ALINHAMENTO DO MENU À DIREITA === */
-.central-navbar {
-    display: flex;
-    justify-content: flex-end; /* Alinha o conteúdo à direita */
-    width: 80%;
-    margin-right: 20px;
-}
 
 /* === CONTAINER PRINCIPAL DE CONTEÚDO === */
 .container-box {
@@ -196,12 +106,6 @@ input[type="text"]:focus {
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
 
-/* === IMAGEM NA NAVBAR (se houver) === */
-.navbar-brand img {
-    max-height: 50px;                /* Altura máxima da imagem */
-    margin-right: 10px;              /* Espaço ao lado do texto */
-    vertical-align: middle;          /* Alinha com o texto */
-}
 .queroadotar {
     background-color: orange; /* Cor amarela mais suave com opacidade */
     color: white; /* Cor do texto escuro */
@@ -220,5 +124,4 @@ input[type="text"]:focus {
     background-color: rgba(255, 165, 0, 0.8); /* Muda para uma cor amarela mais forte */
     color: white; /* Muda o texto para branco */
     transform: scale(1.05); /* Aumenta o tamanho do link suavemente */
-    
 }

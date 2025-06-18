@@ -6,53 +6,126 @@
   <title>Pagamento via Pix</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Bootstrap e CSS base -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Fontes e Ícones -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Alerts -->
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.all.min.js"></script>
+
+  <!-- CSS Local -->
+  <link rel="stylesheet" href="../css/styleNavBar.css">
   <link rel="stylesheet" href="../css/telasGer.css">
+
+  <style>
+    .navbar {
+      background-color: var(--cor-petroleo);
+      padding: 0.8rem 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-bottom: 2px solid var(--cor-destaque);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 2rem;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 0 auto;
+      text-decoration: none;
+    }
+
+    .navbar-brand img {
+      max-height: 50px;
+      vertical-align: middle;
+    }
+
+    .navbar-brand:hover {
+      color: var(--cor-destaque);
+      text-shadow: 2px 2px 6px rgba(211, 169, 106, 0.5);
+    }
+
+    .navbar-brand::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 3px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--cor-destaque);
+      transform: scaleX(0);
+      transform-origin: bottom right;
+      transition: transform 0.3s ease;
+    }
+
+    .navbar-brand:hover::after {
+      transform: scaleX(1);
+      transform-origin: bottom left;
+    }
+  </style>
+
   <script>
     function copiarPix() {
-      navigator.clipboard.writeText("12.345.678/0001-90");
-      alert("Chave Pix copiada!");
+      navigator.clipboard.writeText("51670642000139");
+      Swal.fire({
+        icon: 'success',
+        title: 'Chave Pix copiada!',
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
   </script>
 </head>
 
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
+
+  <!-- ✅ Navbar -->
+  <nav class="navbar">
+    <div class="container-fluid justify-content-center">
       <a class="navbar-brand" href="../index.html">
-        Sistema MiauAuau
-        <img src="../img/logo.png" alt="Logo Sistema MiauAuau">
+        GrupoMiauAuau
+        <img src="../img/logo.png" alt="Logo GrupoMiauAuau">
       </a>
     </div>
   </nav>
 
-  <!-- Tela Pix -->
-  <main class="container container-box text-center mt-5">
+  <!-- ✅ Conteúdo -->
+  <main class="container container-box text-center mt-4">
     <h2 class="mb-4">Pagamento via Pix</h2>
 
     <div class="d-flex flex-column align-items-center gap-4">
       <div>
         <h5>Chave Pix (CNPJ)</h5>
-        <p>12.345.678/0001-90</p>
-        <p onclick="copiarPix()" class="fs-5 fw-bold text-primary" style="cursor: pointer;">
-            Copiar pix
-        </p>
+        <p>51670642000139</p>
+        <button onclick="copiarPix()" class="btn btn-outline-primary btn-sm">Copiar Pix</button>
       </div>
 
       <div>
-        <h5>QR Code para pagamento</h5>
-        <img src="../img/qrcode_exemplo.png" alt="QR Code Pix" class="rounded border border-secondary" style="width: 250px; height: 250px;">
+        <h5 class="mb-3">QR Code para pagamento</h5>
+        <div class="d-flex justify-content-center">
+          <img src="../img/QRCode.png" alt="QR Code Pix"
+            class="rounded border border-2 border-secondary"
+            style="width: 280px; max-width: 100%; height: auto;">
+        </div>
       </div>
 
       <div>
-        <button class="btn btn-secondary mt-4" onclick="history.back()">Voltar</button>
+        <button class="btn btn-secondary mt-4" onclick="window.location.href='../index.html'">
+          <i class="bi bi-arrow-left"></i> Voltar para Início
+        </button>
       </div>
     </div>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

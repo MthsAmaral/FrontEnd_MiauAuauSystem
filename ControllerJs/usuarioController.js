@@ -40,50 +40,75 @@ function validarCampos() {
 }
 
 function cadUsuario() {
-
+    const token = localStorage.getItem("token");
     var fusuario = document.getElementById("fusuario");
     var formData = new FormData(fusuario);
     var cod = document.getElementById("cod").value;
     if (cod) // existe, atualiza
     {
-        const URL = "http://localhost:8080/apis/usuario/atualizar"
+        const URL = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/usuario/atualizar"
         fetch(URL, {
-            method: 'PUT', body: formData
+            method: 'PUT', body: formData,
+            headers: { 'Authorization': token }
         })
             .then((response) => {
                 return response.json();
             })
             .then((json) => {
-                alert("Usuario Alterado Com Sucesso");
+                console.log("Usuario Alterado Com Sucesso! " + JSON.stringify(json));
                 fusuario.reset();
+                sessionStorage.setItem("usuarioAlterado", 'true');
+                window.location.href = "../TelasGerenciar/gerenUsuarios.html";
             })
-            .catch((error) => console.error(error))
-
+            .catch((error) => {
+                console.error("Erro ao atualizar Usuário!! " + error);
+                sessionStorage.setItem("usuarioAlterado", 'false');
+                window.location.href = "../TelasGerenciar/gerenUsuarios.html";
+            });
     }
     else {
-        const URL = "http://localhost:8080/apis/usuario/gravar"
+        const URL = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/usuario/gravar"
         fetch(URL, {
-            method: 'POST', body: formData
+            method: 'POST', body: formData,
+            headers: { 'Authorization': token }
         })
             .then((response) => {
                 return response.json();
             })
             .then((json) => {
-                alert("Usuario Cadastrado Com Sucesso");
-                fusuario.reset();
+                Swal.fire({
+                    icon: "success",
+                    title: "Usuário Gravado com Sucesso",
+                    timer: 1500,
+                    timerProgressBar: true
+                }).then(() => {
+                    console.log("Usuário Cadastrado Com Sucesso! " + JSON.stringify(json));
+                    fusuario.reset();
+                });
             })
-            .catch((error) => console.error(error))
+            .catch((error) => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Erro ao cadastrar!!",
+                    timer: 1500,
+                    timerProgressBar: true
+                }).then(() => {
+                    console.error("Erro ao cadastrar Usuário!! " + error);
+                });
+            });
     }
 }
 
 function buscarUsuario() {
+    const token = localStorage.getItem("token");
     let filtro = document.getElementById("filtro").value
     const resultado = document.getElementById("resultado");
     if (filtro.length > 0) // busca com filtro
     {
-        const url = "http://localhost:8080/apis/usuario/buscar/" + filtro;
+        const url = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/usuario/buscar/" + filtro;
         fetch(url, {
-            method: 'GET', redirect: "follow"
+            method: 'GET', redirect: "follow",
+            headers: { 'Authorization': token }
         })
             .then((response) => {
                 return response.text();
@@ -126,9 +151,10 @@ function buscarUsuario() {
             });
     }
     else {
-        const url = "http://localhost:8080/apis/usuario/buscar/%20";
+        const url = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/usuario/buscar/%20";
         fetch(url, {
-            method: 'GET', redirect: "follow"
+            method: 'GET', redirect: "follow",
+            headers: { 'Authorization': token }
         })
             .then((response) => {
                 return response.text();
@@ -172,28 +198,48 @@ function buscarUsuario() {
 }
 
 function excluirUsuario(id) {
+    const token = localStorage.getItem("token");
+    Swal.fire({
+        title: "Você tem certeza ?",
+        text: "Você não poderá reverter isso!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Apagar",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const URL = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/usuario/excluir/" + id;
 
-    const confirmacao = confirm("Tem certeza que deseja excluir este usuario ?");
-    if (confirmacao) {
-        const URL = "http://localhost:8080/apis/usuario/excluir/" + id;
-
-        fetch(URL, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            method: 'DELETE'
-        })
-            .then((response) => {
-                return response.json();
+            fetch(URL, { method: 'DELETE',
+                        headers: { 'Authorization': token }
             })
-            .then((json) => {
-                alert("Usuario Excluido Com Sucesso");
-                window.location.reload();
-            })
-            .catch((error) => console.error("Erro ao excluir o usuario:", error));
-    }
+                .then((response) => {
+                    if(!response.ok)
+                    {
+                        
+                        Toast.fire({
+                        icon: 'error',
+                        title: 'Erro ao Excluir Usuário!',
+                        });
+                    }
+                    else
+                    {
+                        sessionStorage.setItem("usuarioApagado", 'true');
+                        window.location.reload();
+                    }
+                    return response.json();
 
+                })
+                .then((json) => {
+                    
+                })
+                .catch((error) => {
+                    
+                });
+        }
+    });
 }
 
 function editarUsuario(id) {
@@ -202,13 +248,14 @@ function editarUsuario(id) {
 }
 
 function buscarUsuarioPeloId(id) {
-
-    const URL = "http://localhost:8080/apis/usuario/buscar-id/" + id;
+    const token = localStorage.getItem("token");
+    const URL = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/usuario/buscar-id/" + id;
     var fusuario = document.getElementById("fusuario");
 
     fetch(URL, {
         headers: {
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Authorization': token 
         },
         method: 'GET'
     })

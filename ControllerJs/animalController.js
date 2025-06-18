@@ -48,7 +48,7 @@ function validarData(dataString)
       return false; 
     }
   
-    return true; 
+    return true;
 }
 
 function validarCampos() {
@@ -109,14 +109,15 @@ function validarCampos() {
 
 function cadAnimal() {
 
+    const token = localStorage.getItem("token");
     var fanimal = document.getElementById("fanimal");
     var formData = new FormData(fanimal);
     var cod = document.getElementById("codAnimal").value;
     if (cod) 
     {
-        const URL = "http://localhost:8080/apis/animal/atualizar"
+        const URL = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/animal/atualizar"
         fetch(URL, {
-            method: 'PUT', body: formData
+            method: 'PUT', body: formData, headers: { 'Authorization': token }
         })
             .then((response) => {
                 if(!response.ok)
@@ -140,9 +141,9 @@ function cadAnimal() {
 
     }
     else {
-        const URL = "http://localhost:8080/apis/animal/gravar"
+        const URL = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/animal/gravar"
         fetch(URL, {
-            method: 'POST', body: formData
+            method: 'POST', body: formData, headers: { 'Authorization': token }
         })
             .then((response) => {
                 
@@ -170,11 +171,12 @@ function cadAnimal() {
 function buscarAnimal() {
     let filtro = document.getElementById("filtro").value
     const resultado = document.getElementById("resultado");
+    const token = localStorage.getItem("token");
     if (filtro.length > 0) // busca com filtro
     {
-        const url = "http://localhost:8080/apis/animal/buscar/" + filtro;
+        const url = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/animal/buscar/" + filtro;
         fetch(url, {
-            method: 'GET', redirect: "follow"
+            method: 'GET', redirect: "follow", headers: { 'Authorization': token }
         })
             .then((response) => {
                 return response.text();
@@ -200,13 +202,13 @@ function buscarAnimal() {
                         <td>${json[i].castrado}</td>
                         <td>${json[i].adotado}</td>
                         <td>
-                        <img src="data:image/jpeg;base64,${json[i].imagemBase64}" alt="Imagem do animal" style="width: 100px; height: 100px; object-fit: cover;">
+                            <img src="data:image/jpeg;base64,${json[i].imagemBase64}" alt="Imagem do animal" style="width: 100px; height: 100px; object-fit: cover;">
                         </td>
                         <td>
-                        <button type="button" class="btn btn-sm btn-warning" onclick="editarAnimal(${json[i].codAnimal})"><i class="bi bi-pencil-square"></i></button>
+                            <button type="button" class="btn btn-sm btn-warning" onclick="editarAnimal(${json[i].codAnimal})"><i class="bi bi-pencil-square"></i></button>
                         </td>
                         <td>
-                        <button type="button" class="btn btn-sm btn-danger" onclick="excluirAnimal(${json[i].codAnimal})"><i class="bi bi-trash"></i></button>
+                            <button type="button" class="btn btn-sm btn-danger" onclick="excluirAnimal(${json[i].codAnimal})"><i class="bi bi-trash"></i></button>
                         </td>
                       </tr>`;
                 }
@@ -218,9 +220,9 @@ function buscarAnimal() {
             });
     }
     else {
-        const url = "http://localhost:8080/apis/animal/buscar/%20";
+        const url = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/animal/buscar/%20";
         fetch(url, {
-            method: 'GET', redirect: "follow"
+            method: 'GET', redirect: "follow", headers: { 'Authorization': token }
         })
             .then((response) => {
                 return response.text();
@@ -265,7 +267,7 @@ function buscarAnimal() {
 }
 
 function excluirAnimal(id) {
-
+    const token = localStorage.getItem("token");
     Swal.fire({
         title: "Você tem certeza ?",
         text: "Você não poderá reverter isso!",
@@ -279,12 +281,13 @@ function excluirAnimal(id) {
         if (result.isConfirmed) 
         {
 
-        const URL = "http://localhost:8080/apis/animal/excluir/" + id;
+        const URL = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/animal/excluir/" + id;
 
         fetch(URL, {
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': token 
             },
             method: 'DELETE'
         })
@@ -320,11 +323,12 @@ function editarAnimal(id) {
 }
 
 function buscarAnimalPeloId(id) {
-    const URL = "http://localhost:8080/apis/animal/buscar-id/" + id;
-
+    const URL = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/animal/buscar-id/" + id;
+    const token = localStorage.getItem("token");
     fetch(URL, {
         headers: {
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Authorization': token 
         },
         method: 'GET'
     })

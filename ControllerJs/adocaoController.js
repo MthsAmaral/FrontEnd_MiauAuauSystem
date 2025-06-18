@@ -1,3 +1,4 @@
+
 function limparForm() {
   var fdados = document.getElementById("fadocao");
   fdados.cod_usuario.value = "";
@@ -141,7 +142,7 @@ function buscarAnimalAdocao() {
   container.innerHTML = "";
   if (filtro.length <= 0) 
   {
-    const url = "http://localhost:8080/apis/animal/buscar-filtro/%20";
+    const url = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/animal/buscar-filtro/%20";
     fetch(url, {
       method: 'GET', redirect: "follow"
     })
@@ -240,7 +241,7 @@ function buscarAnimalAdocao() {
       });
   }
   else {
-    const url = "http://localhost:8080/apis/animal/buscar-filtro/"+filtro;
+    const url = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/animal/buscar-filtro/"+filtro;
     fetch(url, {
       method: 'GET', redirect: "follow"
     })
@@ -341,7 +342,283 @@ function buscarAnimalAdocao() {
   }
 
 }
+
+function buscarAnimalAdocaoVersaoGabriel() {
+
+  const filtroCor = document.getElementById("filtroCor").value;
+  const filtroEspecie = document.getElementById("filtroEspecie").value;
+  const filtroSexo = document.getElementById("filtroSexo").value;
+  const filtroRaca = document.getElementById("filtroRaca").value;
+  
+  let filtro = ""; 
+  let aux = ""; 
+  
+
+  if (filtroCor.length > 0)
+  {
+    aux = aux + filtroCor;
+  } 
+  else 
+  {
+    aux = aux + " "; 
+  }
+  
+  if (filtroEspecie.length > 0)
+  {
+    if (aux.trim().length > 0) 
+    {
+      aux = aux + " " + filtroEspecie;
+    } 
+    else 
+    {
+      aux = aux + filtroEspecie;
+    }
+  } 
+  else
+  {
+    aux = aux + " ";
+  }
+  
+  if (filtroSexo.length > 0)
+  {
+    if (aux.trim().length > 0)
+    {
+      aux = aux + " " + filtroSexo; 
+    } 
+    else
+    {
+      aux = aux + filtroSexo;
+    }
+  } else {
+    aux = aux + " "; 
+  }
+  
+  if (filtroRaca.length > 0) 
+  {
+    if (aux.trim().length > 0)
+    {
+      aux = aux + " " + filtroRaca;
+    } 
+    else 
+    {
+      aux = aux + filtroRaca;
+    }
+  } else {
+    aux = aux + " "; 
+  }
+  
+  if(aux.trim().length > 0)
+  {
+    filtro = aux;
+  }
+  
+  const container = document.getElementById("resultado");
+  container.innerHTML = "";
+  if (filtro.length <= 0) 
+  {
+    const url = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/animal/buscar-filtro/%20";
+    fetch(url, {
+      method: 'GET', redirect: "follow"
+    })
+      .then((response) => {
+        return response.text();
+      })
+      .then(function (text) {
+        var json = JSON.parse(text); // Converte a resposta JSON
+        for (let i = 0; i < json.length; i++) {
+          if (json[i].adotado == 'Não') {
+            const dataNascimento = new Date(json[i].dataNascimento);
+            const hoje = new Date();
+
+            let diferencaAno = hoje.getFullYear() - dataNascimento.getFullYear();
+            if (hoje.getMonth() < dataNascimento.getMonth() || (hoje.getMonth() === dataNascimento.getMonth() && hoje.getDate() < dataNascimento.getDate())) {
+              diferencaAno--;
+            }
+
+            let diferencaMes = 0;
+            let diferencaDias = 0;
+
+            if (diferencaAno === 0) {
+              diferencaMes = hoje.getMonth() - dataNascimento.getMonth();
+              if (hoje.getDate() < dataNascimento.getDate()) {
+                diferencaMes--;
+              }
+              if (diferencaMes < 0) {
+                diferencaMes += 12;
+              }
+
+              const inicioMes = new Date(hoje.getFullYear(), hoje.getMonth(), 0);
+              diferencaDias = Math.abs(
+                Math.floor((hoje - dataNascimento) / (1000 * 60 * 60 * 24))
+              );
+            }
+
+            let idade;
+            if (diferencaAno > 0) {
+              if (diferencaAno > 1)
+                idade = `${diferencaAno} anos`;
+              else
+                idade = `${diferencaAno} ano`;
+            }
+            else if (diferencaMes > 0) {
+              if (diferencaMes > 1)
+                idade = `${diferencaMes} meses`;
+              else
+                idade = `${diferencaMes} mes`;
+            }
+            else if (diferencaDias > 0) {
+              if (diferencaDias > 1)
+                idade = `${diferencaDias} dias`;
+              else
+                idade = `${diferencaDias} dia`;
+            } else {
+              idade = "Recém-nascido";
+            }
+            container.innerHTML += `
+            <div class="animal-card">
+            <img src="data:image/jpeg;base64,${json[i].imagemBase64}" alt="Animal" />
+            <div class="animal-info">
+              <h3>${json[i].nome}</h3>
+              <div class="tags">
+                <div class="tag"><i class="fas fa-venus-mars"></i> ${json[i].sexo}</div>
+                <div class="tag"><i class="fas fa-cut"></i> ${json[i].castrado}</div>
+                <div class="tag"><i class="fas fa-birthday-cake"></i> ${idade}</div>
+                <div class="tag"><i class="fas fa-weight"></i> ${json[i].peso} kg</div>
+              </div>
+        
+              <div class="details">
+                <p><i class="fas fa-paw"></i> <strong>Espécie:</strong> ${json[i].especie}</p>
+                <p><i class="fas fa-dna"></i> <strong>Raça:</strong> ${json[i].raca}</p>
+                <p><i class="fas fa-palette"></i> <strong>Cor:</strong> ${json[i].cor}</p>
+              </div>
+        
+              <button class="adopt-btn2" onclick="solicitarAdocao(${json[i].codAnimal})">Quero Adotar</button>
+            </div>
+          </div>
+            `
+          }
+
+        }
+        if (container.innerHTML == "") {
+          container.innerHTML = `
+              <div class="banner_adocao">
+          <div class="banner_texto">
+            <p> No momento, não encontramos nenhum animal disponível para adoção que atenda aos filtros selecionados.</p>
+          </div>
+        </div>
+          `;
+      }
+      
+      })
+      .catch(function (error) {
+        console.error(error); // Exibe erros, se houver
+      });
+  }
+  else {
+    const url = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/animal/buscar-filtro/"+filtro;
+    fetch(url, {
+      method: 'GET', redirect: "follow"
+    })
+      .then((response) => {
+        return response.text();
+      })
+      .then(function (text) {
+        
+        var json = JSON.parse(text); // Converte a resposta JSON
+        for (let i = 0; i < json.length; i++) {
+          if (json[i].adotado == 'Não') {
+            const dataNascimento = new Date(json[i].dataNascimento);
+            const hoje = new Date();
+
+            let diferencaAno = hoje.getFullYear() - dataNascimento.getFullYear();
+            if (hoje.getMonth() < dataNascimento.getMonth() || (hoje.getMonth() === dataNascimento.getMonth() && hoje.getDate() < dataNascimento.getDate())) {
+              diferencaAno--;
+            }
+
+            let diferencaMes = 0;
+            let diferencaDias = 0;
+
+            if (diferencaAno === 0) {
+              diferencaMes = hoje.getMonth() - dataNascimento.getMonth();
+              if (hoje.getDate() < dataNascimento.getDate()) {
+                diferencaMes--;
+              }
+              if (diferencaMes < 0) {
+                diferencaMes += 12;
+              }
+
+              const inicioMes = new Date(hoje.getFullYear(), hoje.getMonth(), 0);
+              diferencaDias = Math.abs(
+                Math.floor((hoje - dataNascimento) / (1000 * 60 * 60 * 24))
+              );
+            }
+
+            let idade;
+            if (diferencaAno > 0) {
+              if (diferencaAno > 1)
+                idade = `${diferencaAno} anos`;
+              else
+                idade = `${diferencaAno} ano`;
+            }
+            else if (diferencaMes > 0) {
+              if (diferencaMes > 1)
+                idade = `${diferencaMes} meses`;
+              else
+                idade = `${diferencaMes} mes`;
+            }
+            else if (diferencaDias > 0) {
+              if (diferencaDias > 1)
+                idade = `${diferencaDias} dias`;
+              else
+                idade = `${diferencaDias} dia`;
+            } else {
+              idade = "Recém-nascido";
+            }
+            container.innerHTML += `
+            <div class="animal-card">
+            <img src="data:image/jpeg;base64,${json[i].imagemBase64}" alt="Animal" />
+            <div class="animal-info">
+              <h3>${json[i].nome}</h3>
+              <div class="tags">
+                <div class="tag"><i class="fas fa-venus-mars"></i> ${json[i].sexo}</div>
+                <div class="tag"><i class="fas fa-cut"></i> ${json[i].castrado}</div>
+                <div class="tag"><i class="fas fa-birthday-cake"></i> ${idade}</div>
+                <div class="tag"><i class="fas fa-weight"></i> ${json[i].peso} kg</div>
+              </div>
+        
+              <div class="details">
+                <p><i class="fas fa-paw"></i> <strong>Espécie:</strong> ${json[i].especie}</p>
+                <p><i class="fas fa-dna"></i> <strong>Raça:</strong> ${json[i].raca}</p>
+                <p><i class="fas fa-palette"></i> <strong>Cor:</strong> ${json[i].cor}</p>
+              </div>
+        
+              <button class="adopt-btn2" onclick="solicitarAdocao(${json[i].codAnimal})">Quero Adotar</button>
+            </div>
+          </div>`
+          }
+
+        }
+        if (container.innerHTML == "") {
+          container.innerHTML = `
+              <div class="banner_adocao">
+          <div class="banner_texto">
+            <p> No momento, não encontramos nenhum animal disponível para adoção que atenda aos filtros selecionados.</p>
+          </div>
+        </div>
+          `;
+      }
+      
+      
+      })
+      .catch(function (error) {
+        console.error(error); // Exibe erros, se houver
+      });
+  }
+
+}
 function buscarAdocao() {
+
+  const token = localStorage.getItem("token");
   let filtroAno = document.getElementById("filtroAno").value;
   let filtroStatus = document.getElementById("filtroStatus").value;
   let filtro = "";
@@ -363,9 +640,9 @@ function buscarAdocao() {
   if (filtro.length > 0) // busca com filtro
   {
     console.log(filtro)
-    const url = "http://localhost:8080/apis/adocao/buscar/" + filtro;
+    const url = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/adocao/buscar/" + filtro;
     fetch(url, {
-      method: 'GET', redirect: "follow"
+      method: 'GET', redirect: "follow",  headers: { 'Authorization': token }
     })
       .then((response) => {
         return response.text();
@@ -416,9 +693,9 @@ function buscarAdocao() {
       });
   }
   else {
-    const url = "http://localhost:8080/apis/adocao/buscar/%20";
+    const url = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/adocao/buscar/%20";
     fetch(url, {
-      method: 'GET', redirect: "follow"
+      method: 'GET', redirect: "follow",  headers: { 'Authorization': token }
     })
       .then((response) => {
         return response.text();
@@ -469,11 +746,12 @@ function buscarAdocao() {
 }
 
 function buscarAnos() {
+  const token = localStorage.getItem("token");
   const filtroAno = document.getElementById("filtroAno");
-  const url = "http://localhost:8080/apis/adocao/buscarAno";
+  const url = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/adocao/buscarAno";
   fetch(url, {
     method: 'GET',
-    redirect: "follow"
+    redirect: "follow", headers: { 'Authorization': token }
   })
     .then((response) => {
       return response.json();
@@ -492,59 +770,99 @@ function buscarAnos() {
 
 }
 
-function solicitarAdocao(id) {
-
+function solicitarAdocao(id)
+{
   const token = localStorage.getItem("token");
-  if (token) {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const payload = JSON.parse(window.atob(base64)); // recupera todas as informaçoes no token
-    const formData = new FormData();
-    const dataAtual = new Date();
-    const dataFormatada = dataAtual.toISOString().slice(0, 10);
-    formData.append("cod_animal", id);
-    formData.append("cod_usuario", payload.cod_usuario);
-    formData.append("status", "Pendente");
-    formData.append("data", dataFormatada);
-
-    const URL = "http://localhost:8080/apis/adocao/solicitar"
-    fetch(URL, {
-      method: 'POST', body: formData,
-      headers: { 'Authorization': token }
-    })
-      .then((response) => {
-        if (response.ok) {
-          sessionStorage.setItem("adocaoSolicitada", 'true');
-          window.location.reload();
-        }
-        else {
+  if (token) 
+  {
+    Swal.fire({
+      title: 'Confirmar Solicitação',
+      text: 'Você deseja enviar uma solicitação de adoção para este animal?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Confirmar',
+      cancelButtonText: 'Cancelar'
+    }).then((result)=>{
+      if(result.isConfirmed)
+      {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const payload = JSON.parse(window.atob(base64)); // recupera todas as informaçoes no token
+        const now = Math.floor(Date.now() / 1000); 
+        let flag = 1;
+        if (payload.exp && payload.exp < now)
+        {
           Swal.fire({
             icon: "error",
-            title: "Erro ao Enviar Solicitação de Adoção!",
-            timer: 1500,
-            timerProgressBar: true
-          })
+            title: "Sessão Expirada",
+            text: "Por favor, faça login novamente.",
+            confirmButtonText: "Ok"
+          }).then(() => {
+            logout(); 
+          });
+          flag = 0;
         }
-        return response.json();
-      })
-      .then((json) => {
+        if(flag == 1)
+        {
+          const formData = new FormData();
+          const dataAtual = new Date();
+          const dataFormatada = dataAtual.toISOString().slice(0, 10);
+          formData.append("cod_animal", id);
+          formData.append("cod_usuario", payload.cod_usuario);
+          formData.append("status", "Pendente");
+          formData.append("data", dataFormatada);
 
-      })
-      .catch((error) => console.error(error))
-  }
-  else {
-    Swal.fire({
-      icon: "error",
-      title: "Acesso Não Autorizado!",
-      timer: 1500,
-      timerProgressBar: true
+          const URL = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/adocao/solicitar"
+          fetch(URL, {
+            method: 'POST', body: formData,
+            headers: { 'Authorization': token }
+          })
+          .then((response) => {
+            if (response.ok)
+            {
+              Swal.fire({
+              title: 'Enviando Solicitação de Adoção...',
+              allowOutsideClick: false,
+              didOpen: () => {
+                Swal.showLoading();
+              }
+            });
+              sessionStorage.setItem("adocaoSolicitada", 'true');
+              setTimeout(() => {
+                window.location.reload();
+              }, 3000); 
+
+            }
+            else
+            {
+              Swal.fire({
+                icon: "error",
+                title: "Você já possui uma solicitação de adoção pendente.",
+                timer: 1500,
+                timerProgressBar: true
+              })
+            }
+            return response.json();
+          })
+          .then((json) => {
+
+          })
+          .catch((error) => console.error(error))
+        }
+      }
+      
     })
+  }
+  else
+  {
+    sessionStorage.setItem("usuarioNaoAutenticado", 'true');
+    window.location.href = "./TelasFundamentais/telaLogin.html";
   }
 
 }
 
 function logar(nome, senha, id) {
-  const URL = "http://localhost:8080/autenticacao"
+  const URL = "https://backend-miauauau-7bacd44b7104.herokuapp.com/autenticacao"
   const formData = new FormData();
   formData.append("nome", nome);
   formData.append("senha", senha);
@@ -620,11 +938,11 @@ function carregarAnimaisModal() {
 
   const container = document.getElementById("resultadoAnimal");
   container.innerHTML = "";
-  const url = "http://localhost:8080/apis/animal/buscar/%20";
-
+  const url = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/animal/buscar/%20";
+  const token = localStorage.getItem("token");
   fetch(url, {
     method: "GET",
-    redirect: "follow",
+    redirect: "follow", headers: { 'Authorization': token }
   })
     .then((response) => response.text())
     .then(function (text) {
@@ -668,11 +986,11 @@ function selecionarUsuario(id, adotante) {
 function carregarUsuariosModal() {
   const container = document.getElementById("resultadoUsuario");
   container.innerHTML = "";
-  const url = "http://localhost:8080/apis/usuario/buscar/%20";
-
+  const url = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/usuario/buscar/%20";
+  const token = localStorage.getItem("token");
   fetch(url, {
     method: "GET",
-    redirect: "follow",
+    redirect: "follow", headers: { 'Authorization': token }
   })
     .then((response) => response.text())
     .then(function (text) {
@@ -708,15 +1026,16 @@ function carregarUsuariosModal() {
 }
 
 function cadAdocao() {
-
+  
+  const token = localStorage.getItem("token");
   var fadocao = document.getElementById("fadocao");
   var formData = new FormData(fadocao);
   var cod = document.getElementById("codAdocao").value;
   if (cod) {
 
-    const URL = "http://localhost:8080/apis/adocao/atualizar"
+    const URL = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/adocao/atualizar"
     fetch(URL, {
-      method: 'PUT', body: formData
+      method: 'PUT', body: formData, headers: { 'Authorization': token }
     })
       .then((response) => {
         if (!response.ok) {
@@ -736,9 +1055,9 @@ function cadAdocao() {
 
   }
   else {
-    const URL = "http://localhost:8080/apis/adocao/gravar"
+    const URL = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/adocao/gravar"
     fetch(URL, {
-      method: 'POST', body: formData
+      method: 'POST', body: formData, headers: { 'Authorization': token }
     })
       .then((response) => {
         if (!response.ok) {
@@ -760,6 +1079,7 @@ function cadAdocao() {
 }
 function excluirAdocao(id, status) {
 
+  const token = localStorage.getItem("token");
   if (status != "Pendente" && status != "Aprovada") {
     Swal.fire({
       title: "Deseja apagar está solicitação de adoção ?",
@@ -773,12 +1093,12 @@ function excluirAdocao(id, status) {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        const URL = "http://localhost:8080/apis/adocao/excluir/" + id;
+        const URL = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/adocao/excluir/" + id;
 
         fetch(URL, {
           headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json', 'Authorization': token
           },
           method: 'DELETE'
         })
@@ -806,7 +1126,7 @@ function excluirAdocao(id, status) {
     });
   }
   else {
-    let URL = "http://localhost:8080/apis/adocao/buscar-id/" + id;
+    let URL = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/adocao/buscar-id/" + id;
     var formData = new FormData();
 
     Swal.fire({
@@ -821,7 +1141,7 @@ function excluirAdocao(id, status) {
       if (result.isConfirmed) {
         fetch(URL, {
           headers: {
-            Accept: 'application/json',
+            Accept: 'application/json', 'Authorization': token
           },
           method: 'GET',
         })
@@ -838,10 +1158,10 @@ function excluirAdocao(id, status) {
             formData.append("data", json.data);
             formData.append("status", "Cancelada");
 
-            URL = "http://localhost:8080/apis/adocao/atualizar";
+            URL = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/adocao/atualizar";
             return fetch(URL, {
               method: 'PUT',
-              body: formData,
+              body: formData, headers: { 'Authorization': token }
             });
           })
           .then((response) => {
@@ -872,7 +1192,8 @@ function excluirAdocao(id, status) {
 
 function emitirTermo(id) {
 
-  let URL = "http://localhost:8080/apis/adocao/buscar-id/" + id;
+  const token = localStorage.getItem("token");
+  let URL = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/adocao/buscar-id/" + id;
   var formData = new FormData();
 
   Swal.fire({
@@ -888,7 +1209,7 @@ function emitirTermo(id) {
     if (result.isConfirmed) {
       fetch(URL, {
         headers: {
-          Accept: 'application/json',
+          Accept: 'application/json', 'Authorization': token 
         },
         method: 'GET',
       })
@@ -905,10 +1226,10 @@ function emitirTermo(id) {
           formData.append("data", json.data);
           formData.append("status", "Aprovada");
 
-          URL = "http://localhost:8080/apis/adocao/atualizar";
+          URL = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/adocao/atualizar";
           return fetch(URL, {
             method: 'PUT',
-            body: formData,
+            body: formData, headers: { 'Authorization': token }
           });
         })
         .then((response) => {
@@ -936,8 +1257,8 @@ function emitirTermo(id) {
 }
 
 function gerarPdf(id) {
-  const URL = "http://localhost:8080/apis/adocao/download-pdf/" + id;
-
+  const URL = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/adocao/download-pdf/" + id;
+  const token = localStorage.getItem("token");
   Swal.fire({
     title: 'Gerando PDF...',
     text: 'Aguarde Enquanto o Termo é Gerado!',
@@ -949,7 +1270,7 @@ function gerarPdf(id) {
 
   fetch(URL, {
     method: 'GET',
-    headers: { Accept: 'application/pdf' }
+    headers: { Accept: 'application/pdf', 'Authorization': token }
   })
     .then(response => {
       if (!response.ok) {
@@ -984,11 +1305,11 @@ function editarAdocao(id) {
 }
 
 function buscarAdocaoPeloId(id) {
-  const URL = "http://localhost:8080/apis/adocao/buscar-id/" + id;
-
+  const URL = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/adocao/buscar-id/" + id;
+  const token = localStorage.getItem("token");
   fetch(URL, {
     headers: {
-      'Accept': 'application/json'
+      'Accept': 'application/json', 'Authorization': token
     },
     method: 'GET'
   })
@@ -1020,7 +1341,7 @@ function buscarAdocaoPeloId(id) {
 }
 function buscarRaca() {
   const filtroRaca = document.getElementById("filtroRaca");
-  const url = "http://localhost:8080/apis/animal/buscar-raca";
+  const url = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/animal/buscar-raca";
   fetch(url, {
     method: 'GET',
     redirect: "follow"
@@ -1043,7 +1364,7 @@ function buscarRaca() {
 }
 function buscarCor() {
   const filtroCor = document.getElementById("filtroCor");
-  const url = "http://localhost:8080/apis/animal/buscar-cor";
+  const url = "https://backend-miauauau-7bacd44b7104.herokuapp.com/apis/animal/buscar-cor";
   fetch(url, {
     method: 'GET',
     redirect: "follow"

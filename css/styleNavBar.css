@@ -1,0 +1,176 @@
+/* === NAVBAR (barra de navegação superior) === */
+.navbar {
+    background-color: var(--cor-petroleo);
+    padding: 0.8rem 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-bottom: 2px solid var(--cor-destaque);
+}
+
+/* === LOGO OU NOME DO SISTEMA NA NAVBAR === */
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--cor-clara);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 0.5rem 1rem;
+}
+
+.navbar-brand:hover {
+    color: var(--cor-destaque);
+    text-shadow: 2px 2px 6px rgba(211, 169, 106, 0.5);
+}
+
+/* === ANIMAÇÃO DE SUBLINHADO NA MARCA === */
+.navbar-brand::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    bottom: 0; left: 0;
+    background-color: var(--cor-destaque);
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/* === ITENS DE MENU (links) === */
+.nav-link {
+    font-weight: 500;
+    color: var(--cor-clara);
+    padding: 0.5rem 1rem;
+    margin: 0 0.2rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--cor-destaque);
+    background-color: rgba(205, 238, 234, 0.1);
+}
+
+/* === DROPDOWN (submenus) === */
+.dropdown-menu {
+    background-color: var(--cor-petroleo);
+    border: 1px solid var(--cor-destaque);
+}
+
+.dropdown-item {
+    color: var(--cor-clara);
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: var(--cor-destaque);
+    color: var(--cor-petroleo);
+}
+
+/* === BOTÃO DE MENU MOBILE === */
+.navbar-toggler {
+    border-color: var(--cor-clara);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(245, 245, 245, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* === ALINHAMENTO DO MENU À DIREITA === */
+.central-navbar {
+    display: flex;
+    justify-content: flex-end;
+    width: 80%;
+    margin-right: 20px;
+}
+
+/* === IMAGEM NA NAVBAR (se houver) === */
+.navbar-brand img {
+    max-height: 50px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+.nav-item.dropdown-auaumiau {
+  position: relative;
+}
+
+.nav-link.dropdown-toggle-auaumiau {
+  display: inline-block;
+  padding: 10px 15px; /* Espaçamento interno */
+  background-color: #d5a96c; /* Cor de fundo */
+  color: #ffffff; /* Cor do texto */
+  border: 2px solid #d5a96c; /* Borda */
+  border-radius: 8px; /* Bordas arredondadas */
+  text-align: center;
+  text-decoration: none; /* Remove o sublinhado */
+}
+
+.nav-link.dropdown-toggle-auaumiau:hover {
+  background-color: #d5a96c; /* Cor de fundo ao passar o mouse */
+  color: #ffffff; /* Cor do texto ao passar o mouse */
+}
+
+/* Estilo do menu dropdown */
+.dropdown-menu-auaumiau {
+  list-style: none;
+  display: none; /* Esconde o menu inicialmente */
+  position: absolute;
+  top: 100%;
+  left: -4px;
+  background-color: #073b4c; /* Mesma cor da barra de navegação */
+  padding: 1rem 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  z-index: 1000;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* Mostra o menu ao passar o mouse */
+.nav-item.dropdown-auaumiau:hover .dropdown-menu-auaumiau {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Itens dentro do menu */
+.dropdown-item-auaumiau {
+  white-space: nowrap;
+  color: #f5f5f5;
+  padding: 0.8rem 2.1rem;
+  text-decoration: none;
+  font-weight: 500;
+  display: block;
+  position: relative; /* Necessário para o pseudo-elemento */
+  transition: color 0.3s ease; /* Transição suave da cor */
+}
+
+/* Pseudo-elemento para a linha */
+.dropdown-item-auaumiau::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #d5a96c;
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease;
+}
+
+/* Efeito hover */
+.dropdown-item-auaumiau:hover {
+  color: #d5a96c; /* Cor do texto ao passar o mouse */
+}
+
+.dropdown-item-auaumiau:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
