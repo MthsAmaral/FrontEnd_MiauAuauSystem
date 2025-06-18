@@ -15,7 +15,7 @@ function cadPlanoContasReferencial() {
       body: new URLSearchParams(formData),
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
-        'Authorization': token 
+        'Authorization': token
       },
     })
       .then((response) => {
@@ -52,8 +52,9 @@ function buscarPlanoContasReferencial(filtro) {
   if (filtro && filtro.length > 0) url += `/${encodeURIComponent(filtro)}`;
   else url += "/%20";
 
-  fetch(url, { method: "GET",
-              headers: { 'Authorization': token }
+  fetch(url, { 
+    method: "GET",
+    headers: { 'Authorization': token }
   })
     .then((response) => {
       if (!response.ok) throw new Error("Erro ao buscar lista");
@@ -96,8 +97,9 @@ function buscarPlanoContasReferencialFiltro() {
 // Buscar por ID para edição
 function buscarPlanoContasReferencialID(id) {
   const token = localStorage.getItem("token");
-  fetch(`${API_BASE_URL}/buscar-id/${id}`, { method: "GET",
-                                            headers: { 'Authorization': token }
+  fetch(`${API_BASE_URL}/buscar-id/${id}`, {
+    method: "GET",
+    headers: { 'Authorization': token }
   })
     .then((response) => {
       if (!response.ok) throw new Error("Erro ao buscar por ID");
